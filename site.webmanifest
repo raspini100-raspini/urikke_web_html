@@ -1,0 +1,17 @@
+{
+  "name": "우리꺼 주문웹",
+  "short_name": "우리꺼",
+  "start_url": "/wooricco_order.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff7ed",
+  "theme_color": "#ff6b00",
+  "icons": [
+    {
+      "src": "/assets/logo/512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

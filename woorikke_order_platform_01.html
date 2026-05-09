@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+<link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link href="https://woorecco.vercel.app/woorikke_order_platform_01.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="https://woorecco.vercel.app/woorikke_order_platform_01.html" property="og:url"/>
+<meta content="우리꺼" property="og:site_name"/>
+<meta content="일마레카페 주문웹" property="og:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." property="og:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image:secure_url"/>
+<meta content="image/png" property="og:image:type"/>
+<meta content="1731" property="og:image:width"/>
+<meta content="909" property="og:image:height"/>
+<meta content="우리꺼 주문웹 소개 이미지" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://woorecco.vercel.app/woorikke_order_platform_01.html" name="twitter:url"/>
+<meta content="일마레카페 주문웹" name="twitter:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." name="twitter:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image"/>
+<meta content="우리꺼 주문웹 소개 이미지" name="twitter:image:alt"/>
+<title>일마레카페 주문웹</title>
+
+  <link rel="stylesheet" href="common.css" />
+</head>
+<body class="page-order-01" data-page="order-original">
+<header class="appbar">
+  <div class="wrap appbar-inner">
+    <a class="brand" href="#top" aria-label="우리꺼 홈">
+      <img class="footer-logo" src="assets/logo.png" alt="우리꺼 본사 로고">
+    </a>
+    <div class="search">
+      <input id="searchInput" type="search" placeholder="메뉴를 검색해보세요" oninput="renderMenus()">
+    </div>
+    <div class="top-actions">
+      <a class="icon-btn" href="member-login.html">login</a>
+      <a class="icon-btn" href="member-register.html">회원가입</a>
+      <a class="icon-btn primary" href="#cart">장바구니</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="store-hero wrap">
+    <div class="store-card">
+      <div class="cover">
+        <div class="cover-badges">
+          <span class="badge">🟢 영업중</span>
+          <span class="badge">🚚 배달 가능</span>
+          <span class="badge">🥡 포장 가능</span>
+        </div>
+      </div>
+      <div class="store-info">
+        <div>
+          <h1 class="store-title">{상점명}</h1>
+          <p class="store-desc">제주 서쪽 바다의 여유를 가장 가까이에서 만날 수 있는 곳.</p>
+          <div class="score">
+          <span>📍  {상점 주소}<br>
+                    <a href="tel:{상점 전화번호}">📞 {상점 전화번호}</a></span>
+          
+          </span>
+          </div>
+          <div class="notice-box">매장 사정에 따라 조리 시간이 달라질 수 있습니다. 단체 주문은 매장으로 문의해주세요.</div>
+        </div>
+        <aside class="order-type">
+          <div class="switch" role="tablist">
+            <button id="deliveryBtn" class="active" onclick="setOrderType('배달')">배달</button>
+            <button id="pickupBtn" onclick="setOrderType('포장')">포장</button>
+          </div>
+          <div class="delivery-meta">
+            <div class="mini"><small>예상시간</small><b id="timeText">35~45분</b></div>
+            <div class="mini"><small>배달비</small><b id="feeText">3,000원</b></div>
+            <div class="mini"><small>최소주문</small><b>12,000원</b></div>
+            <div class="mini"><small>결제방식</small><b>카드결제</b></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <nav class="category-bar">
+    <div class="wrap category-scroll" id="categoryList"></div>
+  </nav>
+
+  <section class="wrap layout">
+    <div class="content">
+      <section class="section-card" id="menuArea">
+        <div class="section-title">
+          <h2 id="categoryTitle">전체 메뉴</h2>
+          <p>담기 버튼을 누르면 장바구니에 추가됩니다.</p>
+        </div>
+        <div class="menu-list" id="menuList"></div>
+      </section>
+
+      <section class="section-card order-status-section" id="orderStatusSection">
+        <div class="section-title">
+          <h2>주문현황</h2>
+          <p>결제 후 현재 주문 상태를 확인할 수 있습니다.</p>
+        </div>
+        <div class="order-status-card">
+          <div class="order-status-head">
+            <b id="statusOrderNo">주문번호 -</b>
+            <span class="badge" id="statusBadge">주문 접수</span>
+          </div>
+          <div class="order-status-body">
+            <div class="status-steps">
+              <div class="status-step active" id="stepOrder">주문접수</div>
+              <div class="status-step" id="stepReady">준비중</div>
+              <div class="status-step" id="stepDelivery">배달중</div>
+              <div class="status-step" id="stepDone">완료</div>
+            </div>
+            <div class="order-status-grid">
+              <div class="order-status-box"><small>주문자</small><strong id="statusCustomer">-</strong></div>
+              <div class="order-status-box"><small>연락처</small><strong id="statusPhone">-</strong></div>
+              <div class="order-status-box"><small>주문방식</small><strong id="statusType">-</strong></div>
+              <div class="order-status-box"><small>결제금액</small><strong id="statusTotal">-</strong></div>
+              <div class="order-status-box" style="grid-column:1/-1"><small>주소 / 요청사항</small><strong id="statusAddressMemo">-</strong></div>
+            </div>
+            <h3 style="margin:0 0 8px;font-size:17px">주문 메뉴</h3>
+            <ul class="order-items-list" id="statusItems"></ul>
+            <div class="order-status-actions">
+              <button class="dark" type="button" onclick="simulateOrderProgress()">상태 진행 테스트</button>
+              <button class="ghost" type="button" onclick="goCart()">장바구니로 이동</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card" id="storeInfo">
+        <div class="section-title"><h2>매장정보</h2><p>전용 주문웹 정보</p></div>
+        <div class="info-grid">
+          <div class="info-box">
+            <h3>가맹점 정보</h3>
+            <p>상호 : 리조트일마레 카페<br>사업자번호 : 512-85-99633<br>대표자 : 홍길동<br>주소 : 제주특별자치도 제주시 고산중길 110-2<br>전화 : 064-540-0001</p>
+          </div>
+          <div class="info-box">
+            <h3>QRcord</h3>
+            <div class="brand01">
+          <img src="assets/qr.png" alt="리조트일마레 카페 사진 1">
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-title"><h2>가게사진</h2><p>매장 분위기</p></div>
+        <div class="album-grid">
+          <img src="assets/store/ilmare01.jpg" alt="리조트일마레 카페 사진 1">
+          <img src="assets/store/ilmare02.jpg" alt="리조트일마레 카페 사진 2">
+          <img src="assets/store/ilmare03.jpg" alt="리조트일마레 카페 사진 3">
+          <img src="assets/store/ilmare04.jpg" alt="리조트일마레 카페 사진 4">
+        </div>
+      </section>
+    </div>
+
+    <aside class="cart-panel" id="cart">
+      <div class="cart-head">
+        <h2>장바구니</h2>
+        <button class="cart-clear" onclick="clearCart()">비우기</button>
+      </div>
+      <div class="cart-body">
+        <div id="cartList" class="empty">아직 담긴 메뉴가 없습니다.<br>먹고 싶은 메뉴를 담아주세요.</div>
+        <div class="sum"><b>주문금액</b><b id="subtotal">0원</b></div>
+        <div class="sum"><span>배달비</span><span id="deliveryFee">3,000원</span></div>
+        <div class="sum"><b>총 결제금액</b><b id="total">0원</b></div>
+        <div class="form-line"><label>주문자명</label><input id="name" placeholder="예: 홍길동"></div>
+        <div class="form-line"><label>연락처</label><input id="phone" placeholder="010-0000-0000"></div>
+        <div class="form-line"><label>주소</label><input id="address" placeholder=""></div>
+        <div class="form-line"><label>요청사항</label><textarea id="memo" rows="3" placeholder="요청사항을 입력해주세요"></textarea></div>
+        <button class="checkout" onclick="submitOrder()">주문결제하기</button>
+        <div class="done" id="done">주문이 접수되었습니다. 매장에서 확인 후 준비를 시작합니다.</div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<div class="mobile-checkout">
+  <button onclick="goCart()"><span class="mobile-count" id="mobileCount">0</span><span id="mobileText">장바구니 보기 · 0원</span></button>
+</div>
+
+<footer class="footer" id="company">
+  <div class="footer-inner">
+    <div>
+      <img class="footer-logo" src="assets/logo_w.png" alt="우리꺼 본사 로고">
+      <p class="footer-desc">사장님과 손님을 직접 연결하는<br>가맹점 전용 주문웹</p>
+    </div>
+    <div>
+      <ul class="footer-info-list">
+        <li>(주)망고[우리꺼] | 대표 안정길</li>
+        <li>사업자등록번호 495-87-01663 | 통신판매업 2025-제주한경-39호</li>
+        <li>인천 동구 송림로 119-1 망고빌딩 | cmo@mcorea.io</li>
+        <li>mobilitycorea. co.,ltd.</li>
+
+      </ul>
+    </div>
+    <div class="footer-apply-box">
+      <h3>가맹신청</h3>
+      <a class="footer-apply-btn" href="store-register.html">가맹신청하기</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 우리꺼 · 우리 가게 손님은 우리꺼로</span>
+    <span>  본 서비스는 판매자와 구매자를 연결하는 중개서비스입니다.<br>
+              상품의 상태, 진위 여부, 배송, 환불 등 거래와 관련된 책임은 거래 당사자에게 있습니다.</span>
+  </div>
+</footer>
+
+<div class="modal" id="paymentModal">
+  <div class="modal-card">
+    <div style="font-size:42px">💳</div>
+    <h2>카드결제 정보 입력</h2>
+    <p>주문 결제를 위해 카드 정보를 입력해주세요.</p>
+
+    <div class="payment-tabs">
+      <button id="newCardTab" class="active" type="button" onclick="setPaymentMode('new')">새 카드 결제</button>
+      <button id="savedCardTab" type="button" onclick="setPaymentMode('saved')">등록카드 결제</button>
+    </div>
+
+    <div class="payment-guide" id="paymentGuide">
+      신규 고객은 카드번호, 유효기간, 비밀번호 앞 2자리, 생년월일 6자리를 입력합니다.
+    </div>
+
+    <div class="saved-card-box" id="savedCardBox">
+      <b>등록된 카드</b>
+      <span>신한카드 ****-****-****-1234</span><br>
+      <small>기존 회원은 등록된 카드로 바로 주문할 수 있습니다.</small>
+    </div>
+
+    <form class="payment-form" id="paymentForm" onsubmit="payAndSubmitOrder(event)">
+      <div id="newCardFields">
+        <div class="form-line">
+          <label>신용카드번호</label>
+          <input id="cardNumber" inputmode="numeric" maxlength="19" placeholder="0000-0000-0000-0000" oninput="formatCardNumber(this)">
+        </div>
+        <div class="payment-grid">
+          <div class="form-line">
+            <label>유효기간</label>
+            <input id="cardExpiry" inputmode="numeric" maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)">
+          </div>
+          <div class="form-line">
+            <label>비밀번호 앞 2자리</label>
+            <input id="cardPassword" type="password" inputmode="numeric" maxlength="2" placeholder="**">
+          </div>
+        </div>
+        <div class="form-line">
+          <label>생년월일 6자리</label>
+          <input id="birthDate" inputmode="numeric" maxlength="6" placeholder="예: 800101">
+        </div>
+        <label class="save-card-check">
+
+          이 카드를 다음 주문에도 사용할 수 있도록 등록합니다.
+        </label>
+      </div>
+
+      <div class="payment-actions">
+        <button class="pay-submit" type="submit">결제하고 주문하기</button>
+        <button class="pay-cancel" type="button" onclick="closePaymentModal()">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="orderModal">
+  <div class="modal-card">
+    <div style="font-size:48px">✅</div>
+    <h2>주문이 접수되었습니다</h2>
+    <p>결제가 완료되어 주문이 접수되었습니다.<br>아래 주문현황에서 진행 상태를 확인할 수 있습니다.</p>
+    <button onclick="closeModalAndShowStatus()">주문현황 보기</button>
+  </div>
+</div>
+
+<script>
+const categories=['전체','인기메뉴','커피','음료','디저트','푸드'];
+const menus=[
+  {id:1,cat:'인기메뉴',emoji:'☕',name:'아메리카노',desc:'고소하고 깔끔한 기본 커피',price:3000,popular:true},
+  {id:2,cat:'인기메뉴',emoji:'🥛',name:'카페라떼',desc:'부드러운 우유와 에스프레소',price:4200,popular:true},
+  {id:3,cat:'음료',emoji:'🍊',name:'한라봉 에이드',desc:'제주 감귤향 시그니처 음료',price:5500,popular:true},
+  {id:4,cat:'음료',emoji:'🍋',name:'레몬 에이드',desc:'상큼한 수제 레몬 베이스',price:5200},
+  {id:5,cat:'푸드',emoji:'🥪',name:'일마레 샌드위치',desc:'간단한 식사 대용 인기 메뉴',price:6900},
+  {id:6,cat:'디저트',emoji:'🍰',name:'오늘의 케이크',desc:'매장에서 준비한 디저트',price:6500},
+  {id:7,cat:'커피',emoji:'🧊',name:'콜드브루',desc:'천천히 추출한 깊은 풍미',price:4800},
+  {id:8,cat:'디저트',emoji:'🥐',name:'버터 크루아상',desc:'커피와 잘 어울리는 고소한 베이커리',price:4300}
+];
+let currentCategory='전체';
+let orderType='배달';
+let deliveryFee=3000;
+let cart={};
+let lastOrder=null;
+let orderProgressIndex=0;
+const orderProgressSteps=['주문접수','준비중','배달중','완료'];
+function won(n){return n.toLocaleString('ko-KR')+'원'}
+function renderCategories(){
+  const box=document.getElementById('categoryList');
+  box.innerHTML=categories.map(c=>`<button class="cat-btn ${c===currentCategory?'active':''}" onclick="setCategory('${c}')">${c}</button>`).join('');
+}
+function setCategory(cat){currentCategory=cat;document.getElementById('categoryTitle').textContent=cat==='전체'?'전체 메뉴':cat;renderCategories();renderMenus();}
+function renderMenus(){
+  const q=(document.getElementById('searchInput').value||'').trim().toLowerCase();
+  const box=document.getElementById('menuList');
+  const filtered=menus.filter(m=>{
+    const categoryOk=currentCategory==='전체'||m.cat===currentCategory||(currentCategory==='인기메뉴'&&m.popular);
+    const searchOk=!q||m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
+    return categoryOk&&searchOk;
+  });
+  if(!filtered.length){box.innerHTML='<div class="empty">검색된 메뉴가 없습니다.</div>';return;}
+  box.innerHTML=filtered.map(m=>`
+    <article class="menu-item" onclick="addCart(${m.id})">
+      <div class="menu-img">${m.emoji}</div>
+      <div class="menu-copy">
+        <h3>${m.name}${m.popular?'<span class="popular-mark">인기</span>':''}</h3>
+        <p>${m.desc}</p>
+        <b class="price">${won(m.price)}</b>
+      </div>
+      <button class="add-btn" onclick="event.stopPropagation();addCart(${m.id})">담기</button>
+    </article>`).join('');
+}
+function setOrderType(type){
+  orderType=type;
+  deliveryFee=type==='배달'?3000:0;
+  document.getElementById('deliveryBtn').classList.toggle('active',type==='배달');
+  document.getElementById('pickupBtn').classList.toggle('active',type==='포장');
+  document.getElementById('timeText').textContent=type==='배달'?'35~45분':'15~20분';
+  document.getElementById('feeText').textContent=type==='배달'?'3,000원':'무료';
+  document.getElementById('deliveryFee').textContent=type==='배달'?'3,000원':'0원';
+  renderCart();
+}
+function addCart(id){cart[id]=(cart[id]||0)+1;renderCart();}
+function changeQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCart();}
+function clearCart(){cart={};renderCart();}
+function renderCart(){
+  const ids=Object.keys(cart);
+  const list=document.getElementById('cartList');
+  let subtotal=0;
+  if(!ids.length){
+    list.className='empty';
+    list.innerHTML='아직 담긴 메뉴가 없습니다.<br>먹고 싶은 메뉴를 담아주세요.';
+  }else{
+    list.className='';
+    list.innerHTML=ids.map(id=>{
+      const m=menus.find(x=>x.id==id); const q=cart[id]; subtotal+=m.price*q;
+      return `<div class="cart-row"><div><div class="cart-row-name">${m.name}</div><small>${won(m.price)} × ${q}</small></div><div class="qty-control"><button onclick="changeQty(${m.id},-1)">-</button><b>${q}</b><button onclick="changeQty(${m.id},1)">+</button></div></div>`;
+    }).join('');
+  }
+  const itemCount=ids.reduce((a,id)=>a+cart[id],0);
+  const total=ids.length?subtotal+deliveryFee:0;
+  document.getElementById('subtotal').textContent=won(subtotal);
+  document.getElementById('total').textContent=won(total);
+  document.getElementById('mobileCount').textContent=itemCount;
+  document.getElementById('mobileText').textContent=`장바구니 보기 · ${won(total)}`;
+}
+let paymentMode='new';
+const isExistingMember=false;
+
+function submitOrder(){
+  if(!Object.keys(cart).length){alert('메뉴를 먼저 담아주세요.');return;}
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const address=document.getElementById('address').value.trim();
+  if(!name){alert('주문자명을 입력해주세요.');return;}
+  if(!phone){alert('연락처를 입력해주세요.');return;}
+  if(orderType==='배달'&&!address){alert('배달 주소를 입력해주세요.');return;}
+
+  document.getElementById('paymentModal').style.display='flex';
+  setPaymentMode(isExistingMember ? 'saved' : 'new');
+}
+
+function setPaymentMode(mode){
+  paymentMode=mode;
+  document.getElementById('newCardTab').classList.toggle('active',mode==='new');
+  document.getElementById('savedCardTab').classList.toggle('active',mode==='saved');
+  document.getElementById('newCardFields').style.display=mode==='new'?'block':'none';
+  document.getElementById('savedCardBox').classList.toggle('show',mode==='saved');
+  document.getElementById('paymentGuide').textContent=mode==='new'
+    ? '신규 고객은 카드번호, 유효기간, 비밀번호 앞 2자리, 생년월일 6자리를 입력합니다.'
+    : '기존 회원은 등록된 카드로 주문 결제가 진행됩니다.';
+}
+
+function closePaymentModal(){
+  document.getElementById('paymentModal').style.display='none';
+}
+
+function formatCardNumber(input){
+  let value=input.value.replace(/\D/g,'').slice(0,16);
+  input.value=value.replace(/(.{4})/g,'$1-').replace(/-$/,'');
+}
+
+function formatExpiry(input){
+  let value=input.value.replace(/\D/g,'').slice(0,4);
+  if(value.length>=3)value=value.slice(0,2)+'/'+value.slice(2);
+  input.value=value;
+}
+
+function validateCardPayment(){
+  if(paymentMode==='saved') return true;
+  const cardNumber=document.getElementById('cardNumber').value.replace(/\D/g,'');
+  const expiry=document.getElementById('cardExpiry').value.trim();
+  const password=document.getElementById('cardPassword').value.replace(/\D/g,'');
+  const birth=document.getElementById('birthDate').value.replace(/\D/g,'');
+
+  if(cardNumber.length<14){alert('신용카드번호를 정확히 입력해주세요.');return false;}
+  if(!/^\d{2}\/\d{2}$/.test(expiry)){alert('유효기간을 MM/YY 형식으로 입력해주세요.');return false;}
+  if(password.length!==2){alert('카드 비밀번호 앞 2자리를 입력해주세요.');return false;}
+  if(birth.length!==6){alert('생년월일 6자리를 입력해주세요.');return false;}
+  return true;
+}
+
+function payAndSubmitOrder(event){
+  event.preventDefault();
+  if(!validateCardPayment())return;
+
+  createOrderStatus();
+  closePaymentModal();
+  document.getElementById('done').style.display='block';
+  document.getElementById('orderModal').style.display='flex';
+  clearCart();
+}
+
+function getCartSnapshot(){
+  const ids=Object.keys(cart);
+  let subtotal=0;
+  const items=ids.map(id=>{
+    const menu=menus.find(x=>x.id==id);
+    const qty=cart[id];
+    const amount=menu.price*qty;
+    subtotal+=amount;
+    return { name:menu.name, qty, price:menu.price, amount };
+  });
+  return { items, subtotal, total: subtotal + deliveryFee };
+}
+
+function createOrderStatus(){
+  const snapshot=getCartSnapshot();
+  lastOrder={
+    no:'#WO' + new Date().getTime().toString().slice(-6),
+    customer:document.getElementById('name').value.trim(),
+    phone:document.getElementById('phone').value.trim(),
+    address:document.getElementById('address').value.trim(),
+    memo:document.getElementById('memo').value.trim(),
+    type:orderType,
+    items:snapshot.items,
+    total:snapshot.total,
+    status:'주문접수'
+  };
+  orderProgressIndex=0;
+  renderOrderStatus();
+}
+
+function renderOrderStatus(){
+  if(!lastOrder)return;
+  document.getElementById('orderStatusSection').classList.add('show');
+  document.getElementById('statusOrderNo').textContent='주문번호 ' + lastOrder.no;
+  document.getElementById('statusBadge').textContent=lastOrder.status;
+  document.getElementById('statusCustomer').textContent=lastOrder.customer;
+  document.getElementById('statusPhone').textContent=lastOrder.phone;
+  document.getElementById('statusType').textContent=lastOrder.type;
+  document.getElementById('statusTotal').textContent=won(lastOrder.total);
+  document.getElementById('statusAddressMemo').textContent=(lastOrder.address || '포장 주문') + (lastOrder.memo ? ' / ' + lastOrder.memo : '');
+  document.getElementById('statusItems').innerHTML=lastOrder.items.map(item=>`
+    <li><span>${item.name} × ${item.qty}</span><strong>${won(item.amount)}</strong></li>
+  `).join('');
+
+  const stepIds=['stepOrder','stepReady','stepDelivery','stepDone'];
+  stepIds.forEach((id,index)=>{
+    document.getElementById(id).classList.toggle('active', index<=orderProgressIndex);
+  });
+}
+
+function simulateOrderProgress(){
+  if(!lastOrder){alert('주문 후 확인할 수 있습니다.');return;}
+  orderProgressIndex=Math.min(orderProgressIndex+1, orderProgressSteps.length-1);
+  lastOrder.status=orderProgressSteps[orderProgressIndex];
+  renderOrderStatus();
+}
+
+function closeModal(){document.getElementById('orderModal').style.display='none'}
+function closeModalAndShowStatus(){
+  closeModal();
+  const section=document.getElementById('orderStatusSection');
+  if(section)section.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function goCart(){document.getElementById('cart').scrollIntoView({behavior:'smooth',block:'start'});}
+renderCategories();renderMenus();renderCart();
+</script>
+</body>
+</html>

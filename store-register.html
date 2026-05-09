@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+  <link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+  <link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+  <link href="/site.webmanifest" rel="manifest"/>
+  <link href="https://woorecco.vercel.app/store-register.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="https://woorecco.vercel.app/store-register.html" property="og:url"/>
+<meta content="우리꺼" property="og:site_name"/>
+<meta content="상점회원가입" property="og:title"/>
+<meta content="사장님에게도 사장님의 주문웹이 필요합니다" property="og:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image:secure_url"/>
+<meta content="image/png" property="og:image:type"/>
+<meta content="1731" property="og:image:width"/>
+<meta content="909" property="og:image:height"/>
+<meta content="우리꺼 주문웹 소개 이미지" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://woorecco.vercel.app/store-register.html" name="twitter:url"/>
+<meta content="상점회원가입" name="twitter:title"/>
+<meta content="사장님에게도 사장님의 주문웹이 필요합니다" name="twitter:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image"/>
+<meta content="우리꺼 주문웹 소개 이미지" name="twitter:image:alt"/>
+<title>상점회원가입</title>
+  <link rel="stylesheet" href="common.css" />
+  <script src="https://t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+
+  <main class="page">
+    <section class="left-panel">
+
+        <img class="logo-img" src="assets/logo/logo_w.png" alt="우리꺼 로고" />
+      </div>
+
+      <div class="hero-copy">
+        <h1>사장님,<br />이제 손님과 직접 연결하세요</h1>
+        <p>
+          우리꺼는 상점 주문 웹페이지를 만들어<br />
+          손님이 직접 보고 주문할 수 있는 서비스입니다.
+        </p>
+      </div>
+
+      <div class="left-bottom">
+        가게관리 · 메뉴등록 · 정산관리 · 직접주문연결
+      </div>
+    </section>
+
+    <section class="right-panel">
+      <div class="card wide">
+        <h2>상점전용웹 제작신청</h2>
+        <p class="desc">
+          신청하시면 상점전용웹 및 매장관리가 가능합니다.
+        </p>
+
+        <div class="notice-box">
+          입력하신 정보는 상점전용웹제작, 주문 페이지 제작, 정산 및 고객 안내를 위해 사용됩니다.
+        </div>
+
+        <form id="storeRegisterForm" action="#" method="post" enctype="multipart/form-data">
+
+          <div class="section-title">1. 대표자 정보</div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="ownerName">대표자명</label>
+              <input type="text" id="ownerName" name="ownerName" placeholder="대표자 이름" required />
+            </div>
+
+            <div class="form-group">
+              <label for="ownerPhone">대표자 연락처</label>
+              <input type="tel" id="ownerPhone" name="ownerPhone" placeholder="010-0000-0000" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ownerEmail">대표자 이메일</label>
+            <input type="email" id="ownerEmail" name="ownerEmail" placeholder="example@email.com" />
+          </div>
+          
+
+          <div class="section-title">2. 상점 기본 정보</div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="storeId">상점관리자아이디</label>
+              <input type="text" id="storeId" name="storeId" placeholder="영문/숫자 조합 아이디" required />
+            </div>
+
+            <div class="form-group">
+              <label for="storePassword">패스워드</label>
+              <input type="password" id="storePassword" name="storePassword" placeholder="비밀번호 입력" required />
+            </div>
+          </div>
+
+            <div class="row">
+            <div class="form-group">
+              <label for="storeName">상호명</label>
+              <input type="text" id="storeName" name="storeName" placeholder="예: 우리꺼 치킨" required />
+            </div>
+
+            <div class="form-group">
+              <label for="storeCategory">업종</label>
+              <select id="storeCategory" name="storeCategory" required>
+                <option value="">업종 선택</option>
+                <option value="korean">한식</option>
+                <option value="chinese">중식</option>
+                <option value="japanese">일식</option>
+                <option value="chicken">치킨</option>
+                <option value="pizza">피자</option>
+                <option value="cafe">카페/디저트</option>
+                <option value="snack">분식</option>
+                <option value="etc">기타</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="storeAddress">상점 주소</label>
+            <input type="text" id="storeAddress" name="storeAddress" placeholder="클릭해서 도로명 주소 검색" required readonly role="button" />
+          </div>
+
+          <div class="form-group">
+            <label for="storeDetailAddress">상세 주소</label>
+            <input type="text" id="storeDetailAddress" name="storeDetailAddress" placeholder="층, 호수 등 상세 주소" />
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="openTime">영업 시작 시간</label>
+              <input type="time" id="openTime" name="openTime" />
+            </div>
+
+            <div class="form-group">
+              <label for="closeTime">영업 종료 시간</label>
+              <input type="time" id="closeTime" name="closeTime" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="closedDay">휴무일</label>
+            <input type="text" id="closedDay" name="closedDay" placeholder="예: 매주 월요일 / 연중무휴" />
+          </div>
+
+          <div class="section-title">3. 사업자 정보</div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="businessNumber">사업자등록번호</label>
+              <input type="text" id="businessNumber" name="businessNumber" placeholder="000-00-00000" required />
+            </div>
+
+            <div class="form-group">
+              <label for="businessFile">사업자등록증 첨부</label>
+              <input type="file" id="businessFile" name="businessFile" accept="image/*,.pdf" />
+            </div>
+          </div>
+
+          <div class="section-title">4. 주문 및 배달 설정</div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="orderType">주문 방식</label>
+              <select id="orderType" name="orderType" required>
+                <option value="">선택</option>
+                <option value="delivery">배달 주문</option>
+                <option value="pickup">포장 주문</option>
+                <option value="both">배달 + 포장</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="deliveryFee">기본 배달비</label>
+              <input type="number" id="deliveryFee" name="deliveryFee" placeholder="예: 3000" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="minOrderPrice">최소 주문금액</label>
+              <input type="number" id="minOrderPrice" name="minOrderPrice" placeholder="예: 15000" />
+            </div>
+
+          </div>
+
+          <div class="section-title">5. 정산 계좌 정보</div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="bankName">은행명</label>
+              <input type="text" id="bankName" name="bankName" placeholder="예: 국민은행" />
+            </div>
+
+            <div class="form-group">
+              <label for="accountHolder">예금주</label>
+              <input type="text" id="accountHolder" name="accountHolder" placeholder="예금주명" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="accountNumber">계좌번호</label>
+            <input type="text" id="accountNumber" name="accountNumber" placeholder="계좌번호 입력" />
+          </div>
+
+          <label class="check-line">
+            <input type="checkbox" required />
+            상점전용웹 제작을 위해 개인정보 및 사업자정보 수집·이용에 동의합니다.
+          </label>
+
+          <label class="check-line">
+            <input type="checkbox" required />
+            입력한 상점 정보가 사실과 다름없음을 확인합니다.
+          </label>
+
+          <button type="submit" class="btn btn-primary">
+            상점전용웹 제작 신청하기
+          </button>
+
+        </form>
+
+        <div class="footer-links">
+          이미 등록하셨나요?
+          <a href="store-login.html" class="link-orange">로그인하기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('storeRegisterForm');
+    let addressSearchOpen = false;
+
+    const labels = {
+      ownerName: '대표자명',
+      ownerPhone: '대표자 연락처',
+      ownerEmail: '대표자 이메일',
+      storeId: '상점관리자아이디',
+      storePassword: '패스워드',
+      storeName: '상호명',
+      storeCategory: '업종',
+      storeAddress: '상점 주소',
+      storeDetailAddress: '상세 주소',
+      openTime: '영업 시작 시간',
+      closeTime: '영업 종료 시간',
+      closedDay: '휴무일',
+      businessNumber: '사업자등록번호',
+      orderType: '주문 방식',
+      deliveryFee: '기본 배달비',
+      minOrderPrice: '최소 주문금액',
+      bankName: '은행명',
+      accountHolder: '예금주',
+      accountNumber: '계좌번호'
+    };
+
+    const optionText = (field) => {
+      if (field.tagName !== 'SELECT') return field.value.trim();
+      return field.selectedOptions[0] ? field.selectedOptions[0].textContent.trim() : '';
+    };
+
+    function openKakaoAddressSearch() {
+      if (addressSearchOpen) return;
+      const Postcode = window.daum && window.daum.Postcode;
+      if (!Postcode) {
+        alert('카카오 주소 검색을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+
+      addressSearchOpen = true;
+      new Postcode({
+        oncomplete: function(data) {
+          const roadAddress = data.roadAddress || data.address || '';
+          const extraParts = [];
+
+          if (data.bname && /[동|로|가]$/g.test(data.bname)) extraParts.push(data.bname);
+          if (data.buildingName) extraParts.push(data.buildingName);
+
+          const extraAddress = extraParts.length ? ` (${extraParts.join(', ')})` : '';
+          const address = data.userSelectedType === 'R'
+            ? `${roadAddress}${extraAddress}`
+            : data.jibunAddress || roadAddress;
+
+          form.elements.storeAddress.value = address;
+          form.elements.storeDetailAddress.focus();
+          addressSearchOpen = false;
+        },
+        onclose: function() {
+          addressSearchOpen = false;
+        }
+      }).open();
+    }
+
+    form.elements.storeAddress.addEventListener('click', openKakaoAddressSearch);
+    form.elements.storeAddress.addEventListener('focus', openKakaoAddressSearch);
+
+    const readBusinessFile = () => {
+      const field = form.elements.businessFile;
+      const file = field && field.files ? field.files[0] : null;
+      if (!file) return Promise.resolve(null);
+
+      if (file.size > 3 * 1024 * 1024) {
+        return Promise.reject(new Error('사업자등록증 파일은 3MB 이하로 첨부해주세요.'));
+      }
+
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve({
+          name: file.name,
+          contentType: file.type || 'application/octet-stream',
+          size: file.size,
+          data: reader.result
+        });
+        reader.onerror = () => reject(new Error('사업자등록증 파일을 읽지 못했습니다.'));
+        reader.readAsDataURL(file);
+      });
+    };
+
+    const getApplicationPayload = async () => {
+      const getValue = (name) => {
+        const field = form.elements[name];
+        return field ? optionText(field) : '';
+      };
+      const getRawValue = (name) => {
+        const field = form.elements[name];
+        return field ? field.value.trim() : '';
+      };
+      const businessFile = form.elements.businessFile;
+      const businessFileData = await readBusinessFile();
+
+      return {
+        ownerName: getValue('ownerName'),
+        ownerPhone: getValue('ownerPhone'),
+        ownerEmail: getValue('ownerEmail'),
+        storeId: getValue('storeId'),
+        storePassword: getRawValue('storePassword'),
+        storeName: getValue('storeName'),
+        storeCategory: getRawValue('storeCategory'),
+        storeAddress: getValue('storeAddress'),
+        storeDetailAddress: getValue('storeDetailAddress'),
+        openTime: getValue('openTime'),
+        closeTime: getValue('closeTime'),
+        closedDay: getValue('closedDay'),
+        businessNumber: getValue('businessNumber'),
+        businessFileName: businessFile && businessFile.files.length ? businessFile.files[0].name : '',
+        businessFile: businessFileData,
+        orderType: getRawValue('orderType'),
+        deliveryFee: getValue('deliveryFee'),
+        minOrderPrice: getValue('minOrderPrice'),
+        bankName: getValue('bankName'),
+        accountHolder: getValue('accountHolder'),
+        accountNumber: getValue('accountNumber')
+      };
+    };
+
+    const saveApplicationForAdmin = async () => {
+      const response = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(await getApplicationPayload())
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message || '신청 저장에 실패했습니다.');
+      }
+      return result.application;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalText = submitButton ? submitButton.textContent : '';
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = '신청 접수중...';
+      }
+
+      try {
+        await saveApplicationForAdmin();
+      } catch (error) {
+        alert(error.message || '신청 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalText || '상점전용웹 제작 신청하기';
+        }
+        return;
+      }
+
+      alert('신청이 접수되었습니다. 본사 승인 후 상점로그인을 이용할 수 있습니다.');
+      window.location.href = 'store-login.html';
+    });
+  </script>
+
+</body>
+</html>

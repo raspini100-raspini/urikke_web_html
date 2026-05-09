@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/assets/logo/favicon.png" rel="icon" type="image/png" />
+  <link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png" />
+  <link href="/assets/logo/512.png" rel="apple-touch-icon" />
+  <link href="/site.webmanifest" rel="manifest" />
+  <link href="https://woorecco.vercel.app/store-login.html" rel="canonical" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://woorecco.vercel.app/store-login.html" />
+  <meta property="og:site_name" content="&#50864;&#47532;&#44732;" />
+  <meta property="og:title" content="&#49345;&#51216; &#47196;&#44536;&#51064;" />
+  <meta property="og:description" content="&#50864;&#47532;&#44732; &#49345;&#51216;&#44288;&#47532;&#51088; &#47196;&#44536;&#51064; &#54168;&#51060;&#51648;&#51077;&#45768;&#45796;." />
+  <meta property="og:image" content="https://woorecco.vercel.app/assets/og_img01.png" />
+  <meta property="og:image:secure_url" content="https://woorecco.vercel.app/assets/og_img01.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://woorecco.vercel.app/store-login.html" />
+  <meta name="twitter:title" content="&#49345;&#51216; &#47196;&#44536;&#51064;" />
+  <meta name="twitter:description" content="&#50864;&#47532;&#44732; &#49345;&#51216;&#44288;&#47532;&#51088; &#47196;&#44536;&#51064; &#54168;&#51060;&#51648;&#51077;&#45768;&#45796;." />
+  <meta name="twitter:image" content="https://woorecco.vercel.app/assets/og_img01.png" />
+  <title>&#49345;&#51216; &#47196;&#44536;&#51064;</title>
+  <link rel="stylesheet" href="common.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="left-panel">
+      <img class="logo-img" src="assets/logo/logo_w.png" alt="&#50864;&#47532;&#44732; &#47196;&#44256;" />
+
+      <div class="hero-copy">
+        <h1>&#49324;&#51109;&#45784;&#44284; &#49552;&#45784;&#51012;<br />&#51649;&#51217; &#47564;&#45208;&#45716; &#51452;&#47928; &#44277;&#44036;</h1>
+        <p>
+          &#48176;&#45804;&#50545; &#47568;&#44256;, &#50864;&#47532; &#44032;&#44172; &#49552;&#45784;&#51008; &#50864;&#47532;&#44732;&#47196;.<br />
+          &#49345;&#51216;&#44288;&#47532;&#51088;&#50640;&#49436; &#51452;&#47928;&#44284; &#47700;&#45684;&#47484; &#44288;&#47532;&#54616;&#49464;&#50836;.
+        </p>
+      </div>
+
+      <div class="left-bottom">
+        &#50864;&#47532;&#44732; &middot; &#50864;&#47532; &#44032;&#44172; &middot; &#50864;&#47532; &#49552;&#45784;
+      </div>
+    </section>
+
+    <section class="right-panel">
+      <div class="card">
+        <h2>&#49345;&#51216; &#47196;&#44536;&#51064;</h2>
+        <p class="desc">
+          &#49849;&#51064; &#50756;&#47308;&#46108; &#49345;&#51216;&#47564; &#49345;&#51216;&#44288;&#47532;&#51088;&#47196; &#51217;&#49549;&#54624; &#49688; &#51080;&#49845;&#45768;&#45796;.
+        </p>
+
+        <form id="storeLoginForm" action="#" method="post">
+          <div class="form-group">
+            <label for="storeId">&#49345;&#51216;&#50500;&#51060;&#46356;</label>
+            <input type="text" id="storeId" name="storeId" placeholder="&#49345;&#51216;&#50500;&#51060;&#46356; &#51077;&#47141;" autocomplete="username" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">&#48708;&#48128;&#48264;&#54840;</label>
+            <input type="password" id="password" name="password" placeholder="&#48708;&#48128;&#48264;&#54840; &#51077;&#47141;" autocomplete="current-password" required />
+          </div>
+
+          <div class="helper">
+            <label class="check-line" style="margin:0;">
+              <input type="checkbox" name="remember" />
+              &#47196;&#44536;&#51064; &#50976;&#51648;
+            </label>
+            <a href="store-register.html" class="link-orange">&#49345;&#51216;&#54924;&#50896;&#44032;&#51077;</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary">&#47196;&#44536;&#51064;</button>
+        </form>
+
+        <div class="footer-links">
+          &#50500;&#51649; &#50864;&#47532;&#44732; &#49345;&#51216;&#51060; &#50500;&#45768;&#49888;&#44032;&#50836;?
+          <a href="store-register.html" class="link-orange">&#49345;&#51216;&#54924;&#50896;&#44032;&#51077;</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  const LOGIN_TEXT = {
+    idRequired: '\uC0C1\uC810\uC544\uC774\uB514\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.',
+    passwordRequired: '\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.',
+    checking: '\uD655\uC778\uC911...',
+    login: '\uB85C\uADF8\uC778',
+    failed: '\uB85C\uADF8\uC778\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.',
+    error: '\uB85C\uADF8\uC778 \uD655\uC778 \uC911 \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4. \uC7A0\uC2DC \uD6C4 \uB2E4\uC2DC \uC2DC\uB3C4\uD574\uC8FC\uC138\uC694.'
+  };
+
+  function enterStoreAdmin(store) {
+    sessionStorage.setItem('wooreccoStoreAdminLogin', '1');
+    const storeId = store && store.storeId ? String(store.storeId) : '';
+    if (store) {
+      sessionStorage.setItem('wooreccoStoreAdminStoreId', storeId);
+      sessionStorage.setItem('wooreccoStoreAdminStoreName', store.storeName || '');
+    }
+    window.location.href = storeId
+      ? `store-admin.html?store=${encodeURIComponent(storeId)}`
+      : 'store-admin.html';
+  }
+
+  document.getElementById('storeLoginForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const storeId = document.getElementById('storeId').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const submitButton = event.currentTarget.querySelector('button[type="submit"]');
+
+    if (!storeId) {
+      alert(LOGIN_TEXT.idRequired);
+      return;
+    }
+
+    if (!password) {
+      alert(LOGIN_TEXT.passwordRequired);
+      return;
+    }
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = LOGIN_TEXT.checking;
+    }
+
+    try {
+      const response = await fetch('/api/store-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ storeId, password })
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.ok) {
+        alert(result.message || LOGIN_TEXT.failed);
+        if (result.code === 'not_found') {
+          window.location.href = result.registerUrl || 'store-register.html';
+        }
+        return;
+      }
+
+      enterStoreAdmin(result.store);
+    } catch (error) {
+      alert(LOGIN_TEXT.error);
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = LOGIN_TEXT.login;
+      }
+    }
+  });
+  </script>
+</body>
+</html>

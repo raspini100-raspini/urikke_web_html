@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/assets/logo/favicon.png" rel="icon" type="image/png" />
+  <link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png" />
+  <link href="/assets/logo/512.png" rel="apple-touch-icon" />
+  <link href="/site.webmanifest" rel="manifest" />
+  <link href="https://woorecco.vercel.app/admin-login.html" rel="canonical" />
+  <meta content="website" property="og:type" />
+  <meta content="https://woorecco.vercel.app/admin-login.html" property="og:url" />
+  <meta content="우리꺼" property="og:site_name" />
+  <meta content="본사관리자 로그인" property="og:title" />
+  <meta content="우리꺼 본사관리자 전용 로그인 화면입니다." property="og:description" />
+  <meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image" />
+  <meta content="summary_large_image" name="twitter:card" />
+  <meta content="본사관리자 로그인" name="twitter:title" />
+  <meta content="우리꺼 본사관리자 전용 로그인 화면입니다." name="twitter:description" />
+  <meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image" />
+  <title>본사관리자 로그인</title>
+  <link rel="stylesheet" href="common.css" />
+  <style>
+    .left-panel .logo-img {
+      width: 150px;
+      max-width: 46vw;
+      height: auto;
+    }
+
+    @media (max-width: 900px) {
+      .left-panel .logo-img {
+        width: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="left-panel">
+      <div>
+        <img class="logo-img" src="assets/logo/logo_w.png" alt="우리꺼 로고" />
+      </div>
+
+      <div class="hero-copy">
+        <h1>본사관리자<br />전용 로그인</h1>
+        <p>
+          상점 신청, 승인, 고객현황, 정산을<br />
+          본사에서 안전하게 관리합니다.
+        </p>
+      </div>
+
+      <div class="left-bottom">
+        우리꺼 · 본사 운영관리
+      </div>
+    </section>
+
+    <section class="right-panel">
+      <div class="card">
+        <h2>본사관리자 로그인</h2>
+        <p class="desc">
+          본사관리자 계정으로 로그인해야<br />
+          관리자 화면에 접근할 수 있습니다.
+        </p>
+
+        <form id="adminLoginForm" action="#" method="post">
+          <div class="form-group">
+            <label for="adminId">아이디</label>
+            <input type="text" id="adminId" name="adminId" placeholder="아이디 입력" autocomplete="username" required />
+          </div>
+
+          <div class="form-group">
+            <label for="adminPassword">비밀번호</label>
+            <input type="password" id="adminPassword" name="adminPassword" placeholder="비밀번호 입력" autocomplete="current-password" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            로그인
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_ID = 'admin';
+    const ADMIN_PASSWORD = '1234';
+
+    document.getElementById('adminLoginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const id = document.getElementById('adminId').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+
+      if (id !== ADMIN_ID || password !== ADMIN_PASSWORD) {
+        alert('아이디 또는 비밀번호가 맞지 않습니다.');
+        return;
+      }
+
+      sessionStorage.setItem('wooreccoHeadAdminLogin', '1');
+      sessionStorage.setItem('wooreccoHeadAdminId', id);
+      sessionStorage.setItem('wooreccoAdminAccessKey', ADMIN_PASSWORD);
+      window.location.href = 'admin.html';
+    });
+  </script>
+</body>
+</html>

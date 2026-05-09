@@ -1,0 +1,11 @@
+*.psd
+**/*.psd
+*.bak
+**/*.bak
+.DS_Store
+Thumbs.db
+vercel-userinfo-patch.cjs
+.env
+.env.*
+node_modules
+

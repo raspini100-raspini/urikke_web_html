@@ -1,0 +1,4554 @@
+<!doctype html>
+<html lang="ko" class="store-admin-loading">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+<link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link href="https://woorecco.vercel.app/store-admin.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="https://woorecco.vercel.app/store-admin.html" property="og:url"/>
+<meta content="우리꺼" property="og:site_name"/>
+<meta content="상점관리자" property="og:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." property="og:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image:secure_url"/>
+<meta content="image/png" property="og:image:type"/>
+<meta content="1731" property="og:image:width"/>
+<meta content="909" property="og:image:height"/>
+<meta content="우리꺼 주문웹 소개 이미지" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://woorecco.vercel.app/store-admin.html" name="twitter:url"/>
+<meta content="상점관리자" name="twitter:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." name="twitter:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image"/>
+<meta content="우리꺼 주문웹 소개 이미지" name="twitter:image:alt"/>
+<title>상점관리자</title>
+
+<script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const isSample = params.get('sample') === '1';
+  const isLoggedIn = sessionStorage.getItem('wooreccoStoreAdminLogin') === '1';
+  const loggedInStoreId = sessionStorage.getItem('wooreccoStoreAdminStoreId');
+  if(isSample){
+    document.documentElement.classList.remove('store-admin-loading');
+  }
+  if(!isSample && (!isLoggedIn || !loggedInStoreId)){
+    sessionStorage.removeItem('wooreccoStoreAdminLogin');
+    sessionStorage.removeItem('wooreccoStoreAdminStoreId');
+    sessionStorage.removeItem('wooreccoStoreAdminStoreName');
+    window.location.replace('store-login.html');
+    return;
+  }
+
+  if(!isSample && isLoggedIn && loggedInStoreId){
+    const requestedStoreId = params.get('store');
+    if(requestedStoreId && requestedStoreId !== loggedInStoreId){
+      window.location.replace('store-login.html');
+      return;
+    }
+    if(!requestedStoreId){
+      params.set('store', loggedInStoreId);
+      const nextUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+      window.history.replaceState(null, '', nextUrl);
+    }
+  }
+})();
+</script>
+
+  <link rel="stylesheet" href="common.css" />
+
+<style>
+html.store-admin-loading body{
+  visibility:hidden;
+}
+
+/* 메뉴관리 화면 공백 축소 / 컴팩트 레이아웃 */
+.page-store-admin .wrap{
+  max-width:1180px;
+}
+.page-store-admin .section.panel{
+  padding:22px 18px;
+}
+.page-store-admin .tab h2{
+  margin-top:14px;
+  margin-bottom:10px;
+}
+.page-store-admin .tab > .muted{
+  margin-bottom:16px;
+}
+
+/* 메뉴관리 탭: 좌우 카드 간격을 줄이고 균형 있게 배치 */
+#menus .grid2{
+  display:grid;
+  grid-template-columns:minmax(360px, 430px) minmax(480px, 1fr);
+  gap:22px;
+  align-items:start;
+}
+#menus .card{
+  padding:18px;
+}
+#menus .category-panel{
+  max-width:430px;
+  margin-bottom:16px;
+}
+#menus label{
+  display:block;
+  margin:12px 0 6px;
+}
+#menus .input{
+  min-height:44px;
+}
+#menus textarea.input{
+  min-height:92px;
+}
+#menus .menu-image-preview{
+  min-height:110px;
+  height:110px;
+}
+#menus .menu-form-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+/* 현재 등록 메뉴 카드가 너무 오른쪽으로 밀리지 않도록 정리 */
+#menus .table-wrap{
+  overflow-x:auto;
+}
+#menus .menu-table th,
+#menus .menu-table td{
+  padding:10px 8px;
+}
+#menus .menu-thumb{
+  width:54px;
+  height:54px;
+}
+
+@media (max-width:980px){
+  #menus .grid2{
+    grid-template-columns:1fr;
+  }
+  #menus .category-panel{
+    max-width:none;
+  }
+}
+@media (max-width:560px){
+  .page-store-admin .section.panel{
+    padding:16px 12px;
+  }
+  #menus .card{
+    padding:16px;
+  }
+  #menus .menu-form-actions{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* 메뉴관리 화면 공백 최소화 - 좌우 여백 제거형 */
+#menus{
+  max-width:980px;
+  margin:0 auto;
+}
+#menus .category-panel{
+  max-width:none;
+  margin:0 0 14px;
+}
+#menus .category-form{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:end;
+}
+#menus .grid2{
+  display:grid;
+  grid-template-columns:420px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+  width:100%;
+  max-width:980px;
+  margin:0 auto;
+}
+#menus .grid2 > .card{
+  width:100%;
+  max-width:none;
+  min-height:0;
+  box-sizing:border-box;
+}
+#menus .grid2 > .card:last-child{
+  align-self:start;
+}
+#menus .card{
+  padding:16px;
+}
+#menus .card h3{
+  margin:0 0 12px;
+}
+#menus .card .muted{
+  margin:0 0 14px;
+}
+#menus label{
+  margin:10px 0 5px;
+}
+#menus .input{
+  min-height:42px;
+}
+#menus textarea.input{
+  min-height:82px;
+}
+#menus .menu-image-preview{
+  height:92px;
+  min-height:92px;
+}
+#menus .menu-form-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+#menus .table-wrap{
+  margin-top:0;
+}
+#menus .menu-table{
+  width:100%;
+  table-layout:auto;
+}
+#menus .menu-table th,
+#menus .menu-table td{
+  padding:8px 7px;
+}
+#menus .menu-thumb{
+  width:50px;
+  height:50px;
+}
+#menus .menu-name-btn{
+  margin-bottom:4px;
+}
+#menus .menu-desc-small{
+  line-height:1.35;
+}
+@media (max-width:980px){
+  #menus{max-width:none;}
+  #menus .grid2{
+    grid-template-columns:1fr;
+    max-width:none;
+  }
+}
+@media (max-width:560px){
+  #menus .category-form{grid-template-columns:1fr;}
+  #menus .menu-form-actions{grid-template-columns:1fr;}
+}
+
+
+/* 메뉴관리 화면 좌우 여백 채우기 - 최종 오버라이드 */
+#menus{
+  width:100%;
+  max-width:none;
+  margin:0;
+}
+#menus > h2,
+#menus > .muted{
+  max-width:none;
+}
+#menus .category-panel{
+  width:100%;
+  max-width:none;
+  box-sizing:border-box;
+}
+#menus .grid2{
+  width:100%;
+  max-width:none;
+  margin:14px 0 0;
+  display:grid;
+  grid-template-columns:minmax(420px, .9fr) minmax(520px, 1.1fr);
+  gap:18px;
+  align-items:start;
+}
+#menus .grid2 > .card{
+  width:100%;
+  max-width:none;
+  box-sizing:border-box;
+}
+#menus .grid2 > .card:last-child{
+  min-height:420px;
+}
+#menus .table-wrap,
+#menus .menu-table{
+  width:100%;
+}
+@media (max-width:1080px){
+  #menus .grid2{
+    grid-template-columns:1fr;
+  }
+}
+
+
+
+/* 주문 상세정보 모달 */
+#orders .order-table tbody tr{
+  cursor:pointer;
+  transition:background .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+#orders .order-table tbody tr:hover{
+  background:#fffaf3;
+  box-shadow:0 8px 22px rgba(17,24,39,.06);
+}
+.order-detail-modal{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(15,23,42,.52);
+  backdrop-filter:blur(6px);
+}
+.order-detail-modal.show{display:flex;}
+.order-detail-card{
+  width:min(100%, 720px);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:28px;
+  background:#fff;
+  box-shadow:0 28px 80px rgba(15,23,42,.28);
+  border:1px solid rgba(226,232,240,.9);
+}
+.order-detail-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  padding:24px 26px 18px;
+  border-bottom:1px solid #eef2f7;
+}
+.order-detail-head small{
+  display:block;
+  color:#ff7a00;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.order-detail-head h3{
+  margin:0;
+  font-size:26px;
+  letter-spacing:-.04em;
+  color:#0f172a;
+}
+.order-detail-close{
+  width:42px;
+  height:42px;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  background:#fff;
+  cursor:pointer;
+  font-size:22px;
+  font-weight:900;
+  line-height:1;
+}
+.order-detail-body{
+  padding:22px 26px 26px;
+}
+.order-detail-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:12px;
+}
+.order-detail-item{
+  padding:15px 16px;
+  border:1px solid #edf1f5;
+  border-radius:18px;
+  background:#fbfdff;
+}
+.order-detail-item.full{grid-column:1 / -1;}
+.order-detail-item span{
+  display:block;
+  margin-bottom:7px;
+  color:#64748b;
+  font-size:12px;
+  font-weight:900;
+}
+.order-detail-item strong{
+  display:block;
+  color:#0f172a;
+  font-size:16px;
+  line-height:1.45;
+  word-break:keep-all;
+}
+.order-detail-summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:18px 0;
+}
+.order-detail-summary div{
+  padding:16px;
+  border-radius:18px;
+  background:#fff7ed;
+  border:1px solid rgba(255,122,0,.18);
+}
+.order-detail-summary span{
+  display:block;
+  color:#9a3412;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.order-detail-summary b{
+  color:#0f172a;
+  font-size:20px;
+}
+.order-detail-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  padding-top:4px;
+}
+.order-detail-actions .btn{
+  min-width:96px;
+}
+@media (max-width:640px){
+  .order-detail-card{border-radius:22px;}
+  .order-detail-head{padding:20px 18px 14px;}
+  .order-detail-body{padding:18px;}
+  .order-detail-grid,
+  .order-detail-summary{grid-template-columns:1fr;}
+  .order-detail-actions .btn{flex:1 1 calc(50% - 8px);}
+}
+
+
+/* 주문서 발행 / 프린터 출력 버튼 */
+.order-print-box{
+  margin:18px 0 10px;
+  padding:16px;
+  border:1px solid rgba(255,122,0,.18);
+  border-radius:20px;
+  background:linear-gradient(135deg,#fff7ed,#ffffff);
+}
+.order-print-box strong{
+  display:block;
+  color:#0f172a;
+  font-size:16px;
+  margin-bottom:6px;
+}
+.order-print-box p{
+  margin:0 0 12px;
+  color:#64748b;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.5;
+}
+.order-print-box .btn{
+  width:100%;
+  min-height:48px;
+  font-size:15px;
+}
+
+
+/* 주문 상세 모달 스크롤 제거형 컴팩트 레이아웃 */
+.order-detail-modal{
+  padding:10px;
+  align-items:center;
+}
+.order-detail-card{
+  width:min(96vw, 700px);
+  max-height:none;
+  overflow:visible;
+  border-radius:22px;
+}
+.order-detail-head{
+  padding:14px 18px 10px;
+}
+.order-detail-head small{
+  margin-bottom:2px;
+  font-size:11px;
+}
+.order-detail-head h3{
+  font-size:20px;
+}
+.order-detail-close{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  font-size:20px;
+}
+.order-detail-body{
+  padding:12px 18px 16px;
+}
+.order-detail-grid{
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:8px;
+}
+.order-detail-item{
+  padding:10px 12px;
+  border-radius:14px;
+}
+.order-detail-item span{
+  margin-bottom:4px;
+  font-size:11px;
+}
+.order-detail-item strong{
+  font-size:14px;
+  line-height:1.35;
+}
+.order-detail-summary{
+  gap:8px;
+  margin:10px 0;
+}
+.order-detail-summary div{
+  padding:10px 12px;
+  border-radius:14px;
+}
+.order-detail-summary span{
+  margin-bottom:4px;
+  font-size:11px;
+}
+.order-detail-summary b{
+  font-size:17px;
+}
+.order-print-box{
+  display:grid;
+  grid-template-columns:1fr minmax(180px, 240px);
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
+  padding:12px;
+  border-radius:15px;
+}
+.order-print-box strong{
+  font-size:14px;
+  margin:0;
+}
+.order-print-box p{
+  display:none;
+}
+.order-print-box .btn{
+  min-height:42px;
+  font-size:14px;
+}
+.order-detail-actions{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:8px;
+  padding-top:0;
+}
+.order-detail-actions .btn{
+  width:100%;
+  min-width:0;
+  min-height:42px;
+  padding:10px 8px;
+  font-size:14px;
+}
+@media (max-width:640px){
+  .order-detail-modal{padding:8px;}
+  .order-detail-card{width:100%; border-radius:18px;}
+  .order-detail-head{padding:12px 14px 8px;}
+  .order-detail-head h3{font-size:18px;}
+  .order-detail-body{padding:10px 14px 14px;}
+  .order-detail-grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:7px;}
+  .order-detail-item{padding:9px 10px; border-radius:12px;}
+  .order-detail-item.full{grid-column:1 / -1;}
+  .order-detail-item strong{font-size:13px;}
+  .order-detail-summary{grid-template-columns:repeat(3, minmax(0,1fr)); gap:7px; margin:8px 0;}
+  .order-detail-summary div{padding:9px 8px;}
+  .order-detail-summary b{font-size:15px;}
+  .order-print-box{grid-template-columns:1fr; gap:7px; margin:8px 0; padding:10px;}
+  .order-print-box .btn{min-height:40px;}
+  .order-detail-actions{grid-template-columns:repeat(4, minmax(0,1fr)); gap:6px;}
+  .order-detail-actions .btn{flex:auto; min-height:40px; padding:9px 5px; font-size:13px;}
+}
+@media (max-height:760px){
+  .order-detail-head{padding:10px 16px 7px;}
+  .order-detail-head small{display:none;}
+  .order-detail-body{padding:9px 16px 12px;}
+  .order-detail-grid{gap:6px;}
+  .order-detail-item{padding:8px 10px;}
+  .order-detail-item span{font-size:10px;}
+  .order-detail-item strong{font-size:13px;}
+  .order-detail-summary{margin:7px 0; gap:6px;}
+  .order-detail-summary div{padding:8px 9px;}
+  .order-print-box{margin:7px 0; padding:9px;}
+  .order-detail-actions .btn{min-height:38px;}
+}
+
+
+
+/* 상점설정 화면 최종 정렬: 가운데 큰 공백 제거 */
+#store{
+  width:100% !important;
+  max-width:860px !important;
+  margin:0 auto !important;
+}
+#store > h2,
+#store > .muted{
+  max-width:860px !important;
+}
+#store > .grid2{
+  display:grid !important;
+  grid-template-columns:430px 360px !important;
+  gap:18px !important;
+  align-items:start !important;
+  justify-content:center !important;
+  width:100% !important;
+  max-width:860px !important;
+  margin:16px auto 0 !important;
+}
+#store > .grid2 > .card{
+  width:100% !important;
+  max-width:none !important;
+  min-height:0 !important;
+  height:auto !important;
+  align-self:start !important;
+  box-sizing:border-box !important;
+  padding:18px !important;
+}
+#store .store-settings-card{
+  padding:16px !important;
+}
+#store .form-section-title{
+  margin:10px 0 8px !important;
+  padding:9px 12px !important;
+  border-radius:10px !important;
+}
+#store label{
+  display:block !important;
+  margin:9px 0 5px !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+}
+#store .input{
+  min-height:38px !important;
+  height:38px !important;
+  padding:0 12px !important;
+  border-radius:12px !important;
+  font-size:13px !important;
+}
+#store input[type="file"].input{
+  padding:8px 12px !important;
+}
+#store .inner-grid{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+}
+#store .check-line{
+  display:flex !important;
+  align-items:center !important;
+  gap:7px !important;
+  margin:10px 0 0 !important;
+  font-size:12px !important;
+  line-height:1.35 !important;
+}
+#store .check-line input{
+  margin:0 !important;
+}
+#store .store-settings-card .btn.dark{
+  width:100% !important;
+  margin-top:12px !important;
+  min-height:44px !important;
+}
+#store > .grid2 > .card:last-child{
+  padding:22px !important;
+  min-height:0 !important;
+  height:auto !important;
+}
+#store > .grid2 > .card:last-child h3{
+  margin-top:0 !important;
+}
+#store > .grid2 > .card:last-child .qr{
+  width:120px !important;
+  height:120px !important;
+  margin:14px 0 18px !important;
+}
+#store > .grid2 > .card:last-child .btn{
+  width:100% !important;
+  min-height:44px !important;
+}
+@media (max-width:920px){
+  #store{
+    max-width:none !important;
+  }
+  #store > .grid2{
+    grid-template-columns:1fr !important;
+    max-width:520px !important;
+    justify-content:stretch !important;
+  }
+}
+@media (max-width:560px){
+  #store > .grid2{
+    max-width:none !important;
+  }
+  #store .inner-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+
+/* 상점설정 화면: 좌우 공백 채우기 최종 확장 레이아웃 */
+#store{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+}
+#store > h2,
+#store > .muted{
+  max-width:none !important;
+}
+#store > .grid2{
+  display:grid !important;
+  grid-template-columns:minmax(620px, 1fr) 400px !important;
+  gap:22px !important;
+  align-items:start !important;
+  justify-content:stretch !important;
+  width:100% !important;
+  max-width:none !important;
+  margin:16px 0 0 !important;
+}
+#store > .grid2 > .store-settings-card{
+  width:100% !important;
+  max-width:none !important;
+}
+#store .store-settings-card form{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  column-gap:18px !important;
+  row-gap:8px !important;
+}
+#store .store-settings-card .form-section-title,
+#store .store-settings-card .check-line,
+#store .store-settings-card .btn.dark{
+  grid-column:1 / -1 !important;
+}
+#store .store-settings-card label,
+#store .store-settings-card .input{
+  width:100% !important;
+}
+#store .store-settings-card label[for="storeAddress"],
+#store .store-settings-card label[for="storeAddress"] + .input,
+#store .store-settings-card label[for="storeDetailAddress"],
+#store .store-settings-card label[for="storeDetailAddress"] + .input,
+#store .store-settings-card label[for="businessFile"],
+#store .store-settings-card label[for="businessFile"] + .input{
+  grid-column:1 / -1 !important;
+}
+#store .inner-grid{
+  grid-column:1 / -1 !important;
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:12px !important;
+}
+#store .store-side-stack{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:16px !important;
+  width:100% !important;
+  align-self:start !important;
+}
+#store .store-side-stack .card{
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  padding:22px !important;
+  box-sizing:border-box !important;
+}
+#store .store-side-stack h3{
+  margin:0 0 10px !important;
+}
+#store .store-side-stack .muted{
+  margin:0 0 16px !important;
+  line-height:1.55 !important;
+}
+#store .qr-card .qr{
+  width:150px !important;
+  height:150px !important;
+  margin:14px 0 18px !important;
+}
+#store .qr-card .qr img{
+  width:100%;
+  height:100%;
+  display:block;
+  border-radius:12px;
+}
+#store .qr-card .side-qr-button{
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+}
+#store .qr-card .btn{
+  width:100% !important;
+  min-height:46px !important;
+}
+#store .store-mini-card{
+  border-radius:18px;
+  border:1px solid #eef2f7;
+  background:#fbfdff;
+  padding:14px;
+  margin-top:10px;
+}
+#store .store-mini-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:9px 0;
+  border-bottom:1px solid #edf1f5;
+  font-size:13px;
+  font-weight:800;
+}
+#store .store-mini-row:last-child{border-bottom:0;}
+#store .store-mini-row span{color:#64748b;}
+#store .store-mini-row b{color:#0f172a; text-align:right;}
+#store .store-mini-row.editable{
+  align-items:center;
+}
+#store .store-mini-row select,
+#store .store-mini-row input{
+  width:132px;
+  min-height:36px;
+  border:1px solid #dbe3ed;
+  border-radius:10px;
+  background:#fff;
+  color:#0f172a;
+  font:inherit;
+  font-weight:800;
+  text-align:right;
+  padding:0 10px;
+}
+#store .store-mini-row select{
+  text-align:left;
+}
+#store .store-mini-description{
+  display:grid;
+  gap:8px;
+  padding:12px 0;
+  border-bottom:1px solid #e5eaf0;
+}
+#store .store-mini-description span{
+  color:#64748b;
+  font-size:13px;
+  font-weight:900;
+}
+#store .store-mini-description textarea{
+  width:100%;
+  min-height:92px;
+  border:1px solid #dbe3ed;
+  border-radius:13px;
+  padding:12px;
+  resize:vertical;
+  font:inherit;
+  font-weight:700;
+  color:#0f172a;
+  outline:none;
+}
+#store .side-save-btn,
+#store .side-copy-btn{
+  width:100%;
+  min-height:42px;
+  margin-top:12px;
+}
+#store .store-link-box{
+  padding:14px;
+  border-radius:16px;
+  background:#fff7ed;
+  border:1px solid rgba(255,122,0,.18);
+  font-size:13px;
+  font-weight:900;
+  line-height:1.5;
+  word-break:break-all;
+}
+#store .store-check-list{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+#store .store-check-list div{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid #edf1f5;
+  font-size:13px;
+  font-weight:900;
+}
+#store .store-check-list .place-link-row{
+  justify-content:space-between;
+  gap:10px;
+}
+#store .store-check-label{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+#store .place-shortcut-btn{
+  flex:0 0 auto;
+  min-height:34px;
+  padding:0 12px;
+  border:1px solid #dbe3ed;
+  border-radius:10px;
+  background:#fff;
+  color:#0f172a;
+  font-size:12px;
+  font-weight:900;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+#store .place-shortcut-btn:hover{
+  border-color:#03c75a;
+  color:#03a64a;
+}
+#store .store-media-preview{
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:10px;
+  margin:6px 0 8px;
+}
+#store .store-media-preview figure{
+  margin:0;
+  min-height:116px;
+  border:1px dashed #dbe3ed;
+  border-radius:14px;
+  background:#fbfdff;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  color:#94a3b8;
+  font-size:12px;
+  font-weight:800;
+}
+#store .store-media-preview figure.sign{
+  grid-column:1 / -1;
+  min-height:160px;
+}
+#store .store-media-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+#store .store-check-list i{
+  width:20px;
+  height:20px;
+  display:inline-grid;
+  place-items:center;
+  border-radius:50%;
+  background:#22c55e;
+  color:#fff;
+  font-style:normal;
+  font-size:12px;
+}
+@media (max-width:1080px){
+  #store > .grid2{
+    grid-template-columns:1fr !important;
+  }
+  #store .store-side-stack{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+}
+@media (max-width:720px){
+  #store .store-settings-card form,
+  #store .inner-grid,
+  #store .store-media-preview,
+  #store .store-side-stack{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* 주문관리 검색 영역 */
+#orders .order-search-panel{
+  display:grid;
+  grid-template-columns:minmax(260px, 1.5fr) 150px 150px auto auto;
+  gap:10px;
+  align-items:end;
+  margin:16px 0 14px;
+  padding:14px;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  background:#fbfdff;
+}
+#orders .order-search-panel label{
+  display:block;
+  margin:0 0 6px;
+  font-size:12px;
+  font-weight:900;
+  color:#334155;
+}
+#orders .order-search-panel .input{
+  width:100%;
+  min-height:42px;
+  height:42px;
+  border-radius:13px;
+  font-weight:800;
+}
+#orders .order-search-panel .btn{
+  min-height:42px;
+  white-space:nowrap;
+}
+#orders .order-search-count{
+  margin:2px 0 10px;
+  color:#64748b;
+  font-size:13px;
+  font-weight:900;
+}
+#orders h2{
+  font-weight:700;
+}
+#orders .muted,
+#orders .sound-note,
+#orders .order-search-count,
+#orders .order-page-info{
+  font-weight:500;
+}
+#orders .order-search-panel label,
+#orders .order-table th{
+  font-weight:600;
+}
+#orders .order-search-panel .input,
+#orders .order-table td,
+#orders .order-table td[style],
+#orders .no-result{
+  font-weight:500 !important;
+}
+#orders .btn,
+#orders .order-page-btn{
+  font-weight:650;
+}
+#orders .customer-info b,
+#orders .customer-info small,
+#orders .delivery-count,
+#orders .order-menu-cell{
+  font-weight:600;
+}
+#orders .order-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:12px 0 16px;
+}
+#orders .order-toolbar-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+#orders .sound-note{
+  flex:0 1 auto;
+  margin-right:8px;
+}
+#orders .sound-toggle.enabled{
+  background:#16a34a;
+  border-color:#16a34a;
+  color:#fff;
+}
+#orders .sound-toggle:not(.enabled){
+  animation:soundOffPulse 1s ease-in-out infinite;
+}
+@keyframes soundOffPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,138,0,.45);transform:translateY(0);}
+  50%{box-shadow:0 0 0 8px rgba(255,138,0,0);transform:translateY(-1px);}
+}
+@media (max-width:980px){
+  #orders .order-search-panel{
+    grid-template-columns:1fr 1fr;
+  }
+}
+@media (max-width:560px){
+  #orders .order-search-panel{
+    grid-template-columns:1fr;
+  }
+}
+
+
+
+/* 신규주문 모달 주문서 발행 버튼 */
+#customers .order-search-panel{
+  display:grid;
+  grid-template-columns:82px minmax(260px, 1fr) 96px 96px;
+  gap:10px;
+  align-items:center;
+  margin:16px 0 14px;
+}
+#customers .order-search-panel > div{
+  display:contents;
+}
+#customers .order-search-panel label{
+  display:flex;
+  align-items:center;
+  grid-column:1 / 2;
+  margin:0;
+  min-height:44px;
+  font-size:12px;
+  font-weight:600;
+  color:#334155;
+}
+#customers .order-search-panel .input{
+  grid-column:2 / 3;
+  width:100%;
+  min-height:44px;
+  height:44px;
+  border-radius:14px;
+  font-weight:500;
+}
+#customers .order-search-panel .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  width:100%;
+  min-height:44px;
+  height:44px;
+  padding:0 16px;
+  border-radius:14px;
+  line-height:1;
+  white-space:nowrap;
+}
+@media (max-width:720px){
+  #customers .order-search-panel{
+    grid-template-columns:1fr;
+  }
+  #customers .order-search-panel label{
+    grid-column:1;
+    min-height:auto;
+  }
+  #customers .order-search-panel .input{
+    grid-column:1;
+  }
+}
+
+.new-order-popup-actions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.new-order-popup-actions .btn{
+  width:100%;
+  min-height:52px;
+  font-size:16px;
+}
+.store-admin-notice-modal{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(15,23,42,.46);
+}
+.store-admin-notice-modal.show{display:flex;}
+.store-admin-notice-card{
+  width:min(100%,430px);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 24px 80px rgba(15,23,42,.28);
+  overflow:hidden;
+}
+.store-admin-notice-head{
+  padding:20px 22px 14px;
+  border-bottom:1px solid #e5eaf1;
+}
+.store-admin-notice-head h2{
+  margin:0;
+  font-size:22px;
+  font-weight:750;
+}
+.store-admin-notice-body{
+  padding:18px 22px;
+  color:#334155;
+  line-height:1.7;
+  font-weight:650;
+  white-space:pre-wrap;
+}
+.store-admin-notice-actions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  padding:0 22px 22px;
+}
+.store-admin-notice-actions button{
+  min-height:46px;
+  border-radius:14px;
+  border:1px solid #dbe3ed;
+  background:#fff;
+  font-weight:750;
+  cursor:pointer;
+}
+.store-admin-notice-actions button{
+  border-color:#111827;
+  background:#111827;
+  color:#fff;
+}
+.store-customer-notice-form{
+  display:grid;
+  gap:12px;
+  padding:18px 22px 22px;
+}
+.store-customer-notice-form label{
+  display:grid;
+  gap:7px;
+  color:#334155;
+  font-size:13px;
+  font-weight:750;
+}
+.store-customer-notice-form input,
+.store-customer-notice-form textarea{
+  width:100%;
+  border:1px solid #dbe3ed;
+  border-radius:13px;
+  padding:12px 13px;
+  font:inherit;
+  font-weight:650;
+}
+.store-customer-notice-form textarea{
+  min-height:130px;
+  resize:vertical;
+  line-height:1.55;
+}
+.store-customer-notice-form .form-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.store-customer-notice-form .btn{
+  width:100%;
+}
+#notices .notice-layout{
+  display:grid;
+  grid-template-columns:minmax(300px, .62fr) minmax(700px, 1.75fr);
+  gap:18px;
+  align-items:start;
+}
+#notices .store-customer-notice-form{
+  padding:0;
+}
+#notices .notice-history-list{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  align-items:start;
+}
+#notices .notice-history-item{
+  display:grid;
+  grid-template-columns:minmax(150px, .75fr) minmax(220px, 1.35fr) minmax(260px, .95fr);
+  align-items:center;
+  gap:12px;
+  border:1px solid #e5eaf1;
+  border-radius:14px;
+  background:#fff;
+  padding:12px 14px;
+}
+#notices .notice-history-item h4{
+  margin:0;
+  font-size:15px;
+  font-weight:750;
+  color:#0f172a;
+  word-break:keep-all;
+}
+#notices .notice-history-item p{
+  margin:0;
+  color:#475569;
+  line-height:1.45;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#notices .notice-history-item small{
+  display:block;
+  margin-top:0;
+  color:#94a3b8;
+  font-weight:650;
+  text-align:right;
+  white-space:nowrap;
+}
+#notices .notice-empty{
+  grid-column:1 / -1;
+  border:1px dashed #dbe3ed;
+  border-radius:16px;
+  padding:18px;
+  color:#64748b;
+  background:#fbfdff;
+}
+#notices .notice-history-pager{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-top:12px;
+  color:#64748b;
+  font-size:13px;
+  font-weight:650;
+}
+#notices .notice-history-pager button{
+  min-width:38px;
+  height:34px;
+  border:1px solid #dbe3ed;
+  border-radius:10px;
+  background:#fff;
+  color:#0f172a;
+  font-weight:750;
+  cursor:pointer;
+}
+#notices .notice-history-pager button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+@media (max-width:860px){
+  #notices .notice-layout{grid-template-columns:1fr;}
+  #notices .notice-history-item{grid-template-columns:1fr;align-items:start;}
+  #notices .notice-history-item p{white-space:normal;}
+  #notices .notice-history-item small{text-align:left;white-space:normal;}
+}
+@media (min-width:560px){
+  .new-order-popup-actions{
+    grid-template-columns:1fr 1fr;
+  }
+  .new-order-popup-actions .btn:first-child{
+    grid-column:1 / -1;
+  }
+}
+
+
+/* 히어로 주요 버튼 4개 정렬 */
+.heroCard .actions.hero-actions-4{
+  display:grid !important;
+  grid-template-columns:repeat(4, minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+.heroCard .actions.hero-actions-4 .btn{
+  width:100% !important;
+  min-width:0 !important;
+  white-space:nowrap !important;
+}
+.heroCard .store-qr-title{
+  width:132px;
+  min-height:132px;
+  border:1px solid #dbe3ed;
+  border-radius:16px;
+  background:#fff;
+  padding:10px;
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  cursor:pointer;
+  box-shadow:0 12px 30px rgba(17,24,39,.08);
+}
+.heroCard .store-qr-title img{
+  width:92px;
+  height:92px;
+  display:block;
+}
+.heroCard .store-qr-title span{
+  max-width:100%;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.25;
+  color:#334155;
+  text-align:center;
+  word-break:keep-all;
+}
+.heroCard .store-qr-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.heroCard .store-url-copy{
+  min-height:48px;
+  padding:0 18px;
+  border:1px solid #dbe3ed;
+  border-radius:14px;
+  background:#fff;
+  color:#111827;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+}
+.heroCard .store-url-copy:hover{
+  border-color:#ff7a1a;
+  color:#ff6b00;
+}
+.heroCard .store-status-control{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:14px;
+}
+.heroCard .store-status-control .btn{
+  min-width:108px;
+  border:1px solid #dbe3ed;
+}
+.heroCard .store-status-control .btn.active{
+  background:#111827;
+  border-color:#111827;
+  color:#fff;
+}
+.heroCard .store-status-control .btn.status-open.active{
+  background:#16a34a;
+  border-color:#16a34a;
+}
+.heroCard .store-status-control .btn.status-closed.active{
+  background:#ef4444;
+  border-color:#ef4444;
+}
+@media (max-width:720px){
+  .heroCard .actions.hero-actions-4{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+  .heroCard .store-status-control{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+@media (max-width:420px){
+  .heroCard .actions.hero-actions-4{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* 주문건당 정산 보기 */
+#settle .settle-view-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:14px 0 14px;
+}
+#settle .settle-view-buttons .btn{
+  width:auto;
+  min-height:42px;
+  height:auto;
+  padding:11px 16px;
+}
+#settle .settle-section-title{
+  margin:22px 0 10px;
+  font-size:18px;
+  font-weight:950;
+  color:#0f172a;
+}
+#settle .settle-order-table td,
+#settle .settle-order-table th{
+  white-space:nowrap;
+}
+#settle .settle-order-table .menu-cell{
+  white-space:normal;
+  min-width:180px;
+}
+#settle .settle-summary-card.order-count-card{
+  background:#fff7ed;
+  border-color:rgba(255,122,0,.22);
+}
+@media (max-width:720px){
+  #settle .settle-view-buttons{display:grid;grid-template-columns:1fr 1fr;}
+  #settle .settle-view-buttons .btn{width:100%;}
+}
+
+
+
+/* 정산 요약 카드 5개 한 줄 정렬 */
+#settle .settle-summary{
+  display:grid !important;
+  grid-template-columns:repeat(5, minmax(0,1fr)) !important;
+  gap:12px !important;
+  align-items:stretch !important;
+}
+#settle .settle-summary-card{
+  min-width:0 !important;
+  width:100% !important;
+}
+#settle .settle-summary-card b{
+  white-space:nowrap !important;
+}
+@media (max-width:980px){
+  #settle .settle-summary{
+    grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  }
+}
+@media (max-width:560px){
+  #settle .settle-summary{
+    grid-template-columns:1fr !important;
+  }
+}
+
+</style>
+</head>
+<body class="page-store-admin" data-page="store-admin01">
+
+<header class="top">
+ <div class="wrap nav"><img class="logo" src="assets/logo/logo.jpg" alt="우리꺼 로고">
+  <nav>
+       <a id="storeOrderWebLink" href="order.html" onclick="openStoreOrderMobileWindow(event)">주문웹</a>
+       <a class="on" href="#" onclick="logoutStoreAdmin(event)">로그아웃</a>
+  </nav>
+ </div>
+ </header>
+
+
+<main class="wrap">
+<section class="hero">
+  <div class="heroGrid">
+    <div class="heroCard">
+      <span class="badge"> <h2>상점명</h2></span>
+      <h1>우리 상점주문과 메뉴를<br>직접 관리합니다</h1>
+      <p class="lead">상점관리자는 주문접수, 메뉴등록, 영업시간, 정산내역을 관리합니다.</p>
+      <div class="actions hero-actions-4"><button class="btn orange" onclick="openTab('orders')">주문 확인</button><button class="btn ghost" onclick="openTab('menus')">메뉴 관리</button><button class="btn blue" onclick="openTab('store')">상점 설정</button><button class="btn dark" onclick="openTab('settle')">정산</button></div>
+      <div class="store-status-control" aria-label="주문웹 영업상태">
+        <button class="btn ghost status-open" id="storeStatusOpenBtn" type="button" onclick="setStoreBusinessStatus('영업중')">영업중</button>
+        <button class="btn ghost status-closed" id="storeStatusClosedBtn" type="button" onclick="setStoreBusinessStatus('마감')">마감</button>
+        <button class="btn ghost" type="button" onclick="openCustomerNoticeComposer()">공지사항</button>
+      </div>
+    </div>
+    <div class="panel logoBox"><img src="assets/store/t_01.jpg" alt="상점간판"></div>
+  </div>
+</section>
+<section class="section stats">
+  <div class="card metric"><div><span>오늘 주문</span><br><b id="storeTodayOrderCount">0건</b></div><span class="tag green">주문</span></div>
+  <div class="card metric"><div><span>오늘 매출</span><br><b id="storeTodaySalesAmount">0원</b></div><span class="tag green">매출</span></div>
+  <div class="card metric"><div><span>주문 대기</span><br><b id="storePendingOrderCount">0건</b></div><span class="tag orange">대기</span></div>
+  <div class="card metric"><div><span>주문웹 고객방문수</span><br><b id="storeVisitCount">0회</b></div><span class="tag blue">방문</span></div>
+</section>
+<section class="section panel" id="work">
+  <div class="tabs"><button class="pill active" data-tab="orders" onclick="openTab('orders')">주문관리</button><button class="pill" data-tab="menus" onclick="openTab('menus')">메뉴관리</button><button class="pill" data-tab="store" onclick="openTab('store')">상점설정</button><button class="pill" data-tab="customers" onclick="openTab('customers')">고객관리</button><button class="pill" data-tab="notices" onclick="openTab('notices')">공지사항</button><button class="pill" data-tab="settle" onclick="openTab('settle')">정산내역</button></div>
+  <div id="orders" class="tab active">
+    <h2>실시간 주문관리</h2>
+    <p class="muted">주문 고객의 연락처, 주소, 누적 배달건수, 신규/단골 여부를 함께 확인하고 처리 상태를 변경할 수 있습니다.</p>
+    <audio id="newOrderAudio" src="assets/sounds/ordering.mp3" preload="auto" playsinline></audio>
+    <div class="new-order-modal" id="newOrderModal" role="dialog" aria-modal="true" aria-labelledby="newOrderModalTitle">
+      <div class="new-order-card">
+        <h3 id="newOrderModalTitle">신규 주문이 들어왔습니다</h3>
+        <p>주문 내용을 확인한 뒤 <b>준비중</b> 버튼을 누르면 주문 상태가 준비중으로 변경되고 주문관리 화면으로 이동합니다.</p>
+        <div class="new-order-detail" id="newOrderModalDetail"></div>
+        <div class="new-order-popup-actions">
+          <button class="btn orange" type="button" onclick="acceptNewOrderFromPopup()">준비중</button>
+          <button class="btn dark" type="button" onclick="printLatestNewOrder()">주문서 발행 / 프린트</button>
+          <button class="btn ghost" type="button" onclick="closeNewOrderPopup()">나중에 확인</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-toolbar">
+      <div class="order-toolbar-actions">
+        <button class="btn blue sound-toggle" id="enableOrderSoundBtn" type="button" onclick="enableNewOrderSound()">알림음 OFF</button>
+        <button class="btn orange" type="button" onclick="simulateNewOrder()">신규주문 테스트</button>
+      </div>
+    </div>
+
+    <div class="order-search-panel" aria-label="주문 검색">
+      <div>
+        <label for="orderSearchKeyword">통합검색</label>
+        <input class="input" id="orderSearchKeyword" type="search" placeholder="주문번호, 고객명, 전화번호, 주소, 메뉴 검색" oninput="searchOrders()">
+      </div>
+      <div>
+        <label for="orderSearchStatus">주문상태</label>
+        <select class="input" id="orderSearchStatus" onchange="searchOrders()">
+          <option value="">전체</option>
+          <option value="주문">주문</option>
+          <option value="준비중">준비중</option>
+          <option value="배달중">배달중</option>
+          <option value="조리완료">조리완료</option>
+          <option value="완료">완료</option>
+          <option value="취소">취소</option>
+        </select>
+      </div>
+      <div>
+        <label for="orderSearchCustomerType">고객구분</label>
+        <select class="input" id="orderSearchCustomerType" onchange="searchOrders()">
+          <option value="">전체</option>
+          <option value="신규">신규</option>
+          <option value="단골">단골</option>
+        </select>
+      </div>
+      <button class="btn dark" type="button" onclick="searchOrders()">검색</button>
+      <button class="btn ghost" type="button" onclick="resetOrderSearch()">초기화</button>
+    </div>
+    <div class="order-search-count" id="orderSearchCount">전체 주문을 표시하고 있습니다.</div>
+
+    <div class="table-wrap">
+      <table class="table order-table">
+        <thead>
+          <tr>
+            <th>주문번호</th>
+            <th>고객정보</th>
+            <th>주문구분</th>
+            <th>배달건수</th>
+            <th>고객구분</th>
+            <th>메뉴</th>
+            <th>금액</th>
+            <th>상태</th>
+            <th>처리</th>
+          </tr>
+        </thead>
+        <tbody id="orderTableBody"></tbody>
+      </table>
+    </div>
+    <div class="order-pagination" id="orderPagination" aria-label="실시간 주문관리 페이지 이동"></div>
+    <div class="order-page-info" id="orderPageInfo"></div>
+
+    <div class="order-detail-modal" id="orderDetailModal" role="dialog" aria-modal="true" aria-labelledby="orderDetailTitle">
+      <div class="order-detail-card">
+        <div class="order-detail-head">
+          <div>
+            <small>ORDER DETAIL</small>
+            <h3 id="orderDetailTitle">주문 상세정보</h3>
+          </div>
+          <button class="order-detail-close" type="button" onclick="closeOrderDetail()" aria-label="주문 상세정보 닫기">×</button>
+        </div>
+        <div class="order-detail-body" id="orderDetailBody"></div>
+      </div>
+    </div>
+
+  </div>
+  <div id="menus" class="tab">
+    <h2>메뉴 등록·수정</h2>
+    <p class="muted">카테고리를 먼저 등록하고, 메뉴명, 설명, 가격, 판매상태, 이미지를 등록하고 수정합니다.</p>
+
+    <div class="card category-panel">
+      <h3>카테고리 등록</h3>
+      <p class="muted">상점 메뉴에 사용할 카테고리를 직접 추가하고 삭제할 수 있습니다.</p>
+      <form class="category-form" onsubmit="addCategory(event)">
+        <div>
+          <label for="categoryName">카테고리명</label>
+          <input class="input" id="categoryName" type="text" placeholder="예: 후라이드, 양념/간장, 순살치킨">
+        </div>
+        <button class="btn orange" type="submit">카테고리 추가</button>
+      </form>
+      <div class="category-list" id="categoryList"></div>
+      <div class="category-help">등록된 카테고리는 메뉴 등록 화면의 카테고리 선택 목록에 자동 반영됩니다.</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>메뉴 정보 입력</h3>
+        <form id="menuForm" onsubmit="saveMenu(event)">
+          <input type="hidden" id="menuEditIndex" value="">
+
+          <label for="menuName">메뉴명</label>
+          <input class="input" id="menuName" type="text" placeholder="예: 후라이드치킨" required>
+
+          <label for="menuDesc">설명</label>
+          <textarea class="input" id="menuDesc" rows="4" placeholder="예: 바삭하게 튀긴 대표 메뉴" required></textarea>
+
+          <label for="menuCategory">카테고리</label>
+          <select class="input" id="menuCategory" required></select>
+
+          <label for="menuPrice">가격</label>
+          <input class="input" id="menuPrice" type="number" placeholder="예: 5500" required>
+
+          <label for="menuStatus">판매상태</label>
+          <select class="input" id="menuStatus" required>
+            <option>판매중</option>
+            <option>품절</option>
+            <option>숨김</option>
+          </select>
+
+          <label for="menuImage">이미지 등록</label>
+          <input class="input" id="menuImage" type="file" accept="image/*" onchange="previewMenuImage(event)">
+          <div class="menu-image-preview" id="menuImagePreview">이미지 미리보기</div>
+
+          <div class="menu-form-actions">
+            <button class="btn dark" type="submit">메뉴 저장하기</button>
+            <button class="btn ghost" type="button" onclick="resetMenuForm()">새 메뉴 입력</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>현재 등록 메뉴</h3>
+        <p class="muted">등록된 메뉴를 클릭하면 왼쪽 입력창에서 수정할 수 있습니다.</p>
+        <div class="table-wrap">
+          <table class="table menu-table">
+            <thead>
+              <tr>
+                <th>이미지</th>
+                <th>메뉴명</th>
+                <th>카테고리</th>
+                <th>가격</th>
+                <th>상태</th>
+                <th>수정</th>
+              </tr>
+            </thead>
+            <tbody id="menuTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="store" class="tab">
+    <h2>상점 기본설정</h2>
+    <p class="muted">상점가입등록 시 입력한 모든 정보를 확인하고 수정할 수 있습니다.</p>
+
+    <div class="grid2">
+      <div class="card store-settings-card">
+        <form id="storeSettingsForm" action="#" method="post" enctype="multipart/form-data" onsubmit="saveStoreSettings(event)">
+          <div class="form-section-title">1. 대표자 정보</div>
+
+          <label for="ownerName">대표자명</label>
+          <input class="input" type="text" id="ownerName" name="ownerName" value="안정길" placeholder="대표자 이름" required>
+
+          <label for="ownerPhone">대표자 연락처</label>
+          <input class="input" type="tel" id="ownerPhone" name="ownerPhone" value="010-0000-0000" placeholder="010-0000-0000" required>
+
+          <label for="ownerEmail">대표자 이메일</label>
+          <input class="input" type="email" id="ownerEmail" name="ownerEmail" value="owner@wooricco.kr" placeholder="example@email.com">
+
+          <div class="form-section-title">2. 상점 기본 정보</div>
+
+          <label for="storeId">상점아이디</label>
+          <input class="input" type="text" id="storeId" name="storeId" value="ilmare" placeholder="영문/숫자 조합 아이디" required>
+
+          <label for="storePassword">패스워드</label>
+          <input class="input" type="password" id="storePassword" name="storePassword" value="12345678" placeholder="비밀번호 입력" required>
+
+          <label for="storeName">상호명</label>
+          <input class="input" type="text" id="storeName" name="storeName" value="" placeholder="예: 우리꺼 치킨" required>
+
+          <label for="storeCategory">업종</label>
+          <select class="input" id="storeCategory" name="storeCategory" required>
+            <option value="">업종 선택</option>
+            <option value="korean">한식</option>
+            <option value="chinese">중식</option>
+            <option value="japanese">일식</option>
+            <option value="chicken" selected>치킨</option>
+            <option value="pizza">피자</option>
+            <option value="cafe">카페/디저트</option>
+            <option value="snack">분식</option>
+            <option value="etc">기타</option>
+          </select>
+
+          <label for="storeAddress">상점 주소</label>
+          <input class="input" type="text" id="storeAddress" name="storeAddress" value="제주특별자치도 제주시 한경면 고산리" placeholder="도로명 주소 입력" required>
+
+          <label for="storeDetailAddress">상세 주소</label>
+          <input class="input" type="text" id="storeDetailAddress" name="storeDetailAddress" value="리조트일마레 1층" placeholder="층, 호수 등 상세 주소">
+
+          <div class="grid2 inner-grid">
+            <div>
+              <label for="openTime">영업 시작 시간</label>
+              <input class="input" type="time" id="openTime" name="openTime" value="10:00">
+            </div>
+            <div>
+              <label for="closeTime">영업 종료 시간</label>
+              <input class="input" type="time" id="closeTime" name="closeTime" value="21:00">
+            </div>
+          </div>
+
+          <label for="closedDay">휴무일</label>
+          <input class="input" type="text" id="closedDay" name="closedDay" value="연중무휴" placeholder="예: 매주 월요일 / 연중무휴">
+
+          <div class="form-section-title">3. 사업자 정보</div>
+
+          <label for="businessNumber">사업자등록번호</label>
+          <input class="input" type="text" id="businessNumber" name="businessNumber" value="495-87-01663" placeholder="000-00-00000" required>
+
+          <label for="businessFile">사업자등록증 첨부</label>
+          <input class="input" type="file" id="businessFile" name="businessFile" accept="image/*,.pdf">
+
+          <div class="form-section-title">4. 주문웹 사진 설정</div>
+
+          <label for="storeSignImage">간판사진</label>
+          <input class="input" type="file" id="storeSignImage" name="storeSignImage" accept="image/*" onchange="previewStoreMedia()">
+          <div class="store-media-preview" id="storeSignPreview">
+            <figure class="sign">간판사진 없음</figure>
+          </div>
+
+          <label for="storePhoto1">가게사진 1</label>
+          <input class="input store-photo-input" type="file" id="storePhoto1" name="storePhoto1" accept="image/*" onchange="previewStoreMedia()">
+          <label for="storePhoto2">가게사진 2</label>
+          <input class="input store-photo-input" type="file" id="storePhoto2" name="storePhoto2" accept="image/*" onchange="previewStoreMedia()">
+          <label for="storePhoto3">가게사진 3</label>
+          <input class="input store-photo-input" type="file" id="storePhoto3" name="storePhoto3" accept="image/*" onchange="previewStoreMedia()">
+          <label for="storePhoto4">가게사진 4</label>
+          <input class="input store-photo-input" type="file" id="storePhoto4" name="storePhoto4" accept="image/*" onchange="previewStoreMedia()">
+          <div class="store-media-preview" id="storePhotoPreview">
+            <figure>가게사진 1</figure>
+            <figure>가게사진 2</figure>
+            <figure>가게사진 3</figure>
+            <figure>가게사진 4</figure>
+          </div>
+
+          <div class="form-section-title">4. 주문 및 배달 설정</div>
+
+          <label for="orderType">주문 방식</label>
+          <select class="input" id="orderType" name="orderType" required>
+            <option value="">선택</option>
+            <option value="delivery">배달 주문</option>
+            <option value="pickup">포장 주문</option>
+            <option value="both" selected>배달 + 포장</option>
+          </select>
+
+          <label for="deliveryFee">기본 배달비</label>
+          <input class="input" type="number" id="deliveryFee" name="deliveryFee" value="3000" placeholder="예: 3000">
+
+          <label for="minOrderPrice">최소 주문금액</label>
+          <input class="input" type="number" id="minOrderPrice" name="minOrderPrice" value="15000" placeholder="예: 15000">
+
+          <div class="form-section-title">5. 정산 계좌 정보</div>
+
+          <label for="bankName">은행명</label>
+          <input class="input" type="text" id="bankName" name="bankName" value="국민은행" placeholder="예: 국민은행">
+
+          <label for="accountHolder">예금주</label>
+          <input class="input" type="text" id="accountHolder" name="accountHolder" value="안정길" placeholder="예금주명">
+
+          <label for="accountNumber">계좌번호</label>
+          <input class="input" type="text" id="accountNumber" name="accountNumber" value="000000-00-000000" placeholder="계좌번호 입력">
+
+          <label class="check-line">
+            <input type="checkbox" checked>
+            상점가입등록을 위해 개인정보 및 사업자정보 수집·이용에 동의합니다.
+          </label>
+
+          <label class="check-line">
+            <input type="checkbox" checked>
+            입력한 상점 정보가 사실과 다름없음을 확인합니다.
+          </label>
+
+          <button type="submit" class="btn dark">상점 기본설정 저장</button>
+        </form>
+      </div>
+
+      <aside class="store-side-stack">
+        <div class="card qr-card">
+          <h3>QR 주문 홍보물</h3>
+          <p class="muted">매장 테이블, 포스터, 영수증에 부착할 QR입니다.</p>
+          <div class="qr" id="storeSideQr"></div>
+          <button class="btn orange" id="storeSideQrDownload" type="button">QR 다운로드</button>
+        </div>
+
+        <div class="card">
+          <h3>상점 운영 요약</h3>
+          <p class="muted">현재 고객에게 노출되는 상점 정보를 한눈에 확인합니다.</p>
+          <div class="store-mini-card">
+            <div class="store-mini-row"><span>상호명</span><b id="sideStoreName">상점명</b></div>
+            <div class="store-mini-row"><span>업종</span><b id="sideStoreCategory">치킨전문점</b></div>
+            <label class="store-mini-description" for="storeDescription">
+              <span>가게 소개</span>
+              <textarea id="storeDescription" name="storeDescription" placeholder="주문웹 사진 아래 소개 박스에 표시될 내용을 입력해주세요."></textarea>
+            </label>
+            <div class="store-mini-row editable"><span>주문방식</span><select id="sideOrderType" onchange="syncSideOrderSettings()"><option value="delivery">배달</option><option value="pickup">포장</option><option value="both">배달 + 포장</option></select></div>
+            <div class="store-mini-row editable"><span>영업 시작</span><input id="sideOpenTime" type="time" onchange="syncSideOrderSettings()" oninput="syncSideOrderSettings()"></div>
+            <div class="store-mini-row editable"><span>영업 종료</span><input id="sideCloseTime" type="time" onchange="syncSideOrderSettings()" oninput="syncSideOrderSettings()"></div>
+            <div class="store-mini-row editable"><span>최소주문</span><input id="sideMinOrderPrice" type="number" min="0" step="100" inputmode="numeric" onchange="syncSideOrderSettings()" oninput="syncSideOrderSettings()"></div>
+            <div class="store-mini-row editable"><span>기본배달비</span><input id="sideDeliveryFee" type="number" min="0" step="100" inputmode="numeric" onchange="syncSideOrderSettings()" oninput="syncSideOrderSettings()"></div>
+          </div>
+          <button class="btn dark side-save-btn" type="button" onclick="saveSideOrderSettings(this)">운영 정보 저장</button>
+        </div>
+
+        <div class="card">
+          <h3>고객 주문 링크</h3>
+          <div class="store-link-box" id="sideOrderLinkBox">상점 주문웹 주소가 표시됩니다.</div>
+          <button class="btn dark side-copy-btn" id="sideOrderLinkCopy" type="button">복사하기</button>
+          <div class="store-check-list">
+            <div><i>✓</i> 문자, 카카오톡전송</div>
+            <div><i>✓</i> QR 홍보물 사용</div>
+            <div class="place-link-row">
+              <span class="store-check-label"><i>✓</i> 네이버플레이스에 링크등록</span>
+              <a class="place-shortcut-btn" href="https://new.smartplace.naver.com/" target="_blank" rel="noopener">바로가기</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <div id="customers" class="tab">
+    <h2>고객관리</h2>
+    <p class="muted">회원가입한 고객 정보를 확인합니다. 현재 로그인한 상점의 고객만 표시됩니다.</p>
+    <div class="order-search-panel" aria-label="고객 검색">
+      <div>
+        <label for="storeCustomerSearchInput">통합검색</label>
+        <input class="input" id="storeCustomerSearchInput" type="search" placeholder="고객명, 연락처, 주소 검색" oninput="searchStoreCustomers()">
+      </div>
+      <button class="btn dark" type="button" onclick="searchStoreCustomers()">검색</button>
+      <button class="btn ghost" type="button" onclick="resetStoreCustomerSearch()">초기화</button>
+    </div>
+    <div class="order-search-count" id="storeCustomerSearchCount">고객 정보를 불러오는 중입니다.</div>
+    <div class="table-wrap">
+      <table class="table order-table">
+        <thead>
+          <tr>
+            <th>고객명</th>
+            <th>연락처</th>
+            <th>주소</th>
+            <th>가입방식</th>
+            <th>가입일</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody id="storeCustomerTableBody"></tbody>
+      </table>
+    </div>
+    <div class="order-pagination" id="storeCustomerPagination" aria-label="고객관리 페이지 이동"></div>
+    <div class="order-page-info" id="storeCustomerPageInfo"></div>
+  </div>
+  <div id="notices" class="tab">
+    <h2>공지사항</h2>
+    <p class="muted">해당 상점의 주문웹에 표시할 공지사항을 작성하고 발송 기록을 확인합니다.</p>
+    <div class="notice-layout">
+      <div class="card">
+        <h3>공지 작성</h3>
+        <form class="store-customer-notice-form" onsubmit="sendCustomerNotice(event)">
+          <label>공지 제목
+            <input id="customerNoticeTitleInput" type="text" placeholder="예: 오늘 영업 안내" required>
+          </label>
+          <label>공지 내용
+            <textarea id="customerNoticeMessageInput" placeholder="주문웹에 표시할 공지사항을 입력해주세요." required></textarea>
+          </label>
+          <div class="inner-grid">
+            <label>공지 시작일
+              <input id="customerNoticeStartDate" type="date" required>
+            </label>
+            <label>공지 종료일
+              <input id="customerNoticeEndDate" type="date" required>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="btn ghost" type="button" onclick="resetCustomerNoticeForm()">입력 초기화</button>
+            <button class="btn dark" type="submit">공지 발송</button>
+          </div>
+        </form>
+      </div>
+      <div class="card">
+        <h3>작성 기록</h3>
+        <p class="muted">최근 발송한 고객 주문웹 공지사항입니다.</p>
+        <div class="notice-history-list" id="customerNoticeHistoryList">
+          <div class="notice-empty">아직 작성된 공지사항이 없습니다.</div>
+        </div>
+        <div class="notice-history-pager" id="customerNoticeHistoryPager"></div>
+      </div>
+    </div>
+  </div>
+  <div id="settle" class="tab">
+    <h2>정산 내역</h2>
+    <p class="muted">완료 후 10분 정산 기준으로 기간별 주문금액, 취소금액, 수수료, 입금액을 확인합니다.</p>
+
+    <div class="settle-search-box">
+      <div>
+        <label for="settleStartDate">시작일</label>
+        <input class="input" id="settleStartDate" type="date" value="2026-04-24">
+      </div>
+      <div>
+        <label for="settleEndDate">종료일</label>
+        <input class="input" id="settleEndDate" type="date" value="2026-04-29">
+      </div>
+      <button class="btn dark" type="button" onclick="searchSettlementByDate()">기간 검색</button>
+      <button class="btn ghost" type="button" onclick="resetSettlementSearch()">전체 보기</button>
+    </div>
+
+    <div class="settle-summary">
+      <div class="settle-summary-card order-count-card"><span>정산 주문건수</span><b id="settleTotalCount">0건</b></div>
+      <div class="settle-summary-card"><span>주문금액</span><b id="settleTotalOrder">0원</b></div>
+      <div class="settle-summary-card"><span>취소금액</span><b id="settleTotalCancel">0원</b></div>
+      <div class="settle-summary-card"><span>수수료</span><b id="settleTotalFee">0원</b></div>
+      <div class="settle-summary-card"><span>입금액</span><b id="settleTotalDeposit">0원</b></div>
+    </div>
+
+    <div class="settle-result-info" id="settleResultInfo"></div>
+
+    <div class="settle-view-buttons" aria-label="정산 보기 방식">
+      <button class="btn dark" type="button" onclick="showSettlementView('period')">기간별 정산</button>
+      <button class="btn ghost" type="button" onclick="showSettlementView('order')">주문건당 정산</button>
+      <button class="btn orange" type="button" onclick="showSettlementView('all')">전체보기</button>
+    </div>
+
+    <div class="settle-period-view" id="settlePeriodView">
+      <h3 class="settle-section-title">기간별 정산</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>기간</th>
+              <th>정산건수</th>
+              <th>주문금액</th>
+              <th>취소</th>
+              <th>수수료</th>
+              <th>입금액</th>
+            </tr>
+          </thead>
+          <tbody id="settleTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="settle-order-view" id="settleOrderView">
+      <h3 class="settle-section-title">주문건당 정산</h3>
+      <div class="table-wrap">
+        <table class="table settle-order-table">
+          <thead>
+            <tr>
+              <th>정산일</th>
+              <th>주문번호</th>
+              <th>고객명</th>
+              <th>주문메뉴</th>
+              <th>주문금액</th>
+              <th>취소금액</th>
+              <th>수수료</th>
+              <th>입금액</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody id="settleOrderTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<div class="store-admin-notice-modal" id="storeAdminNoticeModal" role="dialog" aria-modal="true" aria-labelledby="storeAdminNoticeTitle">
+  <div class="store-admin-notice-card">
+    <div class="store-admin-notice-head">
+      <h2 id="storeAdminNoticeTitle">공지사항</h2>
+    </div>
+    <div class="store-admin-notice-body" id="storeAdminNoticeBody"></div>
+    <div class="store-admin-notice-actions">
+      <button type="button" onclick="confirmStoreAdminNotice()">확인</button>
+    </div>
+  </div>
+</div>
+<footer class="wrap footer">
+ © 우리꺼 상점관리자 <br> 
+ 고객센터 : 1899-7304<br>
+ 우리는 내일도 최선을 다하겠습니다.</footer>
+<script>
+const orderData = [
+  {
+    "no": "#1028",
+    "customer": "안정길",
+    "phone": "010-2300-6700",
+    "address": "제주특별자치도 제주시 한경면 고산리 100-1 리조트일마레 1층",
+    "deliveryCount": 1,
+    "customerType": "신규",
+    "menu": "후라이드치킨 1, 콜라 1.25L 1",
+    "amount": "21,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1027",
+    "customer": "김민수",
+    "phone": "010-2301-6701",
+    "address": "제주특별자치도 제주시 한경면 고산리 101-2 고산빌라 2층",
+    "deliveryCount": 4,
+    "customerType": "신규",
+    "menu": "양념치킨 1",
+    "amount": "19,000원",
+    "status": "준비중"
+  },
+  {
+    "no": "#1026",
+    "customer": "박지은",
+    "phone": "010-2302-6702",
+    "address": "제주특별자치도 제주시 한경면 고산리 102-3 해안로상가 3층",
+    "deliveryCount": 7,
+    "customerType": "단골",
+    "menu": "간장마늘치킨 1, 치킨무 추가 1",
+    "amount": "20,500원",
+    "status": "배달"
+  },
+  {
+    "no": "#1025",
+    "customer": "이서준",
+    "phone": "010-2303-6703",
+    "address": "제주특별자치도 제주시 한경면 고산리 103-4 바다아파트 4층",
+    "deliveryCount": 10,
+    "customerType": "단골",
+    "menu": "반반치킨 1",
+    "amount": "19,000원",
+    "status": "완료"
+  },
+  {
+    "no": "#1024",
+    "customer": "최유진",
+    "phone": "010-2304-6704",
+    "address": "제주특별자치도 제주시 한경면 고산리 104-5 리조트일마레 5층",
+    "deliveryCount": 13,
+    "customerType": "단골",
+    "menu": "순살후라이드 1, 감자튀김 1",
+    "amount": "24,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1023",
+    "customer": "장현우",
+    "phone": "010-2305-6705",
+    "address": "제주특별자치도 제주시 한경면 고산리 105-6 고산빌라 1층",
+    "deliveryCount": 16,
+    "customerType": "신규",
+    "menu": "순살양념치킨 1",
+    "amount": "20,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1022",
+    "customer": "한소라",
+    "phone": "010-2306-6706",
+    "address": "제주특별자치도 제주시 한경면 고산리 106-7 해안로상가 2층",
+    "deliveryCount": 19,
+    "customerType": "신규",
+    "menu": "매콤핫치킨 1, 콜라 1.25L 1",
+    "amount": "23,000원",
+    "status": "준비중"
+  },
+  {
+    "no": "#1021",
+    "customer": "윤태식",
+    "phone": "010-2307-6707",
+    "address": "제주특별자치도 제주시 한경면 고산리 107-8 바다아파트 3층",
+    "deliveryCount": 22,
+    "customerType": "단골",
+    "menu": "치즈시즈닝치킨 1",
+    "amount": "21,000원",
+    "status": "배달"
+  },
+  {
+    "no": "#1020",
+    "customer": "정다은",
+    "phone": "010-2308-6708",
+    "address": "제주특별자치도 제주시 한경면 고산리 108-9 리조트일마레 4층",
+    "deliveryCount": 25,
+    "customerType": "단골",
+    "menu": "닭강정 1, 감자튀김 1",
+    "amount": "21,000원",
+    "status": "완료"
+  },
+  {
+    "no": "#1019",
+    "customer": "김도윤",
+    "phone": "010-2309-6709",
+    "address": "제주특별자치도 제주시 한경면 고산리 109-1 고산빌라 5층",
+    "deliveryCount": 1,
+    "customerType": "단골",
+    "menu": "세트 A 1",
+    "amount": "24,900원",
+    "status": "취소"
+  },
+  {
+    "no": "#1018",
+    "customer": "문성호",
+    "phone": "010-2310-6710",
+    "address": "제주특별자치도 제주시 한경면 고산리 110-2 해안로상가 1층",
+    "deliveryCount": 4,
+    "customerType": "신규",
+    "menu": "후라이드치킨 1, 콜라 1.25L 1",
+    "amount": "21,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1017",
+    "customer": "신미영",
+    "phone": "010-2311-6711",
+    "address": "제주특별자치도 제주시 한경면 고산리 111-3 바다아파트 2층",
+    "deliveryCount": 7,
+    "customerType": "신규",
+    "menu": "양념치킨 1",
+    "amount": "19,000원",
+    "status": "준비중"
+  },
+  {
+    "no": "#1016",
+    "customer": "배성진",
+    "phone": "010-2312-6712",
+    "address": "제주특별자치도 제주시 한경면 고산리 112-4 리조트일마레 3층",
+    "deliveryCount": 10,
+    "customerType": "단골",
+    "menu": "간장마늘치킨 1, 치킨무 추가 1",
+    "amount": "20,500원",
+    "status": "배달"
+  },
+  {
+    "no": "#1015",
+    "customer": "노지훈",
+    "phone": "010-2313-6713",
+    "address": "제주특별자치도 제주시 한경면 고산리 113-5 고산빌라 4층",
+    "deliveryCount": 13,
+    "customerType": "단골",
+    "menu": "반반치킨 1",
+    "amount": "19,000원",
+    "status": "완료"
+  },
+  {
+    "no": "#1014",
+    "customer": "강하늘",
+    "phone": "010-2314-6714",
+    "address": "제주특별자치도 제주시 한경면 고산리 114-6 해안로상가 5층",
+    "deliveryCount": 16,
+    "customerType": "단골",
+    "menu": "순살후라이드 1, 감자튀김 1",
+    "amount": "24,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1013",
+    "customer": "고은아",
+    "phone": "010-2315-6715",
+    "address": "제주특별자치도 제주시 한경면 고산리 115-7 바다아파트 1층",
+    "deliveryCount": 19,
+    "customerType": "신규",
+    "menu": "순살양념치킨 1",
+    "amount": "20,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1012",
+    "customer": "서민재",
+    "phone": "010-2316-6716",
+    "address": "제주특별자치도 제주시 한경면 고산리 116-8 리조트일마레 2층",
+    "deliveryCount": 22,
+    "customerType": "신규",
+    "menu": "매콤핫치킨 1, 콜라 1.25L 1",
+    "amount": "23,000원",
+    "status": "준비중"
+  },
+  {
+    "no": "#1011",
+    "customer": "류지민",
+    "phone": "010-2317-6717",
+    "address": "제주특별자치도 제주시 한경면 고산리 117-9 고산빌라 3층",
+    "deliveryCount": 25,
+    "customerType": "단골",
+    "menu": "치즈시즈닝치킨 1",
+    "amount": "21,000원",
+    "status": "배달"
+  },
+  {
+    "no": "#1010",
+    "customer": "김태훈",
+    "phone": "010-2318-6718",
+    "address": "제주특별자치도 제주시 한경면 고산리 118-1 해안로상가 4층",
+    "deliveryCount": 1,
+    "customerType": "단골",
+    "menu": "닭강정 1, 감자튀김 1",
+    "amount": "21,000원",
+    "status": "완료"
+  },
+  {
+    "no": "#1009",
+    "customer": "박준영",
+    "phone": "010-2319-6719",
+    "address": "제주특별자치도 제주시 한경면 고산리 119-2 바다아파트 5층",
+    "deliveryCount": 4,
+    "customerType": "단골",
+    "menu": "세트 A 1",
+    "amount": "24,900원",
+    "status": "취소"
+  },
+  {
+    "no": "#1008",
+    "customer": "이수정",
+    "phone": "010-2320-6720",
+    "address": "제주특별자치도 제주시 한경면 고산리 120-3 리조트일마레 1층",
+    "deliveryCount": 7,
+    "customerType": "신규",
+    "menu": "후라이드치킨 1, 콜라 1.25L 1",
+    "amount": "21,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1007",
+    "customer": "양재훈",
+    "phone": "010-2321-6721",
+    "address": "제주특별자치도 제주시 한경면 고산리 121-4 고산빌라 2층",
+    "deliveryCount": 10,
+    "customerType": "신규",
+    "menu": "양념치킨 1",
+    "amount": "19,000원",
+    "status": "준비중"
+  },
+  {
+    "no": "#1006",
+    "customer": "정미라",
+    "phone": "010-2322-6722",
+    "address": "제주특별자치도 제주시 한경면 고산리 122-5 해안로상가 3층",
+    "deliveryCount": 13,
+    "customerType": "단골",
+    "menu": "간장마늘치킨 1, 치킨무 추가 1",
+    "amount": "20,500원",
+    "status": "배달"
+  },
+  {
+    "no": "#1005",
+    "customer": "오현석",
+    "phone": "010-2323-6723",
+    "address": "제주특별자치도 제주시 한경면 고산리 123-6 바다아파트 4층",
+    "deliveryCount": 16,
+    "customerType": "단골",
+    "menu": "반반치킨 1",
+    "amount": "19,000원",
+    "status": "완료"
+  },
+  {
+    "no": "#1004",
+    "customer": "임나영",
+    "phone": "010-2324-6724",
+    "address": "제주특별자치도 제주시 한경면 고산리 124-7 리조트일마레 5층",
+    "deliveryCount": 19,
+    "customerType": "단골",
+    "menu": "순살후라이드 1, 감자튀김 1",
+    "amount": "24,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1003",
+    "customer": "차승민",
+    "phone": "010-2325-6725",
+    "address": "제주특별자치도 제주시 한경면 고산리 125-8 고산빌라 1층",
+    "deliveryCount": 22,
+    "customerType": "신규",
+    "menu": "순살양념치킨 1",
+    "amount": "20,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#1002",
+    "customer": "홍민기",
+    "phone": "010-2326-6726",
+    "address": "제주특별자치도 제주시 한경면 고산리 126-9 해안로상가 2층",
+    "deliveryCount": 25,
+    "customerType": "신규",
+    "menu": "매콤핫치킨 1, 콜라 1.25L 1",
+    "amount": "23,000원",
+    "status": "준비중"
+  },
+  {
+    "no": "#1001",
+    "customer": "이준호",
+    "phone": "010-2327-6727",
+    "address": "제주특별자치도 제주시 한경면 고산리 127-1 바다아파트 3층",
+    "deliveryCount": 1,
+    "customerType": "단골",
+    "menu": "치즈시즈닝치킨 1",
+    "amount": "21,000원",
+    "status": "배달"
+  },
+  {
+    "no": "#1000",
+    "customer": "오세훈",
+    "phone": "010-2328-6728",
+    "address": "제주특별자치도 제주시 한경면 고산리 128-2 리조트일마레 4층",
+    "deliveryCount": 4,
+    "customerType": "단골",
+    "menu": "닭강정 1, 감자튀김 1",
+    "amount": "21,000원",
+    "status": "완료"
+  },
+  {
+    "no": "#999",
+    "customer": "전영길",
+    "phone": "010-2329-6729",
+    "address": "제주특별자치도 제주시 한경면 고산리 129-3 고산빌라 5층",
+    "deliveryCount": 7,
+    "customerType": "단골",
+    "menu": "세트 A 1",
+    "amount": "24,900원",
+    "status": "취소"
+  },
+  {
+    "no": "#998",
+    "customer": "최민아",
+    "phone": "010-2330-6730",
+    "address": "제주특별자치도 제주시 한경면 고산리 130-4 해안로상가 1층",
+    "deliveryCount": 10,
+    "customerType": "신규",
+    "menu": "후라이드치킨 1, 콜라 1.25L 1",
+    "amount": "21,000원",
+    "status": "주문"
+  },
+  {
+    "no": "#997",
+    "customer": "윤지호",
+    "phone": "010-2331-6731",
+    "address": "제주특별자치도 제주시 한경면 고산리 131-5 바다아파트 2층",
+    "deliveryCount": 13,
+    "customerType": "신규",
+    "menu": "양념치킨 1",
+    "amount": "19,000원",
+    "status": "준비중"
+  },
+  {
+    "no": "#996",
+    "customer": "서하늘",
+    "phone": "010-2332-6732",
+    "address": "제주특별자치도 제주시 한경면 고산리 132-6 리조트일마레 3층",
+    "deliveryCount": 16,
+    "customerType": "단골",
+    "menu": "간장마늘치킨 1, 치킨무 추가 1",
+    "amount": "20,500원",
+    "status": "배달"
+  },
+  {
+    "no": "#995",
+    "customer": "백도현",
+    "phone": "010-2333-6733",
+    "address": "제주특별자치도 제주시 한경면 고산리 133-7 고산빌라 4층",
+    "deliveryCount": 19,
+    "customerType": "단골",
+    "menu": "반반치킨 1",
+    "amount": "19,000원",
+    "status": "완료"
+  },
+  {
+    "no": "#994",
+    "customer": "문가영",
+    "phone": "010-2334-6734",
+    "address": "제주특별자치도 제주시 한경면 고산리 134-8 해안로상가 5층",
+    "deliveryCount": 22,
+    "customerType": "단골",
+    "menu": "순살후라이드 1, 감자튀김 1",
+    "amount": "24,000원",
+    "status": "주문"
+  }
+];
+
+{
+  const params = new URLSearchParams(window.location.search);
+  const isPureSample = params.get('sample') === '1' && !params.get('store');
+  if(!isPureSample){
+  orderData.length = 0;
+  }
+}
+
+const ordersPerPage = 10;
+let currentOrderPage = 1;
+let knownStoreOrderKeys = new Set();
+let storeOrdersLoadedOnce = false;
+let storeOrderPollingTimer = null;
+let newOrderSoundEnabled = false;
+
+function getStoreOrderKey(order){
+  return String(order?.id || order?.no || '').trim();
+}
+
+function detectFreshStoreOrders(nextOrders){
+  if(!storeOrdersLoadedOnce) return [];
+  return nextOrders.filter(order => {
+    const key = getStoreOrderKey(order);
+    return key && !knownStoreOrderKeys.has(key) && (order.status || '주문') === '주문';
+  });
+}
+
+function startStoreOrderPolling(){
+  if(storeOrderPollingTimer) clearInterval(storeOrderPollingTimer);
+  storeOrderPollingTimer = setInterval(() => {
+    const ordersTab = document.getElementById('orders');
+    const page = ordersTab?.classList.contains('active') ? currentOrderPage : 1;
+    loadStoreOrders(page, { silent: true });
+  }, 3000);
+}
+
+function getFilteredOrderEntries(){
+  const keyword = (document.getElementById('orderSearchKeyword')?.value || '').trim().toLowerCase();
+  const status = document.getElementById('orderSearchStatus')?.value || '';
+  const customerType = document.getElementById('orderSearchCustomerType')?.value || '';
+
+  return orderData
+    .map((order, index) => ({ order, index }))
+    .filter(({ order }) => {
+      const keywordTarget = [
+        order.no,
+        order.customer,
+        order.phone,
+        order.address,
+        order.menu,
+        order.amount,
+        getDisplayOrderStatus(order.status),
+        getOrderKind(order),
+        getComputedCustomerType(order)
+      ].join(' ').toLowerCase();
+
+      const keywordMatched = !keyword || keywordTarget.includes(keyword);
+      const statusMatched = !status || getDisplayOrderStatus(order.status) === status;
+      const customerTypeMatched = !customerType || getComputedCustomerType(order) === customerType;
+
+      return keywordMatched && statusMatched && customerTypeMatched;
+    });
+}
+
+function normalizeOrderCustomerKey(value){
+  return String(value || '').replace(/[^0-9a-zA-Z가-힣]/g, '').toLowerCase();
+}
+
+function getCustomerCumulativeOrderCount(order){
+  if(!order) return 0;
+  const phoneKey = normalizeOrderCustomerKey(order.phone);
+  const nameKey = normalizeOrderCustomerKey(order.customer);
+  return orderData.filter(item => {
+    if(phoneKey) return normalizeOrderCustomerKey(item.phone) === phoneKey;
+    return nameKey && normalizeOrderCustomerKey(item.customer) === nameKey;
+  }).length || 1;
+}
+
+function getComputedCustomerType(order){
+  return getCustomerCumulativeOrderCount(order) >= 2 ? '단골' : '신규';
+}
+
+function searchOrders(){
+  renderOrders(1);
+}
+
+function resetOrderSearch(){
+  const keyword = document.getElementById('orderSearchKeyword');
+  const status = document.getElementById('orderSearchStatus');
+  const customerType = document.getElementById('orderSearchCustomerType');
+
+  if (keyword) keyword.value = '';
+  if (status) status.value = '';
+  if (customerType) customerType.value = '';
+
+  renderOrders(1);
+}
+
+async function loadStoreOrders(page = currentOrderPage, options = {}) {
+  const storeId = getLoggedInStoreId();
+  const tbody = document.getElementById('orderTableBody');
+  if (!storeId) {
+    updateStoreDashboardMetrics();
+    renderOrders(page);
+    return;
+  }
+  if (tbody && !options.silent) tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:28px;color:#64748b;font-weight:900;">주문을 불러오는 중입니다.</td></tr>`;
+  try{
+    const response = await fetch(`/api/orders?store=${encodeURIComponent(storeId)}`, { cache:'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok) throw new Error(result.message || '주문내역을 불러오지 못했습니다.');
+    const nextOrders = result.orders || [];
+    const freshOrders = detectFreshStoreOrders(nextOrders);
+    orderData.length = 0;
+    orderData.push(...nextOrders);
+    knownStoreOrderKeys = new Set(orderData.map(getStoreOrderKey).filter(Boolean));
+    storeOrdersLoadedOnce = true;
+    updateStoreDashboardMetrics();
+    renderOrders(page);
+    if(freshOrders.length){
+      const freshKey = getStoreOrderKey(freshOrders[0]);
+      const freshIndex = orderData.findIndex(order => getStoreOrderKey(order) === freshKey);
+      playNewOrderSound();
+      if(freshIndex >= 0) showNewOrderPopup(freshIndex);
+    }
+  }catch(error){
+    console.warn('store_orders_load_failed', error);
+    if(!options.silent){
+      orderData.length = 0;
+      updateStoreDashboardMetrics();
+      renderOrders(1);
+    }
+  }
+}
+
+function getStoreKoreaDateKey(value = new Date()) {
+  try {
+    const date = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    const koreaTime = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+    return koreaTime.toISOString().slice(0, 10);
+  } catch (error) {
+    return '';
+  }
+}
+
+function isTodayStoreOrder(order) {
+  return getStoreKoreaDateKey(order && (order.createdAt || order.updatedAt || order.time)) === getStoreKoreaDateKey();
+}
+
+function getStoreOrderAmount(order) {
+  return Number(order && order.amountNumber) || parseWonText(order && order.amount);
+}
+
+function updateStoreDashboardMetrics() {
+  try {
+    const orders = Array.isArray(orderData) ? orderData : [];
+    const todayOrders = orders.filter(isTodayStoreOrder);
+    const todaySales = todayOrders.reduce((sum, order) => order.status === '취소' ? sum : sum + getStoreOrderAmount(order), 0);
+    const pendingOrders = orders.filter((order) => order.status === '주문').length;
+    const todayOrderCount = document.getElementById('storeTodayOrderCount');
+    const todaySalesAmount = document.getElementById('storeTodaySalesAmount');
+    const pendingOrderCount = document.getElementById('storePendingOrderCount');
+    if (todayOrderCount) todayOrderCount.textContent = `${todayOrders.length.toLocaleString('ko-KR')}건`;
+    if (todaySalesAmount) todaySalesAmount.textContent = `${Math.round(todaySales).toLocaleString('ko-KR')}원`;
+    if (pendingOrderCount) pendingOrderCount.textContent = `${pendingOrders.length.toLocaleString('ko-KR')}건`;
+  } catch (error) {
+    console.warn('store_dashboard_metric_failed', error);
+  }
+}
+
+function getStatusTag(status) {
+  if (status === '주문') return 'order';
+  if (status === '준비중') return 'orange';
+  if (status === '조리완료' || status === '배달중' || status === '배달') return 'blue';
+  if (status === '완료') return 'green';
+  if (status === '취소') return 'red';
+  return 'orange';
+}
+
+function getDisplayOrderStatus(status) {
+  return status === '배달' ? '배달중' : (status || '주문');
+}
+
+function getButtonClass(status, buttonStatus) {
+  const displayStatus = getDisplayOrderStatus(status);
+  if (displayStatus !== buttonStatus) return 'btn ghost small';
+  if (buttonStatus === '준비중') return 'btn orange small active-status';
+  if (buttonStatus === '조리완료' || buttonStatus === '배달중') return 'btn blue small active-status';
+  if (buttonStatus === '완료') return 'btn dark small active-status';
+  if (buttonStatus === '취소') return 'btn ghost small active-status';
+  return 'btn ghost small';
+}
+
+function getOrderKind(order) {
+  const raw = String(order?.type || order?.orderType || order?.address || '').trim();
+  return raw.includes('포장') ? '포장' : '배달';
+}
+
+function getOrderKindTag(order) {
+  return getOrderKind(order) === '포장' ? 'blue' : 'green';
+}
+
+function renderOrders(page = currentOrderPage) {
+  const tbody = document.getElementById('orderTableBody');
+  const pagination = document.getElementById('orderPagination');
+  const pageInfo = document.getElementById('orderPageInfo');
+  const searchCount = document.getElementById('orderSearchCount');
+  if (!tbody) return;
+  updateStoreDashboardMetrics();
+
+  const filteredEntries = getFilteredOrderEntries();
+  const totalPages = Math.max(1, Math.ceil(filteredEntries.length / ordersPerPage));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  currentOrderPage = safePage;
+
+  const startIndex = (safePage - 1) * ordersPerPage;
+  const currentItems = filteredEntries.slice(startIndex, startIndex + ordersPerPage);
+
+  if (currentItems.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:28px;color:#64748b;font-weight:900;">검색 결과가 없습니다.</td></tr>`;
+  } else {
+    tbody.innerHTML = currentItems.map(({ order, index }) => {
+      const computedCustomerType = getComputedCustomerType(order);
+      const nextStatus = getOrderKind(order) === '배달' ? '배달중' : '조리완료';
+      return `
+      <tr class="${order.status === '주문' ? 'new-order-flash' : ''}" onclick="openOrderDetail(${index})" tabindex="0" onkeydown="if(event.key==='Enter'){openOrderDetail(${index})}">
+        <td>${order.no}</td>
+        <td>
+          <div class="customer-info">
+            <b>${order.customer}</b>
+            <small>${order.phone}</small>
+            <small>${order.address}</small>
+          </div>
+        </td>
+        <td><span class="tag ${getOrderKindTag(order)}">${getOrderKind(order)}</span></td>
+        <td><span class="delivery-count">${getCustomerCumulativeOrderCount(order)}건</span></td>
+        <td><span class="customer-type ${computedCustomerType === '신규' ? 'new' : 'regular'}">${computedCustomerType}</span></td>
+        <td class="order-menu-cell">${order.menu}</td>
+        <td>${order.amount}</td>
+        <td><span class="tag ${getStatusTag(order.status)}">${getDisplayOrderStatus(order.status)}</span></td>
+        <td>
+          <div class="order-actions">
+            <button type="button" class="${getButtonClass(order.status, '준비중')}" onclick="event.stopPropagation(); setOrderStatus(${index}, '준비중')">준비중</button>
+            <button type="button" class="${getButtonClass(order.status, nextStatus)}" onclick="event.stopPropagation(); setOrderStatus(${index}, '${nextStatus}')">${nextStatus}</button>
+            <button type="button" class="${getButtonClass(order.status, '완료')}" onclick="event.stopPropagation(); setOrderStatus(${index}, '완료')">완료</button>
+            <button type="button" class="${getButtonClass(order.status, '취소')}" onclick="event.stopPropagation(); setOrderStatus(${index}, '취소')">취소</button>
+            <button type="button" class="btn cancel small" onclick="event.stopPropagation(); deleteStoreOrder(${index})">삭제</button>
+          </div>
+        </td>
+      </tr>
+    `}).join('');
+  }
+
+  if (pagination) {
+    let buttons = `<button class="order-page-btn" onclick="renderOrders(${safePage - 1})" ${safePage === 1 ? 'disabled' : ''}>이전</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      buttons += `<button class="order-page-btn ${i === safePage ? 'active' : ''}" onclick="renderOrders(${i})">${i}</button>`;
+    }
+    buttons += `<button class="order-page-btn" onclick="renderOrders(${safePage + 1})" ${safePage === totalPages ? 'disabled' : ''}>다음</button>`;
+    pagination.innerHTML = buttons;
+  }
+
+  if (pageInfo) {
+    if (filteredEntries.length === 0) {
+      pageInfo.textContent = `총 ${orderData.length}개 주문 중 0개 표시`;
+    } else {
+      pageInfo.textContent = `총 ${orderData.length}개 주문 중 ${filteredEntries.length}개 검색 · ${startIndex + 1}~${Math.min(startIndex + ordersPerPage, filteredEntries.length)}개 표시`;
+    }
+  }
+
+  if (searchCount) {
+    searchCount.textContent = filteredEntries.length === orderData.length
+      ? `전체 주문 ${orderData.length}개를 표시하고 있습니다.`
+      : `검색 결과 ${filteredEntries.length}개 / 전체 ${orderData.length}개`;
+  }
+}
+
+function openOrderDetail(index){
+  const order = orderData[index];
+  const modal = document.getElementById('orderDetailModal');
+  const body = document.getElementById('orderDetailBody');
+  const title = document.getElementById('orderDetailTitle');
+  if (!order || !modal || !body) return;
+  const cumulativeOrderCount = getCustomerCumulativeOrderCount(order);
+  const computedCustomerType = getComputedCustomerType(order);
+  const nextStatus = getOrderKind(order) === '배달' ? '배달중' : '조리완료';
+
+  if (title) title.textContent = `${order.no} 주문 상세정보`;
+
+  body.innerHTML = `
+    <div class="order-detail-grid">
+      <div class="order-detail-item">
+        <span>고객명</span>
+        <strong>${order.customer}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>전화번호</span>
+        <strong>${order.phone}</strong>
+      </div>
+      <div class="order-detail-item full">
+        <span>주소</span>
+        <strong>${order.address}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>고객구분</span>
+        <strong>${computedCustomerType}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>주문구분</span>
+        <strong>${getOrderKind(order)}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>누적 배달건수</span>
+        <strong>${cumulativeOrderCount}건</strong>
+      </div>
+      <div class="order-detail-item full">
+        <span>주문 메뉴</span>
+        <strong>${order.menu}</strong>
+      </div>
+    </div>
+
+    <div class="order-detail-summary">
+      <div><span>주문번호</span><b>${order.no}</b></div>
+      <div><span>주문금액</span><b>${order.amount}</b></div>
+      <div><span>현재상태</span><b>${getDisplayOrderStatus(order.status)}</b></div>
+    </div>
+
+    <div class="order-print-box">
+      <strong>주문서 발행</strong>
+      <p>주문 상세내용을 영수증/주문서 형태로 프린터 출력합니다.</p>
+      <button type="button" class="btn orange" onclick="printOrderReceipt(${index})">주문서 발행 / 프린트</button>
+    </div>
+
+    <div class="order-detail-actions">
+      <button type="button" class="btn orange" onclick="setOrderStatusFromDetail(${index}, '준비중')">준비중</button>
+      <button type="button" class="btn blue" onclick="setOrderStatusFromDetail(${index}, '${nextStatus}')">${nextStatus}</button>
+      <button type="button" class="btn dark" onclick="setOrderStatusFromDetail(${index}, '완료')">완료</button>
+      <button type="button" class="btn ghost" onclick="setOrderStatusFromDetail(${index}, '취소')">취소</button>
+      <button type="button" class="btn cancel" onclick="deleteStoreOrder(${index})">삭제</button>
+    </div>
+  `;
+
+  modal.classList.add('show');
+}
+
+
+function escapePrintText(value){
+  return String(value ?? '').replace(/[&<>"]/g, function(ch){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]);
+  });
+}
+
+function printOrderReceipt(index){
+  const order = orderData[index];
+  if (!order) return;
+
+  const printedAt = new Date().toLocaleString('ko-KR');
+  const receiptHtml = `<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>${escapePrintText(order.no)} 주문서</title>
+<style>
+  @page{size:80mm auto;margin:4mm;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:Arial,'Malgun Gothic',sans-serif;color:#111827;background:#fff;}
+  .receipt{width:72mm;margin:0 auto;padding:0;}
+  .center{text-align:center;}
+  .brand{font-size:20px;font-weight:900;letter-spacing:-.04em;margin:4px 0 2px;}
+  .sub{font-size:11px;color:#4b5563;margin:0 0 10px;}
+  .line{border-top:1px dashed #9ca3af;margin:10px 0;}
+  .row{display:flex;justify-content:space-between;gap:8px;font-size:13px;line-height:1.45;margin:5px 0;}
+  .row b{white-space:nowrap;}
+  .label{font-weight:900;color:#374151;min-width:22mm;}
+  .value{text-align:right;font-weight:800;word-break:keep-all;}
+  .full{font-size:13px;line-height:1.5;margin:7px 0;}
+  .full .label{display:block;margin-bottom:2px;}
+  .full .value{display:block;text-align:left;font-size:14px;font-weight:900;}
+  .menu{padding:8px;border:1px solid #e5e7eb;border-radius:8px;background:#f9fafb;font-size:15px;font-weight:900;line-height:1.45;}
+  .amount{font-size:22px;font-weight:900;text-align:right;margin-top:4px;}
+  .status{display:inline-block;border:1px solid #111827;border-radius:999px;padding:3px 8px;font-size:12px;font-weight:900;}
+  .footer{font-size:11px;text-align:center;color:#4b5563;margin-top:12px;line-height:1.45;}
+  .no-print{margin:14px 0;display:flex;gap:8px;}
+  .no-print button{flex:1;border:0;border-radius:8px;padding:10px 12px;font-weight:900;cursor:pointer;}
+  .print{background:#ff8a00;color:#111827;}
+  .close{background:#111827;color:#fff;}
+  @media print{.no-print{display:none;} body{background:#fff;} .receipt{width:72mm;}}
+
+/* 주문 상세 모달 스크롤 제거형 컴팩트 레이아웃 */
+.order-detail-modal{
+  padding:10px;
+  align-items:center;
+}
+.order-detail-card{
+  width:min(96vw, 700px);
+  max-height:none;
+  overflow:visible;
+  border-radius:22px;
+}
+.order-detail-head{
+  padding:14px 18px 10px;
+}
+.order-detail-head small{
+  margin-bottom:2px;
+  font-size:11px;
+}
+.order-detail-head h3{
+  font-size:20px;
+}
+.order-detail-close{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  font-size:20px;
+}
+.order-detail-body{
+  padding:12px 18px 16px;
+}
+.order-detail-grid{
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:8px;
+}
+.order-detail-item{
+  padding:10px 12px;
+  border-radius:14px;
+}
+.order-detail-item span{
+  margin-bottom:4px;
+  font-size:11px;
+}
+.order-detail-item strong{
+  font-size:14px;
+  line-height:1.35;
+}
+.order-detail-summary{
+  gap:8px;
+  margin:10px 0;
+}
+.order-detail-summary div{
+  padding:10px 12px;
+  border-radius:14px;
+}
+.order-detail-summary span{
+  margin-bottom:4px;
+  font-size:11px;
+}
+.order-detail-summary b{
+  font-size:17px;
+}
+.order-print-box{
+  display:grid;
+  grid-template-columns:1fr minmax(180px, 240px);
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
+  padding:12px;
+  border-radius:15px;
+}
+.order-print-box strong{
+  font-size:14px;
+  margin:0;
+}
+.order-print-box p{
+  display:none;
+}
+.order-print-box .btn{
+  min-height:42px;
+  font-size:14px;
+}
+.order-detail-actions{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:8px;
+  padding-top:0;
+}
+.order-detail-actions .btn{
+  width:100%;
+  min-width:0;
+  min-height:42px;
+  padding:10px 8px;
+  font-size:14px;
+}
+@media (max-width:640px){
+  .order-detail-modal{padding:8px;}
+  .order-detail-card{width:100%; border-radius:18px;}
+  .order-detail-head{padding:12px 14px 8px;}
+  .order-detail-head h3{font-size:18px;}
+  .order-detail-body{padding:10px 14px 14px;}
+  .order-detail-grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:7px;}
+  .order-detail-item{padding:9px 10px; border-radius:12px;}
+  .order-detail-item.full{grid-column:1 / -1;}
+  .order-detail-item strong{font-size:13px;}
+  .order-detail-summary{grid-template-columns:repeat(3, minmax(0,1fr)); gap:7px; margin:8px 0;}
+  .order-detail-summary div{padding:9px 8px;}
+  .order-detail-summary b{font-size:15px;}
+  .order-print-box{grid-template-columns:1fr; gap:7px; margin:8px 0; padding:10px;}
+  .order-print-box .btn{min-height:40px;}
+  .order-detail-actions{grid-template-columns:repeat(4, minmax(0,1fr)); gap:6px;}
+  .order-detail-actions .btn{flex:auto; min-height:40px; padding:9px 5px; font-size:13px;}
+}
+@media (max-height:760px){
+  .order-detail-head{padding:10px 16px 7px;}
+  .order-detail-head small{display:none;}
+  .order-detail-body{padding:9px 16px 12px;}
+  .order-detail-grid{gap:6px;}
+  .order-detail-item{padding:8px 10px;}
+  .order-detail-item span{font-size:10px;}
+  .order-detail-item strong{font-size:13px;}
+  .order-detail-summary{margin:7px 0; gap:6px;}
+  .order-detail-summary div{padding:8px 9px;}
+  .order-print-box{margin:7px 0; padding:9px;}
+  .order-detail-actions .btn{min-height:38px;}
+}
+
+</style>
+</head>
+<body>
+  <div class="receipt">
+    <div class="center">
+      <div class="brand">우리꺼 주문서</div>
+      <p class="sub">가맹점 전용 주문웹</p>
+    </div>
+    <div class="line"></div>
+    <div class="row"><span class="label">주문번호</span><b class="value">${escapePrintText(order.no)}</b></div>
+    <div class="row"><span class="label">출력시간</span><span class="value">${escapePrintText(printedAt)}</span></div>
+    <div class="row"><span class="label">현재상태</span><span class="value"><span class="status">${escapePrintText(getDisplayOrderStatus(order.status))}</span></span></div>
+    <div class="line"></div>
+    <div class="row"><span class="label">고객명</span><b class="value">${escapePrintText(order.customer)}</b></div>
+    <div class="row"><span class="label">전화번호</span><b class="value">${escapePrintText(order.phone)}</b></div>
+    <div class="full"><span class="label">주소</span><span class="value">${escapePrintText(order.address)}</span></div>
+    <div class="row"><span class="label">주문구분</span><b class="value">${escapePrintText(getOrderKind(order))}</b></div>
+    <div class="row"><span class="label">고객구분</span><b class="value">${escapePrintText(order.customerType)}</b></div>
+    <div class="row"><span class="label">배달건수</span><b class="value">${escapePrintText(order.deliveryCount)}건</b></div>
+    <div class="line"></div>
+    <div class="full"><span class="label">주문 메뉴</span><div class="menu">${escapePrintText(order.menu)}</div></div>
+    <div class="row"><span class="label">주문금액</span></div>
+    <div class="amount">${escapePrintText(order.amount)}</div>
+    <div class="line"></div>
+    <div class="footer">주문 내용을 확인한 뒤 조리 및 배달 상태를 변경해주세요.<br>고객센터 1899-7304</div>
+    <div class="no-print">
+      <button class="print" onclick="window.print()">프린트</button>
+      <button class="close" onclick="window.close()">닫기</button>
+    </div>
+  </div>
+<script>
+  window.addEventListener('load', function(){ setTimeout(function(){ window.print(); }, 250); });
+<\/script>
+</body>
+</html>`;
+
+  const printWindow = window.open('', '_blank', 'width=420,height=760');
+  if (!printWindow) {
+    alert('팝업이 차단되어 주문서를 열 수 없습니다. 브라우저 팝업 허용 후 다시 시도해주세요.');
+    return;
+  }
+  printWindow.document.open();
+  printWindow.document.write(receiptHtml);
+  printWindow.document.close();
+}
+
+function closeOrderDetail(){
+  const modal = document.getElementById('orderDetailModal');
+  if (modal) modal.classList.remove('show');
+}
+
+function setOrderStatusFromDetail(index, status){
+  const order = orderData[index];
+  if (!order) return;
+
+  const ok = confirm(`${order.no} 주문 상태를 '${status}'(으)로 변경하시겠습니까?`);
+  if (!ok) return;
+
+  setOrderStatus(index, status);
+  closeOrderDetail();
+}
+
+document.addEventListener('click', function(event){
+  const modal = document.getElementById('orderDetailModal');
+  if (modal && event.target === modal) closeOrderDetail();
+});
+
+document.addEventListener('keydown', function(event){
+  if (event.key === 'Escape') closeOrderDetail();
+});
+
+async function setOrderStatus(index, status) {
+  const order = orderData[index];
+  if (!order) return;
+  const previousStatus = order.status;
+  order.status = status;
+  renderOrders(currentOrderPage);
+  try{
+    const response = await fetch('/api/orders', {
+      method:'PATCH',
+      headers:{ 'Content-Type':'application/json' },
+      body:JSON.stringify({ id: order.id, no: order.no, status })
+    });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok) throw new Error(result.message || '주문상태를 저장하지 못했습니다.');
+  }catch(error){
+    order.status = previousStatus;
+    renderOrders(currentOrderPage);
+    alert(error.message || '주문상태를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+async function deleteStoreOrder(index) {
+  const order = orderData[index];
+  if (!order) return;
+  const ok = confirm('삭제하시면 복구가 불가합니다.\n정말 이 주문을 삭제하시겠습니까?');
+  if (!ok) return;
+  try{
+    const response = await fetch('/api/orders', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body:JSON.stringify({ action:'delete', id: order.id, no: order.no, storeId: getLoggedInStoreId() })
+    });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok) throw new Error(result.message || '주문을 삭제하지 못했습니다.');
+    orderData.splice(index, 1);
+    closeOrderDetail();
+    renderOrders(currentOrderPage);
+  }catch(error){
+    alert(error.message || '주문을 삭제하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+let latestNewOrderIndex = null;
+
+function showNewOrderPopup(index) {
+  latestNewOrderIndex = index;
+  const order = orderData[index];
+  const modal = document.getElementById('newOrderModal');
+  const detail = document.getElementById('newOrderModalDetail');
+  if (!order || !modal || !detail) return;
+
+  detail.innerHTML = `
+    <div><span>주문번호</span><strong>${order.no}</strong></div>
+    <div><span>고객명</span><strong>${order.customer}</strong></div>
+    <div><span>전화번호</span><strong>${order.phone}</strong></div>
+    <div><span>주문구분</span><strong>${getOrderKind(order)}</strong></div>
+    <div><span>메뉴</span><strong>${order.menu}</strong></div>
+    <div><span>금액</span><strong>${order.amount}</strong></div>
+  `;
+
+  modal.classList.add('show');
+}
+
+function printLatestNewOrder() {
+  if (latestNewOrderIndex === null || !orderData[latestNewOrderIndex]) {
+    alert('출력할 신규 주문이 없습니다.');
+    return;
+  }
+
+  printOrderReceipt(latestNewOrderIndex);
+}
+
+function closeNewOrderPopup() {
+  const modal = document.getElementById('newOrderModal');
+  if (modal) modal.classList.remove('show');
+}
+
+function acceptNewOrderFromPopup() {
+  if (latestNewOrderIndex !== null && orderData[latestNewOrderIndex]) {
+    orderData[latestNewOrderIndex].status = '준비중';
+  }
+
+  closeNewOrderPopup();
+  openTab('orders');
+  renderOrders(1);
+
+  const work = document.getElementById('work');
+  if (work) work.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function playNewOrderSound() {
+  const audio = document.getElementById('newOrderAudio');
+  if (!audio) return;
+  audio.src = audio.getAttribute('src') || 'assets/sounds/ordering.mp3';
+  audio.load();
+  audio.currentTime = 0;
+  const playPromise = audio.play();
+  if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {
+    console.log('브라우저 자동재생 제한으로 인해 화면을 한 번 클릭한 뒤 음성이 재생됩니다.');
+  });
+}
+
+function updateOrderSoundButton(){
+  const button = document.getElementById('enableOrderSoundBtn');
+  if(!button) return;
+  button.classList.toggle('enabled', newOrderSoundEnabled);
+  button.textContent = newOrderSoundEnabled ? '알림음 ON' : '알림음 OFF';
+}
+
+function enableNewOrderSound(){
+  const audio = document.getElementById('newOrderAudio');
+  if(!audio) return;
+  audio.dataset.unlocked = '1';
+  audio.muted = false;
+  audio.src = audio.getAttribute('src') || 'assets/sounds/ordering.mp3';
+  audio.load();
+  audio.currentTime = 0;
+  const playPromise = audio.play();
+  if(playPromise && typeof playPromise.then === 'function'){
+    playPromise.then(() => {
+      newOrderSoundEnabled = true;
+      updateOrderSoundButton();
+    }).catch(() => {
+      newOrderSoundEnabled = false;
+      updateOrderSoundButton();
+      alert('브라우저가 알림음 재생을 막았습니다. 알림음 켜기 버튼을 다시 눌러주세요.');
+    });
+  }else{
+    newOrderSoundEnabled = true;
+    updateOrderSoundButton();
+  }
+}
+
+function unlockNewOrderSound(){
+  const audio = document.getElementById('newOrderAudio');
+  if(!audio || audio.dataset.unlocked === '1') return;
+  audio.dataset.unlocked = '1';
+  audio.muted = true;
+  audio.play().then(() => {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.muted = false;
+  });
+}
+
+updateOrderSoundButton();
+
+function addNewOrder(order) {
+  orderData.unshift({
+    no: order.no || `#${Math.floor(1000 + Math.random() * 9000)}`,
+    customer: order.customer || '신규고객',
+    phone: order.phone || '010-0000-0000',
+    address: order.address || '주소 확인 필요',
+    deliveryCount: order.deliveryCount || 1,
+    customerType: order.customerType || '신규',
+    menu: order.menu || '신규 주문 메뉴',
+    amount: order.amount || '0원',
+    status: '주문'
+  });
+  renderOrders(1);
+  playNewOrderSound();
+  showNewOrderPopup(0);
+}
+
+function simulateNewOrder() {
+  addNewOrder({
+    no: '#NEW' + String(orderData.length + 1).padStart(3, '0'),
+    customer: '신규주문 고객',
+    phone: '010-7777-1234',
+    address: '제주특별자치도 제주시 신규 주문 주소',
+    deliveryCount: 1,
+    customerType: '신규',
+    menu: '후라이드치킨 1, 콜라 1.25L 1',
+    amount: '21,000원'
+  });
+}
+
+const categoryData = ['인기메뉴', '후라이드', '양념/간장', '순살치킨', '사이드', '음료', '세트메뉴'];
+
+function renderCategories(selectedValue = '') {
+  const categoryList = document.getElementById('categoryList');
+  const menuCategory = document.getElementById('menuCategory');
+
+  if (categoryList) {
+    categoryList.innerHTML = categoryData.map((category, index) => `
+      <span class="category-chip">
+        ${category}
+        <button type="button" onclick="deleteCategory(${index})" title="카테고리 삭제">×</button>
+      </span>
+    `).join('');
+  }
+
+  if (menuCategory) {
+    const current = selectedValue || menuCategory.value;
+    menuCategory.innerHTML = '<option value="">카테고리 선택</option>' + categoryData.map((category) => `
+      <option value="${category}">${category}</option>
+    `).join('');
+
+    if (current && categoryData.includes(current)) {
+      menuCategory.value = current;
+    }
+  }
+}
+
+async function saveStoreMenuData() {
+  const storeId = getLoggedInStoreId();
+  if (!storeId) return;
+  const response = await fetch(`/api/store-menus?store=${encodeURIComponent(storeId)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      categories: categoryData,
+      menus: menuData
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.ok) {
+    throw new Error(result.message || 'menu_save_failed');
+  }
+}
+
+async function loadStoreMenuData() {
+  const storeId = getLoggedInStoreId();
+  if (!storeId) return;
+  try {
+    const response = await fetch(`/api/store-menus?store=${encodeURIComponent(storeId)}`, { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) return;
+    const loadedMenus = Array.isArray(result.menus) ? result.menus : [];
+    const loadedCategories = Array.isArray(result.categories) && result.categories.length
+      ? result.categories
+      : [...new Set(loadedMenus.map((menu) => menu.category || menu.cat || '').filter(Boolean))];
+    if (Array.isArray(result.categories)) {
+      categoryData.splice(0, categoryData.length, ...loadedCategories);
+    }
+    if (Array.isArray(result.menus)) {
+      menuData.splice(0, menuData.length, ...loadedMenus);
+    }
+    renderCategories();
+    renderMenus();
+  } catch (error) {
+    console.warn('상점 메뉴를 불러오지 못했습니다.', error);
+  }
+}
+
+async function addCategory(event) {
+  event.preventDefault();
+  const input = document.getElementById('categoryName');
+  if (!input) return;
+
+  const value = input.value.trim();
+  if (!value) {
+    alert('카테고리명을 입력해주세요.');
+    return;
+  }
+
+  if (categoryData.includes(value)) {
+    alert('이미 등록된 카테고리입니다.');
+    return;
+  }
+
+  categoryData.push(value);
+  try {
+    await saveStoreMenuData();
+    input.value = '';
+    renderCategories(value);
+    alert('카테고리가 추가되었습니다.');
+  } catch (error) {
+    categoryData.splice(categoryData.indexOf(value), 1);
+    alert('카테고리를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+async function deleteCategory(index) {
+  const category = categoryData[index];
+  const used = menuData.some((menu) => menu.category === category);
+
+  if (used) {
+    alert('해당 카테고리를 사용하는 메뉴가 있어 삭제할 수 없습니다.');
+    return;
+  }
+
+  categoryData.splice(index, 1);
+  try {
+    await saveStoreMenuData();
+    renderCategories();
+  } catch (error) {
+    categoryData.splice(index, 0, category);
+    alert('카테고리를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+const menuData = [
+  { name: '후라이드치킨', desc: '겉은 바삭하고 속은 촉촉한 대표 메뉴', category: '후라이드', price: 18000, status: '판매중', image: '' },
+  { name: '양념치킨', desc: '달콤매콤한 특제 양념소스로 버무린 인기 메뉴', category: '양념/간장', price: 19000, status: '판매중', image: '' },
+  { name: '간장마늘치킨', desc: '짭조름한 간장소스와 마늘향이 살아있는 치킨', category: '양념/간장', price: 20000, status: '판매중', image: '' },
+  { name: '반반치킨', desc: '후라이드와 양념을 한 번에 즐기는 기본 조합', category: '인기메뉴', price: 19000, status: '판매중', image: '' },
+  { name: '순살후라이드', desc: '먹기 편한 순살로 즐기는 바삭한 후라이드', category: '순살치킨', price: 19000, status: '판매중', image: '' },
+  { name: '순살양념치킨', desc: '순살 치킨에 특제 양념을 듬뿍 입힌 메뉴', category: '순살치킨', price: 20000, status: '판매중', image: '' },
+  { name: '매콤핫치킨', desc: '매운맛을 좋아하는 고객을 위한 화끈한 치킨', category: '인기메뉴', price: 20000, status: '판매중', image: '' },
+  { name: '치즈시즈닝치킨', desc: '고소한 치즈 시즈닝을 더한 젊은 고객 인기 메뉴', category: '인기메뉴', price: 21000, status: '판매중', image: '' },
+  { name: '닭강정', desc: '한입 크기로 즐기는 바삭달콤한 사이드 치킨', category: '사이드', price: 16000, status: '판매중', image: '' },
+  { name: '감자튀김', desc: '치킨과 함께 먹기 좋은 바삭한 사이드 메뉴', category: '사이드', price: 5000, status: '판매중', image: '' },
+  { name: '콜라 1.25L', desc: '치킨과 함께 즐기는 기본 탄산음료', category: '음료', price: 3000, status: '판매중', image: '' },
+  { name: '세트 A', desc: '후라이드치킨, 감자튀김, 콜라 1.25L 구성', category: '세트메뉴', price: 24900, status: '판매중', image: '' }
+];
+
+{
+  const params = new URLSearchParams(window.location.search);
+  const isPureSample = params.get('sample') === '1' && !params.get('store');
+  if(!isPureSample){
+  categoryData.length = 0;
+  menuData.length = 0;
+  }
+}
+
+let currentMenuImage = '';
+let menuImageConversionPromise = null;
+
+function getMenuStatusTag(status) {
+  if (status === '판매중') return 'green';
+  if (status === '품절') return 'orange';
+  if (status === '숨김') return 'blue';
+  return 'green';
+}
+
+function getMenuImageMarkup(menu) {
+  if (menu.image) {
+    return `<img class="menu-thumb" src="${menu.image}" alt="${menu.name} 이미지">`;
+  }
+  return '<div class="menu-thumb" style="display:grid;place-items:center;color:#9ca3af;font-size:12px;font-weight:900;">NO IMG</div>';
+}
+
+function renderMenus() {
+  const tbody = document.getElementById('menuTableBody');
+  if (!tbody) return;
+
+  if (!menuData.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:28px;color:#64748b;font-weight:800;">등록된 메뉴가 없습니다.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = menuData.map((menu, index) => `
+    <tr>
+      <td>${getMenuImageMarkup(menu)}</td>
+      <td>
+        <button type="button" class="menu-name-btn" onclick="editMenu(${index})">${menu.name}</button>
+        <span class="menu-desc-small">${menu.desc}</span>
+      </td>
+      <td>${menu.category}</td>
+      <td>${Number(menu.price).toLocaleString()}원</td>
+      <td><span class="tag ${getMenuStatusTag(menu.status)}">${menu.status}</span></td>
+      <td><button type="button" class="btn ghost small" onclick="editMenu(${index})">수정</button></td>
+    </tr>
+  `).join('');
+}
+
+function previewMenuImage(event) {
+  const file = event.target.files && event.target.files[0];
+  const preview = document.getElementById('menuImagePreview');
+  if (!file || !preview) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    currentMenuImage = e.target.result;
+    preview.innerHTML = `<img src="${currentMenuImage}" alt="메뉴 이미지 미리보기">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function readMenuImageFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => resolve(event.target.result);
+    reader.onerror = () => reject(new Error('image_read_failed'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadMenuImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error('image_load_failed'));
+    image.src = src;
+  });
+}
+
+async function convertMenuImageForWeb(file) {
+  const source = await readMenuImageFile(file);
+  const image = await loadMenuImage(source);
+  const maxSize = 720;
+  const ratio = Math.min(1, maxSize / image.width, maxSize / image.height);
+  const width = Math.max(1, Math.round(image.width * ratio));
+  const height = Math.max(1, Math.round(image.height * ratio));
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, width, height);
+  context.drawImage(image, 0, 0, width, height);
+
+  let quality = 0.78;
+  let dataUrl = canvas.toDataURL('image/jpeg', quality);
+  while (dataUrl.length > 220000 && quality > 0.52) {
+    quality -= 0.08;
+    dataUrl = canvas.toDataURL('image/jpeg', quality);
+  }
+  return dataUrl;
+}
+
+function previewMenuImage(event) {
+  const file = event.target.files && event.target.files[0];
+  const preview = document.getElementById('menuImagePreview');
+  if (!file || !preview) return;
+
+  currentMenuImage = '';
+  preview.textContent = '이미지를 웹용으로 변환중입니다...';
+  menuImageConversionPromise = convertMenuImageForWeb(file)
+    .then((convertedImage) => {
+      currentMenuImage = convertedImage;
+      preview.innerHTML = `<img src="${currentMenuImage}" alt="메뉴 이미지 미리보기">`;
+      return convertedImage;
+    })
+    .catch((error) => {
+      console.warn('menu_image_convert_failed', error);
+      preview.textContent = '이미지 변환에 실패했습니다.';
+      alert('이미지를 웹용으로 변환하지 못했습니다. 다른 이미지를 선택해주세요.');
+      throw error;
+    })
+    .finally(() => {
+      menuImageConversionPromise = null;
+    });
+}
+
+async function saveMenu(event) {
+  event.preventDefault();
+
+  if (menuImageConversionPromise) {
+    try {
+      await menuImageConversionPromise;
+    } catch (error) {
+      return;
+    }
+  }
+
+  const editIndexValue = document.getElementById('menuEditIndex').value;
+  const previousMenus = menuData.map((menu) => ({ ...menu }));
+  const menu = {
+    name: document.getElementById('menuName').value.trim(),
+    desc: document.getElementById('menuDesc').value.trim(),
+    category: document.getElementById('menuCategory').value,
+    price: Number(document.getElementById('menuPrice').value),
+    status: document.getElementById('menuStatus').value,
+    image: currentMenuImage
+  };
+
+  if (editIndexValue === '') {
+    menuData.push(menu);
+  } else {
+    const index = Number(editIndexValue);
+    menuData[index] = {
+      ...menuData[index],
+      ...menu,
+      image: currentMenuImage || menuData[index].image
+    };
+  }
+
+  try {
+    await saveStoreMenuData();
+    renderMenus();
+    renderSettlement();
+    resetMenuForm();
+    alert('메뉴 정보가 저장되었습니다.');
+  } catch (error) {
+    menuData.splice(0, menuData.length, ...previousMenus);
+    renderMenus();
+    alert('메뉴 정보를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+function editMenu(index) {
+  const menu = menuData[index];
+  if (!menu) return;
+
+  document.getElementById('menuEditIndex').value = index;
+  document.getElementById('menuName').value = menu.name;
+  document.getElementById('menuDesc').value = menu.desc;
+  renderCategories(menu.category);
+  document.getElementById('menuCategory').value = menu.category;
+  document.getElementById('menuPrice').value = menu.price;
+  document.getElementById('menuStatus').value = menu.status;
+  currentMenuImage = menu.image || '';
+
+  const preview = document.getElementById('menuImagePreview');
+  if (preview) {
+    preview.innerHTML = currentMenuImage
+      ? `<img src="${currentMenuImage}" alt="${menu.name} 이미지 미리보기">`
+      : '이미지 미리보기';
+  }
+
+  openTab('menus');
+}
+
+function resetMenuForm() {
+  const form = document.getElementById('menuForm');
+  if (form) form.reset();
+  renderCategories();
+  document.getElementById('menuEditIndex').value = '';
+  currentMenuImage = '';
+  const preview = document.getElementById('menuImagePreview');
+  if (preview) preview.textContent = '이미지 미리보기';
+}
+
+const settlementData = [];
+
+function formatWon(value) {
+  return Number(value || 0).toLocaleString() + '원';
+}
+
+function parseWonText(value){
+  return Number(String(value || '').replace(/[^0-9]/g, '')) || 0;
+}
+
+function getSettlementOrderRows(data = settlementData){
+  const dateSet = new Set(data.map(row => row.date));
+  const dates = settlementData.map(row => row.date);
+
+  return orderData.map((order, index) => {
+    const date = dates[index % dates.length];
+    const amount = parseWonText(order.amount);
+    const cancelAmount = order.status === '취소' ? amount : 0;
+    const fee = order.status === '취소' ? 0 : Math.round(amount * 0.03);
+    const deposit = order.status === '취소' ? 0 : amount - fee;
+
+    return {
+      date,
+      no: order.no,
+      customer: order.customer,
+      menu: order.menu,
+      amount,
+      cancelAmount,
+      fee,
+      deposit,
+      status: order.status
+    };
+  }).filter(row => dateSet.has(row.date));
+}
+
+function renderSettlementOrders(data = settlementData){
+  const tbody = document.getElementById('settleOrderTableBody');
+  if (!tbody) return;
+
+  const rows = getSettlementOrderRows(data).sort((a, b) => {
+    const dateCompare = b.date.localeCompare(a.date);
+    if (dateCompare !== 0) return dateCompare;
+
+    const aNo = Number(String(a.no || '').replace(/[^0-9]/g, '')) || 0;
+    const bNo = Number(String(b.no || '').replace(/[^0-9]/g, '')) || 0;
+    return bNo - aNo;
+  });
+
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);font-weight:900;">주문건당 정산 내역이 없습니다.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(row => `
+    <tr>
+      <td>${row.date.replaceAll('-', '.')}</td>
+      <td>${row.no}</td>
+      <td>${row.customer}</td>
+      <td class="menu-cell">${row.menu}</td>
+      <td>${formatWon(row.amount)}</td>
+      <td>${formatWon(row.cancelAmount)}</td>
+      <td>${formatWon(row.fee)}</td>
+      <td>${formatWon(row.deposit)}</td>
+      <td><span class="tag ${getStatusTag(row.status)}">${row.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+function showSettlementView(type){
+  const periodView = document.getElementById('settlePeriodView');
+  const orderView = document.getElementById('settleOrderView');
+
+  if (!periodView || !orderView) return;
+
+  if (type === 'period') {
+    periodView.style.display = '';
+    orderView.style.display = 'none';
+  } else if (type === 'order') {
+    periodView.style.display = 'none';
+    orderView.style.display = '';
+  } else {
+    periodView.style.display = '';
+    orderView.style.display = '';
+  }
+}
+
+function renderSettlement(data = settlementData) {
+  const tbody = document.getElementById('settleTableBody');
+  const info = document.getElementById('settleResultInfo');
+  const totalCount = document.getElementById('settleTotalCount');
+  const totalOrder = document.getElementById('settleTotalOrder');
+  const totalCancel = document.getElementById('settleTotalCancel');
+  const totalFee = document.getElementById('settleTotalFee');
+  const totalDeposit = document.getElementById('settleTotalDeposit');
+
+  if (!tbody) return;
+
+  const sortedSettlementData = [...data].sort((a, b) => b.date.localeCompare(a.date));
+
+  if (sortedSettlementData.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);font-weight:900;">기간별 정산 내역이 없습니다.</td></tr>';
+  } else {
+    tbody.innerHTML = sortedSettlementData.map((row) => `
+      <tr>
+        <td>${row.date.replaceAll('-', '.')}</td>
+        <td>${row.count || 0}건</td>
+        <td>${formatWon(row.orderAmount)}</td>
+        <td>${formatWon(row.cancelAmount)}</td>
+        <td>${formatWon(row.fee)}</td>
+        <td>${formatWon(row.deposit)}</td>
+      </tr>
+    `).join('');
+  }
+
+  const sum = sortedSettlementData.reduce((acc, row) => {
+    acc.count += row.count || 0;
+    acc.order += row.orderAmount;
+    acc.cancel += row.cancelAmount;
+    acc.fee += row.fee;
+    acc.deposit += row.deposit;
+    return acc;
+  }, { count: 0, order: 0, cancel: 0, fee: 0, deposit: 0 });
+
+  if (totalCount) totalCount.textContent = `${sum.count}건`;
+  if (totalOrder) totalOrder.textContent = formatWon(sum.order);
+  if (totalCancel) totalCancel.textContent = formatWon(sum.cancel);
+  if (totalFee) totalFee.textContent = formatWon(sum.fee);
+  if (totalDeposit) totalDeposit.textContent = formatWon(sum.deposit);
+  if (info) {
+    info.textContent = sortedSettlementData.length
+      ? `총 ${sortedSettlementData.length}일, ${sum.count}건의 정산 내역이 조회되었습니다.`
+      : '정산 내역이 없습니다.';
+  }
+
+  renderSettlementOrders(data);
+}
+
+
+function searchSettlementByDate() {
+  const start = document.getElementById('settleStartDate')?.value;
+  const end = document.getElementById('settleEndDate')?.value;
+
+  if (!start || !end) {
+    alert('시작일과 종료일을 모두 선택해주세요.');
+    return;
+  }
+
+  if (start > end) {
+    alert('시작일은 종료일보다 늦을 수 없습니다.');
+    return;
+  }
+
+  const filtered = settlementData.filter((row) => row.date >= start && row.date <= end);
+  renderSettlement(filtered);
+}
+
+function resetSettlementSearch() {
+  const startInput = document.getElementById('settleStartDate');
+  const endInput = document.getElementById('settleEndDate');
+
+  if (startInput) startInput.value = '2026-04-22';
+  if (endInput) endInput.value = '2026-04-29';
+  renderSettlement(settlementData);
+}
+
+const storeCustomersPerPage = 10;
+let storeCustomerData = [];
+let filteredStoreCustomerData = [];
+let currentStoreCustomerPage = 1;
+
+function formatStoreCustomerDate(value){
+  if(!value) return '-';
+  const date = new Date(value);
+  if(Number.isNaN(date.getTime())) return String(value).slice(0, 10) || '-';
+  return date.toLocaleDateString('ko-KR');
+}
+
+function renderStoreCustomers(page = 1){
+  currentStoreCustomerPage = page;
+  const tbody = document.getElementById('storeCustomerTableBody');
+  const count = document.getElementById('storeCustomerSearchCount');
+  const pager = document.getElementById('storeCustomerPagination');
+  const info = document.getElementById('storeCustomerPageInfo');
+  if(!tbody || !count || !pager || !info) return;
+
+  const totalPages = Math.max(1, Math.ceil(filteredStoreCustomerData.length / storeCustomersPerPage));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  currentStoreCustomerPage = safePage;
+  const start = (safePage - 1) * storeCustomersPerPage;
+  const pageItems = filteredStoreCustomerData.slice(start, start + storeCustomersPerPage);
+
+  count.textContent = `총 ${filteredStoreCustomerData.length}명 고객을 표시하고 있습니다.`;
+  if(!pageItems.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:28px;color:#64748b;font-weight:500;">표시할 고객이 없습니다.</td></tr>';
+    pager.innerHTML = '';
+    info.textContent = '고객 0명';
+    return;
+  }
+
+  tbody.innerHTML = pageItems.map(customer => `
+    <tr>
+      <td>${escapePrintText(customer.name || '-')}</td>
+      <td>${escapePrintText(customer.phone || '-')}</td>
+      <td>${escapePrintText(customer.address || '-')}</td>
+      <td>${customer.provider === 'kakao' ? '카카오' : '일반'}</td>
+      <td>${formatStoreCustomerDate(customer.createdAt)}</td>
+      <td><span class="tag ${customer.tag || 'green'}">${escapePrintText(customer.status || '가입완료')}</span></td>
+    </tr>
+  `).join('');
+
+  let buttons = `<button class="order-page-btn" type="button" onclick="renderStoreCustomers(${safePage - 1})" ${safePage === 1 ? 'disabled' : ''}>이전</button>`;
+  for(let i = 1; i <= totalPages; i++){
+    buttons += `<button class="order-page-btn ${i === safePage ? 'active' : ''}" type="button" onclick="renderStoreCustomers(${i})">${i}</button>`;
+  }
+  buttons += `<button class="order-page-btn" type="button" onclick="renderStoreCustomers(${safePage + 1})" ${safePage === totalPages ? 'disabled' : ''}>다음</button>`;
+  pager.innerHTML = buttons;
+  info.textContent = `총 ${filteredStoreCustomerData.length}명 중 ${start + 1}~${Math.min(start + storeCustomersPerPage, filteredStoreCustomerData.length)}명 표시`;
+}
+
+function searchStoreCustomers(){
+  const keyword = (document.getElementById('storeCustomerSearchInput')?.value || '').trim().toLowerCase();
+  filteredStoreCustomerData = storeCustomerData.filter(customer => [
+    customer.name,
+    customer.phone,
+    customer.address,
+    customer.provider,
+    customer.status
+  ].join(' ').toLowerCase().includes(keyword));
+  renderStoreCustomers(1);
+}
+
+function resetStoreCustomerSearch(){
+  const input = document.getElementById('storeCustomerSearchInput');
+  if(input) input.value = '';
+  filteredStoreCustomerData = [...storeCustomerData];
+  renderStoreCustomers(1);
+}
+
+async function loadStoreCustomers(){
+  const storeId = getLoggedInStoreId();
+  const tbody = document.getElementById('storeCustomerTableBody');
+  if(tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:28px;color:#64748b;font-weight:500;">고객 정보를 불러오는 중입니다.</td></tr>';
+  if(!storeId){
+    storeCustomerData = [];
+    filteredStoreCustomerData = [];
+    renderStoreCustomers(1);
+    return;
+  }
+
+  try{
+    const response = await fetch('/api/customers?store=' + encodeURIComponent(storeId), { cache:'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok) throw new Error(result.message || '고객 정보를 불러오지 못했습니다.');
+    storeCustomerData = Array.isArray(result.customers) ? result.customers : [];
+    filteredStoreCustomerData = [...storeCustomerData];
+    renderStoreCustomers(currentStoreCustomerPage);
+  }catch(error){
+    console.warn('store_customers_load_failed', error);
+    storeCustomerData = [];
+    filteredStoreCustomerData = [];
+    renderStoreCustomers(1);
+  }
+}
+
+function openTab(id){
+  document.querySelectorAll('.tab').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.pill').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  if(id === 'orders') {
+    loadStoreOrders(currentOrderPage);
+  }
+  if(id === 'customers') {
+    loadStoreCustomers();
+  }
+  if(id === 'notices') {
+    resetCustomerNoticeForm(false);
+    loadCustomerNoticeHistory();
+  }
+  document.getElementById('work').scrollIntoView({behavior:'smooth'});
+}
+
+function getLoggedInStoreId(){
+  const params = new URLSearchParams(window.location.search);
+  return params.get('store') || sessionStorage.getItem('wooreccoStoreAdminStoreId') || '';
+}
+
+function logoutStoreAdmin(event){
+  if(event) event.preventDefault();
+  sessionStorage.removeItem('wooreccoStoreAdminLogin');
+  sessionStorage.removeItem('wooreccoStoreAdminStoreId');
+  sessionStorage.removeItem('wooreccoStoreAdminStoreName');
+  window.location.href = 'store-login.html';
+}
+
+function setFieldValue(id, value){
+  const field = document.getElementById(id);
+  if(!field || value === undefined || value === null || value === '') return;
+  field.value = value;
+}
+
+function setSelectValue(id, value){
+  const field = document.getElementById(id);
+  if(!field || value === undefined || value === null || value === '') return;
+  const option = Array.from(field.options || []).find(item => item.value === value || item.textContent.trim() === value);
+  if(option) field.value = option.value;
+}
+
+function updateStoreStatusButtons(status){
+  const normalized = status === '\uB9C8\uAC10' ? '\uB9C8\uAC10' : '\uC601\uC5C5\uC911';
+  const openButton = document.getElementById('storeStatusOpenBtn');
+  const closedButton = document.getElementById('storeStatusClosedBtn');
+  if(openButton) openButton.classList.toggle('active', normalized === '\uC601\uC5C5\uC911');
+  if(closedButton) closedButton.classList.toggle('active', normalized === '\uB9C8\uAC10');
+}
+async function setStoreBusinessStatus(status, options = {}){
+  const storeId = getLoggedInStoreId();
+  const normalized = status === '\uB9C8\uAC10' ? '\uB9C8\uAC10' : '\uC601\uC5C5\uC911';
+  if(!storeId) return null;
+  updateStoreStatusButtons(normalized);
+  try{
+    const response = await fetch('/api/store-status?store=' + encodeURIComponent(storeId), {
+      method:'PUT',
+      headers:{ 'Content-Type':'application/json' },
+      body:JSON.stringify({ businessStatus: normalized })
+    });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok){
+      throw new Error(result.message || '\uC601\uC5C5\uC0C1\uD0DC\uB97C \uC800\uC7A5\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4.');
+    }
+    updateStoreStatusButtons(result.status?.businessStatus || normalized);
+    return result.status || { businessStatus: normalized };
+  }catch(error){
+    if(!options.silent){
+      alert(error.message || '\uC601\uC5C5\uC0C1\uD0DC\uB97C \uC800\uC7A5\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4. \uC7A0\uC2DC \uD6C4 \uB2E4\uC2DC \uC2DC\uB3C4\uD574\uC8FC\uC138\uC694.');
+    }
+    return null;
+  }
+}
+function timeToMinutes(value){
+  const match = String(value || '').match(/^(\d{1,2}):(\d{2})/);
+  if(!match) return null;
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if(hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+  return hour * 60 + minute;
+}
+
+function getBusinessStatusBySchedule(openTime, closeTime, now = new Date()){
+  const open = timeToMinutes(openTime);
+  const close = timeToMinutes(closeTime);
+  if(open === null || close === null || open === close) return '';
+  const current = now.getHours() * 60 + now.getMinutes();
+  const isOpen = open < close
+    ? current >= open && current < close
+    : current >= open || current < close;
+  return isOpen ? '\uC601\uC5C5\uC911' : '\uB9C8\uAC10';
+}
+
+let businessScheduleTimer = null;
+async function applyScheduledBusinessStatus(options = {}){
+  const scheduledStatus = getBusinessStatusBySchedule(
+    document.getElementById('openTime')?.value,
+    document.getElementById('closeTime')?.value
+  );
+  if(!scheduledStatus) return;
+  const openButton = document.getElementById('storeStatusOpenBtn');
+  const currentStatus = openButton?.classList.contains('active') ? '\uC601\uC5C5\uC911' : '\uB9C8\uAC10';
+  if(options.force || scheduledStatus !== currentStatus){
+    await setStoreBusinessStatus(scheduledStatus, { silent:true });
+  }
+}
+
+function startBusinessScheduleWatcher(){
+  if(businessScheduleTimer) clearInterval(businessScheduleTimer);
+  applyScheduledBusinessStatus();
+  businessScheduleTimer = setInterval(() => applyScheduledBusinessStatus(), 30000);
+}
+
+function renderMediaFigure(containerId, urls, labels){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  container.innerHTML = labels.map((label, index) => {
+    const url = urls[index] || '';
+    const className = containerId === 'storeSignPreview' ? ' class="sign"' : '';
+    return `<figure${className}>${url ? `<img src="${url}" alt="${label}">` : label}</figure>`;
+  }).join('');
+}
+
+function applyStoreMedia(media = {}){
+  const signUrl = media.signImageUrl || '';
+  const photoUrls = Array.isArray(media.storePhotoUrls) ? media.storePhotoUrls : [];
+  renderMediaFigure('storeSignPreview', [signUrl], ['간판사진 없음']);
+  renderMediaFigure('storePhotoPreview', photoUrls, ['가게사진 1', '가게사진 2', '가게사진 3', '가게사진 4']);
+  const logoImage = document.querySelector('.logoBox img');
+  if(logoImage){
+    if(signUrl){
+      logoImage.src = signUrl;
+      logoImage.style.display = '';
+    }else{
+      logoImage.removeAttribute('src');
+      logoImage.style.display = 'none';
+    }
+  }
+}
+
+function readFileAsDataUrl(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImageFromFile(file){
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('이미지 파일을 읽지 못했습니다.'));
+    };
+    image.src = url;
+  });
+}
+
+function canvasToJpegBlob(canvas, quality){
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+}
+
+async function compressImageForUpload(file){
+  if(!file) return null;
+  if(!String(file.type || '').startsWith('image/')){
+    throw new Error('이미지 파일만 등록할 수 있습니다.');
+  }
+  const maxBytes = 260 * 1024;
+
+  const image = await loadImageFromFile(file);
+  let maxSide = 1100;
+  let blob = null;
+  for(let sizeTry = 0; sizeTry < 5; sizeTry += 1){
+    const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(image.width * scale));
+    canvas.height = Math.max(1, Math.round(image.height * scale));
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    for(const quality of [0.78, 0.7, 0.62, 0.54, 0.46, 0.38]){
+      blob = await canvasToJpegBlob(canvas, quality);
+      if(blob && blob.size <= maxBytes) break;
+    }
+    if(blob && blob.size <= maxBytes) break;
+    maxSide = Math.round(maxSide * 0.82);
+  }
+
+  if(!blob) throw new Error('이미지를 압축하지 못했습니다.');
+  const safeName = String(file.name || 'photo.jpg').replace(/\.[^.]+$/, '') + '-web.jpg';
+  return {
+    name: safeName,
+    contentType: 'image/jpeg',
+    data: await readFileAsDataUrl(blob)
+  };
+}
+
+async function fileToMediaPayload(file){
+  return compressImageForUpload(file);
+}
+
+async function previewStoreMedia(){
+  const signFile = document.getElementById('storeSignImage')?.files?.[0];
+  const photoInputs = Array.from(document.querySelectorAll('#storeSettingsForm .store-photo-input'));
+  const signUrl = signFile ? URL.createObjectURL(signFile) : document.querySelector('#storeSignPreview img')?.src || '';
+  const photoUrls = photoInputs.map((input, index) => (
+    input.files && input.files[0]
+      ? URL.createObjectURL(input.files[0])
+      : document.querySelectorAll('#storePhotoPreview img')[index]?.src || ''
+  ));
+  renderMediaFigure('storeSignPreview', [signUrl], ['간판사진 없음']);
+  renderMediaFigure('storePhotoPreview', photoUrls, ['가게사진 1', '가게사진 2', '가게사진 3', '가게사진 4']);
+}
+
+async function loadStoreMediaData(){
+  const storeId = getLoggedInStoreId();
+  if(!storeId) return;
+  try{
+    const response = await fetch(`/api/store-media?store=${encodeURIComponent(storeId)}`, { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok) return;
+    applyStoreMedia(result.media);
+  }catch(error){
+    console.warn('상점 사진을 불러오지 못했습니다.', error);
+  }
+}
+
+async function saveStoreMediaData(){
+  const storeId = getLoggedInStoreId();
+  if(!storeId) return null;
+  const signFile = document.getElementById('storeSignImage')?.files?.[0] || null;
+  const photoInputs = Array.from(document.querySelectorAll('#storeSettingsForm .store-photo-input'));
+  const storePhotos = [];
+  for(let index = 0; index < photoInputs.length; index += 1){
+    const file = photoInputs[index].files && photoInputs[index].files[0];
+    if(file){
+      storePhotos.push({ slot: index, file: await fileToMediaPayload(file) });
+    }
+  }
+  if(!signFile && storePhotos.length === 0) return null;
+
+  const response = await fetch(`/api/store-media?store=${encodeURIComponent(storeId)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      signImage: await fileToMediaPayload(signFile),
+      storePhotos
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if(!response.ok || !result.ok){
+    if(response.status === 413) throw new Error('사진 용량이 너무 큽니다. 사진을 줄인 뒤 다시 저장해주세요.');
+    throw new Error(result.message || '사진 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+  }
+  applyStoreMedia(result.media);
+  return result.media;
+}
+
+function getStoreSettingsPayload(){
+  const value = (id) => document.getElementById(id)?.value?.trim() || '';
+  return {
+    ownerName: value('ownerName'),
+    ownerPhone: value('ownerPhone'),
+    ownerEmail: value('ownerEmail'),
+    storePassword: value('storePassword'),
+    storeName: value('storeName'),
+    storeCategory: value('storeCategory'),
+    description: value('storeDescription'),
+    storeAddress: value('storeAddress'),
+    storeDetailAddress: value('storeDetailAddress'),
+    openTime: value('openTime'),
+    closeTime: value('closeTime'),
+    closedDay: value('closedDay'),
+    businessNumber: value('businessNumber'),
+    orderType: value('orderType'),
+    deliveryFee: value('deliveryFee'),
+    minOrderPrice: value('minOrderPrice'),
+    bankName: value('bankName'),
+    accountHolder: value('accountHolder'),
+    accountNumber: value('accountNumber')
+  };
+}
+
+async function saveStoreSettingsData(){
+  const storeId = getLoggedInStoreId();
+  if(!storeId) return null;
+  const response = await fetch(`/api/store-settings?store=${encodeURIComponent(storeId)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(getStoreSettingsPayload())
+  });
+  const result = await response.json().catch(() => ({}));
+  if(!response.ok || !result.ok){
+    throw new Error(result.message || '상점 기본정보를 저장하지 못했습니다.');
+  }
+  if(result.settings){
+    sessionStorage.setItem('wooreccoStoreAdminStoreName', result.settings.storeName || '');
+    applyLoggedInStore(result.settings);
+  }
+  return result.settings;
+}
+
+async function saveStoreSettings(event){
+  event.preventDefault();
+  const button = event.currentTarget.querySelector('button[type="submit"]');
+  const originalText = button ? button.textContent : '';
+  if(button){
+    button.disabled = true;
+    button.textContent = '저장중...';
+  }
+  try{
+    await saveStoreSettingsData();
+    await saveStoreMediaData();
+    document.querySelectorAll('#storeSettingsForm input[type="file"]').forEach((input) => { input.value = ''; });
+    alert('상점 기본설정이 저장되었습니다.');
+  }catch(error){
+    alert(error.message || '상점 사진을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }finally{
+    if(button){
+      button.disabled = false;
+      button.textContent = originalText || '상점 기본설정 저장';
+    }
+  }
+}
+
+function getQrImageUrl(orderUrl, size){
+  const absoluteUrl = new URL(orderUrl, window.location.origin).href;
+  return `/api/qr-code?size=${size}&data=${encodeURIComponent(absoluteUrl)}`;
+}
+
+function openStoreOrderMobileWindow(event){
+  if(event) event.preventDefault();
+  const link = document.getElementById('storeOrderWebLink');
+  const storeId = getLoggedInStoreId();
+  const orderUrl = link && link.getAttribute('href')
+    ? link.getAttribute('href')
+    : `order.html?store=${encodeURIComponent(storeId)}`;
+  const absoluteUrl = new URL(orderUrl, window.location.origin).href;
+  const width = 430;
+  const height = 820;
+  const left = Math.max(0, Math.round((window.screen.width - width) / 2));
+  const top = Math.max(0, Math.round((window.screen.height - height) / 2));
+  const popup = window.open(
+    absoluteUrl,
+    'woorecco_store_order_mobile',
+    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+  );
+  if(popup) {
+    popup.focus();
+    return;
+  }
+  window.open(absoluteUrl, '_blank', 'noopener');
+}
+
+function openStoreQrWindow(orderUrl, storeName){
+  const qrUrl = getQrImageUrl(orderUrl, 500);
+  const title = `${storeName || '상점'} 주문웹 QR`;
+  const filename = `${storeName || 'store'}-order-qr.png`.replace(/[\\/:*?"<>|]+/g, '_');
+  const downloadUrl = `${qrUrl}&download=1&filename=${encodeURIComponent(filename)}`;
+  const popup = window.open('', 'storeQrWindow', 'width=540,height=610,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no');
+  if(!popup) return;
+  popup.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${escapePrintText(title)}</title><style>html,body{margin:0;width:100%;min-height:100%;background:#fff;font-family:Arial,sans-serif;}body{display:grid;place-items:center;padding:16px;box-sizing:border-box;}img{width:500px;height:500px;display:block;}.actions{width:500px;display:grid;margin-top:12px;}a{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;background:#111827;color:#fff;text-decoration:none;font-weight:800;}</style></head><body><main><img src="${qrUrl}" alt="${escapePrintText(title)}"><div class="actions"><a href="${downloadUrl}">QR 다운로드</a></div></main></body></html>`);
+  popup.document.close();
+}
+
+async function copyStoreOrderUrl(button){
+  const orderUrl = button?.dataset?.orderUrl || '';
+  if(!orderUrl) return;
+  const absoluteUrl = new URL(orderUrl, window.location.origin).href;
+  try{
+    await navigator.clipboard.writeText(absoluteUrl);
+    alert('상점 주문웹 URL이 복사되었습니다.');
+  }catch(error){
+    const temp = document.createElement('input');
+    temp.value = absoluteUrl;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand('copy');
+    temp.remove();
+    alert('상점 주문웹 URL이 복사되었습니다.');
+  }
+}
+
+let currentStoreAdminNoticeId = '';
+
+function closeStoreAdminNotice(){
+  const modal = document.getElementById('storeAdminNoticeModal');
+  if(modal) modal.classList.remove('show');
+}
+
+function confirmStoreAdminNotice(){
+  if(currentStoreAdminNoticeId){
+    localStorage.setItem(`wooreccoStoreAdminNoticeSeen:${currentStoreAdminNoticeId}`, '1');
+  }
+  closeStoreAdminNotice();
+}
+
+function showStoreAdminNotice(notice){
+  if(!notice || !notice.id) return;
+  if(localStorage.getItem(`wooreccoStoreAdminNoticeSeen:${notice.id}`) === '1') return;
+  currentStoreAdminNoticeId = notice.id;
+  const title = document.getElementById('storeAdminNoticeTitle');
+  const body = document.getElementById('storeAdminNoticeBody');
+  const modal = document.getElementById('storeAdminNoticeModal');
+  if(title) title.textContent = notice.title || '공지사항';
+  if(body) body.textContent = notice.message || '';
+  if(modal) modal.classList.add('show');
+}
+
+async function loadStoreAdminNotice(storeId){
+  if(!storeId) return;
+  try{
+    const response = await fetch(`/api/notices?audience=store-admin&store=${encodeURIComponent(storeId)}`, { cache:'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if(response.ok && result.ok && result.notice) showStoreAdminNotice(result.notice);
+  }catch(error){
+    console.warn('공지사항을 불러오지 못했습니다.', error);
+  }
+}
+
+function resetCustomerNoticeForm(clearText = true){
+  const title = document.getElementById('customerNoticeTitleInput');
+  const message = document.getElementById('customerNoticeMessageInput');
+  const startDate = document.getElementById('customerNoticeStartDate');
+  const endDate = document.getElementById('customerNoticeEndDate');
+  const today = new Date().toISOString().slice(0, 10);
+  if(title && (clearText || !title.value)) title.value = '\uC624\uB298 \uC548\uB0B4';
+  if(message && clearText) message.value = '';
+  if(startDate && !startDate.value) startDate.value = today;
+  if(endDate && !endDate.value) endDate.value = today;
+}
+
+function openCustomerNoticeComposer(){
+  openTab('notices');
+  resetCustomerNoticeForm(false);
+}
+
+function closeCustomerNoticeComposer(){
+  openTab('orders');
+}
+
+function formatNoticeDate(value){
+  if(!value) return '-';
+  const date = new Date(value);
+  if(Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString('ko-KR', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+}
+
+const customerNoticePageSize = 5;
+let customerNoticeHistoryPage = 1;
+let customerNoticeHistoryItems = [];
+
+function renderCustomerNoticePager(total){
+  const pager = document.getElementById('customerNoticeHistoryPager');
+  if(!pager) return;
+  const pages = Math.max(1, Math.ceil(total / customerNoticePageSize));
+  if(total <= customerNoticePageSize){
+    pager.innerHTML = '';
+    return;
+  }
+  pager.innerHTML =
+    '<button type="button" onclick="goCustomerNoticeHistoryPage(' + (customerNoticeHistoryPage - 1) + ')" ' + (customerNoticeHistoryPage <= 1 ? 'disabled' : '') + '>\uC774\uC804</button>' +
+    '<span>' + customerNoticeHistoryPage + ' / ' + pages + '</span>' +
+    '<button type="button" onclick="goCustomerNoticeHistoryPage(' + (customerNoticeHistoryPage + 1) + ')" ' + (customerNoticeHistoryPage >= pages ? 'disabled' : '') + '>\uB2E4\uC74C</button>';
+}
+
+function goCustomerNoticeHistoryPage(page){
+  const pages = Math.max(1, Math.ceil(customerNoticeHistoryItems.length / customerNoticePageSize));
+  customerNoticeHistoryPage = Math.min(Math.max(1, page), pages);
+  renderCustomerNoticeHistoryPage();
+}
+
+function renderCustomerNoticeHistoryPage(){
+  const box = document.getElementById('customerNoticeHistoryList');
+  if(!box) return;
+  const totalPages = Math.max(1, Math.ceil(customerNoticeHistoryItems.length / customerNoticePageSize));
+  customerNoticeHistoryPage = Math.min(Math.max(1, customerNoticeHistoryPage), totalPages);
+  const start = (customerNoticeHistoryPage - 1) * customerNoticePageSize;
+  const pageItems = customerNoticeHistoryItems.slice(start, start + customerNoticePageSize);
+  if(!pageItems.length){
+    box.innerHTML = '<div class="notice-empty">\uC544\uC9C1 \uC791\uC131\uB41C \uACF5\uC9C0\uC0AC\uD56D\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.</div>';
+    renderCustomerNoticePager(0);
+    return;
+  }
+  box.innerHTML = pageItems.map(notice =>
+    '<article class="notice-history-item">' +
+      '<h4>' + escapePrintText(notice.title || '\uACF5\uC9C0\uC0AC\uD56D') + '</h4>' +
+      '<p>' + escapePrintText(notice.message || '') + '</p>' +
+      '<small>\uAC8C\uC2DC\uAE30\uAC04: ' + escapePrintText(notice.startsAt || '-') + ' ~ ' + escapePrintText(notice.endsAt || '-') + ' ? \uC791\uC131: ' + escapePrintText(formatNoticeDate(notice.createdAt)) + '</small>' +
+    '</article>'
+  ).join('');
+  renderCustomerNoticePager(customerNoticeHistoryItems.length);
+}
+
+function renderCustomerNoticeHistory(notices){
+  const storeId = getLoggedInStoreId();
+  customerNoticeHistoryItems = (Array.isArray(notices) ? notices : [])
+    .filter(notice => notice.audience === 'customer' && (!storeId || notice.storeId === storeId))
+    .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+  customerNoticeHistoryPage = 1;
+  renderCustomerNoticeHistoryPage();
+}
+
+async function loadCustomerNoticeHistory(){
+  const storeId = getLoggedInStoreId();
+  if(!storeId) return;
+  try{
+    const response = await fetch('/api/notices?admin=1&audience=customer&store=' + encodeURIComponent(storeId), { cache:'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if(response.ok && result.ok) renderCustomerNoticeHistory(result.notices || []);
+  }catch(error){
+    console.warn('\uACE0\uAC1D \uACF5\uC9C0 \uAE30\uB85D\uC744 \uBD88\uB7EC\uC624\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4.', error);
+  }
+}
+
+async function sendCustomerNotice(event){
+  event.preventDefault();
+  const storeId = getLoggedInStoreId();
+  if(!storeId){
+    alert('\uC0C1\uC810 \uB85C\uADF8\uC778\uC774 \uD544\uC694\uD569\uB2C8\uB2E4.');
+    return;
+  }
+  const button = event.currentTarget.querySelector('button[type="submit"]');
+  const originalText = button ? button.textContent : '';
+  const startsAt = document.getElementById('customerNoticeStartDate')?.value || '';
+  const endsAt = document.getElementById('customerNoticeEndDate')?.value || '';
+  if(startsAt && endsAt && startsAt > endsAt){
+    alert('\uACF5\uC9C0 \uC885\uB8CC\uC77C\uC740 \uC2DC\uC791\uC77C\uBCF4\uB2E4 \uBE60\uB97C \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.');
+    return;
+  }
+  if(button){
+    button.disabled = true;
+    button.textContent = '\uBC1C\uC1A1\uC911...';
+  }
+  try{
+    const response = await fetch('/api/notices', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        audience:'customer',
+        storeId,
+        title: document.getElementById('customerNoticeTitleInput')?.value || '',
+        message: document.getElementById('customerNoticeMessageInput')?.value || '',
+        startsAt,
+        endsAt
+      })
+    });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok) throw new Error(result.message || '\uACF5\uC9C0\uC0AC\uD56D\uC744 \uBC1C\uC1A1\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4.');
+    resetCustomerNoticeForm();
+    await loadCustomerNoticeHistory();
+    alert('\uD574\uB2F9 \uC0C1\uC810 \uC8FC\uBB38\uC6F9\uC5D0 \uACF5\uC9C0\uC0AC\uD56D\uC774 \uBC1C\uC1A1\uB418\uC5C8\uC2B5\uB2C8\uB2E4.');
+  }catch(error){
+    alert(error.message || '\uACF5\uC9C0\uC0AC\uD56D\uC744 \uBC1C\uC1A1\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4.');
+  }finally{
+    if(button){
+      button.disabled = false;
+      button.textContent = originalText || '\uACF5\uC9C0 \uBC1C\uC1A1';
+    }
+  }
+}
+
+function getStoreCategoryLabel(value){
+  const select = document.getElementById('storeCategory');
+  if(select){
+    const option = Array.from(select.options).find(item => item.value === value);
+    if(option && option.textContent.trim()) return option.textContent.trim();
+  }
+  return value || '-';
+}
+
+function getOrderTypeLabel(value){
+  if(value === 'delivery') return '배달';
+  if(value === 'pickup') return '포장';
+  return '배달 + 포장';
+}
+
+function formatStoreWon(value){
+  const amount = Number(String(value || '').replace(/[^0-9]/g, '')) || 0;
+  return amount ? `${amount.toLocaleString('ko-KR')}원` : '-';
+}
+
+function applyStoreSideSummary(store, orderUrl, storeName){
+  const absoluteOrderUrl = new URL(orderUrl, window.location.origin).href;
+  const sideQr = document.getElementById('storeSideQr');
+  if(sideQr){
+    const qrUrl = getQrImageUrl(orderUrl, 150);
+    sideQr.innerHTML = `<button type="button" class="side-qr-button" data-order-url="${escapePrintText(orderUrl)}" data-store-name="${escapePrintText(storeName)}" onclick="openStoreQrWindow(this.dataset.orderUrl, this.dataset.storeName)" aria-label="${escapePrintText(storeName)} 주문웹 QR 크게 보기"><img src="${qrUrl}" alt="${escapePrintText(storeName)} 주문웹 QR"></button>`;
+  }
+
+  const filename = `${storeName || 'store'}-order-qr.png`.replace(/[\\/:*?"<>|]+/g, '_');
+  const downloadUrl = `${getQrImageUrl(orderUrl, 500)}&download=1&filename=${encodeURIComponent(filename)}`;
+  const qrDownload = document.getElementById('storeSideQrDownload');
+  if(qrDownload){
+    qrDownload.onclick = () => { window.location.href = downloadUrl; };
+  }
+
+  const setText = (id, text) => {
+    const element = document.getElementById(id);
+    if(element) element.textContent = text;
+  };
+  setText('sideStoreName', storeName || '-');
+  setText('sideStoreCategory', getStoreCategoryLabel(store.storeCategory));
+  setText('sideOrderLinkBox', absoluteOrderUrl);
+  setSelectValue('sideOrderType', store.orderType || 'both');
+  setFieldValue('sideOpenTime', store.openTime || '');
+  setFieldValue('sideCloseTime', store.closeTime || '');
+  setFieldValue('sideMinOrderPrice', parseWonText(store.minOrderPrice) || '');
+  setFieldValue('sideDeliveryFee', parseWonText(store.deliveryFee) || '');
+  const copyButton = document.getElementById('sideOrderLinkCopy');
+  if(copyButton){
+    copyButton.dataset.orderUrl = orderUrl;
+    copyButton.onclick = () => copyStoreOrderUrl(copyButton);
+  }
+}
+
+function syncSideOrderSettings(){
+  const sideOrderType = document.getElementById('sideOrderType');
+  const sideOpenTime = document.getElementById('sideOpenTime');
+  const sideCloseTime = document.getElementById('sideCloseTime');
+  const sideMinOrderPrice = document.getElementById('sideMinOrderPrice');
+  const sideDeliveryFee = document.getElementById('sideDeliveryFee');
+  if(sideOrderType) setSelectValue('orderType', sideOrderType.value || 'both');
+  if(sideOpenTime) setFieldValue('openTime', sideOpenTime.value);
+  if(sideCloseTime) setFieldValue('closeTime', sideCloseTime.value);
+  if(sideMinOrderPrice) setFieldValue('minOrderPrice', sideMinOrderPrice.value);
+  if(sideDeliveryFee) setFieldValue('deliveryFee', sideDeliveryFee.value);
+}
+async function saveSideOrderSettings(button){
+  syncSideOrderSettings();
+  const originalText = button ? button.textContent : '';
+  if(button){
+    button.disabled = true;
+    button.textContent = '\uC800\uC7A5\uC911...';
+  }
+  try{
+    await saveStoreSettingsData();
+    await applyScheduledBusinessStatus({ force:true });
+    startBusinessScheduleWatcher();
+    alert('\uC6B4\uC601 \uC815\uBCF4\uAC00 \uC800\uC7A5\uB418\uC5C8\uC2B5\uB2C8\uB2E4.');
+  }catch(error){
+    alert(error.message || '\uC6B4\uC601 \uC815\uBCF4\uB97C \uC800\uC7A5\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4.');
+  }finally{
+    if(button){
+      button.disabled = false;
+      button.textContent = originalText || '\uC6B4\uC601 \uC815\uBCF4 \uC800\uC7A5';
+    }
+  }
+}
+function applyLoggedInStore(store){
+  if(!store) return;
+  const storeId = store.storeId || getLoggedInStoreId();
+  const storeName = store.storeName || sessionStorage.getItem('wooreccoStoreAdminStoreName') || '';
+  const orderUrl = `order.html?store=${encodeURIComponent(storeId)}`;
+  const adminUrl = `store-admin.html?store=${encodeURIComponent(storeId)}`;
+
+  document.querySelectorAll('a[href*="order.html"], a[href*="wooricco_order.html"]').forEach(link => {
+    link.href = orderUrl;
+  });
+  document.querySelectorAll('a[href*="store-admin.html"]').forEach(link => {
+    link.href = adminUrl;
+  });
+  const orderWebLink = document.getElementById('storeOrderWebLink');
+  if(orderWebLink) {
+    orderWebLink.href = orderUrl;
+    orderWebLink.textContent = storeName ? `${storeName} 주문웹` : '주문웹';
+  }
+
+  const badgeTitle = document.querySelector('.heroCard .badge h2');
+  if(badgeTitle && storeName) badgeTitle.textContent = storeName;
+  const heroTitle = document.querySelector('.heroCard h1');
+  if(heroTitle && storeName) {
+    const qrUrl = getQrImageUrl(orderUrl, 180);
+    heroTitle.innerHTML = `<div class="store-qr-row"><button class="store-qr-title" type="button" data-order-url="${escapePrintText(orderUrl)}" data-store-name="${escapePrintText(storeName)}" onclick="openStoreQrWindow(this.dataset.orderUrl, this.dataset.storeName)" aria-label="${escapePrintText(storeName)} 주문웹 QR 크게 보기"><img src="${qrUrl}" alt="${escapePrintText(storeName)} 주문웹 QR"><span>${escapePrintText(storeName)} 주문웹 QR</span></button><button class="store-url-copy" type="button" data-order-url="${escapePrintText(orderUrl)}" onclick="copyStoreOrderUrl(this)">상점주문웹 URL 복사하기</button></div>`;
+  }
+  const logoImage = document.querySelector('.logoBox img');
+  if(logoImage && storeName) logoImage.alt = `${storeName} 간판`;
+  applyStoreMedia(store);
+  updateStoreStatusButtons(store.businessStatus);
+  applyStoreSideSummary(store, orderUrl, storeName);
+  startBusinessScheduleWatcher();
+  document.title = storeName ? `${storeName} 상점관리자` : document.title;
+
+  setFieldValue('storeId', storeId);
+  setFieldValue('storeName', storeName);
+  setFieldValue('ownerName', store.ownerName);
+  setFieldValue('ownerPhone', store.ownerPhone);
+  setFieldValue('ownerEmail', store.ownerEmail);
+  setSelectValue('storeCategory', store.storeCategory);
+  setFieldValue('storeDescription', store.description);
+  setFieldValue('storeAddress', store.storeBaseAddress || store.storeAddress);
+  setFieldValue('storeDetailAddress', store.storeDetailAddress);
+  setFieldValue('openTime', store.openTime);
+  setFieldValue('closeTime', store.closeTime);
+  setFieldValue('closedDay', store.closedDay);
+  setFieldValue('businessNumber', store.businessNumber);
+  setSelectValue('orderType', store.orderType);
+  setFieldValue('deliveryFee', store.deliveryFee);
+  setFieldValue('minOrderPrice', store.minOrderPrice);
+  setFieldValue('bankName', store.bankName);
+  setFieldValue('accountHolder', store.accountHolder);
+  setFieldValue('accountNumber', store.accountNumber);
+}
+
+async function loadLoggedInStore(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('sample') === '1' && !params.get('store')) {
+    document.documentElement.classList.remove('store-admin-loading');
+    return;
+  }
+  const storeId = getLoggedInStoreId();
+  if(!storeId) return;
+
+  try{
+    const response = await fetch(`/api/store-info?store=${encodeURIComponent(storeId)}`, { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok){
+      alert(result.message || '상점 정보를 불러올 수 없습니다. 다시 로그인해주세요.');
+      sessionStorage.removeItem('wooreccoStoreAdminLogin');
+      sessionStorage.removeItem('wooreccoStoreAdminStoreId');
+      sessionStorage.removeItem('wooreccoStoreAdminStoreName');
+      window.location.href = 'store-login.html';
+      return;
+    }
+    sessionStorage.setItem('wooreccoStoreAdminStoreId', result.store.storeId || storeId);
+    sessionStorage.setItem('wooreccoStoreAdminStoreName', result.store.storeName || '');
+    applyLoggedInStore(result.store);
+    loadStoreVisitCount(result.store.storeId || storeId);
+    loadStoreOrders(1);
+    startStoreOrderPolling();
+    loadStoreMenuData();
+    loadStoreMediaData();
+    loadStoreAdminNotice(result.store.storeId || storeId);
+    document.documentElement.classList.remove('store-admin-loading');
+  }catch(error){
+    document.documentElement.classList.remove('store-admin-loading');
+    alert('상점 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+async function loadStoreVisitCount(storeId){
+  const target = document.getElementById('storeVisitCount');
+  if(!target || !storeId) return;
+  try{
+    const response = await fetch(`/api/store-visits?store=${encodeURIComponent(storeId)}`, { cache:'no-store' });
+    const result = await response.json().catch(() => ({}));
+    const visits = response.ok && result.ok ? Number(result.visits || 0) : 0;
+    target.textContent = `${visits.toLocaleString('ko-KR')}회`;
+  }catch(error){
+    target.textContent = '0회';
+  }
+}
+
+renderOrders();
+renderCategories();
+renderMenus();
+renderSettlement();
+showSettlementView('all');
+loadLoggedInStore();
+</script>
+</body>
+</html>

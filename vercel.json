@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "src": "/order\\.html",
+      "dest": "/api/order-page.js"
+    },
+    {
+      "src": "/wooricco_order\\.html",
+      "dest": "/api/order-page.js"
+    }
+  ]
+}

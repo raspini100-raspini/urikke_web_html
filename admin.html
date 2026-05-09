@@ -1,0 +1,3737 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+<link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link href="https://woorecco.vercel.app/admin.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="https://woorecco.vercel.app/admin.html" property="og:url"/>
+<meta content="우리꺼" property="og:site_name"/>
+<meta content="본사 관리자" property="og:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." property="og:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image:secure_url"/>
+<meta content="image/png" property="og:image:type"/>
+<meta content="1731" property="og:image:width"/>
+<meta content="909" property="og:image:height"/>
+<meta content="우리꺼 주문웹 소개 이미지" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://woorecco.vercel.app/admin.html" name="twitter:url"/>
+<meta content="본사 관리자" name="twitter:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." name="twitter:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image"/>
+<meta content="우리꺼 주문웹 소개 이미지" name="twitter:image:alt"/>
+<title>본사 관리자</title>
+<script>
+(function(){
+  const isLoggedIn = sessionStorage.getItem('wooreccoHeadAdminLogin') === '1';
+  if(!isLoggedIn){
+    window.location.replace('admin-login.html');
+  }
+})();
+</script>
+
+  <link rel="stylesheet" href="common.css" />
+<style>
+
+/* =========================================================
+   ADMIN FINAL FIX - 본사 관리자 화면 강제 정상화
+   ========================================================= */
+body[data-page="admin"]{
+  --main:#ff7a1a;
+  --main-dark:#ef6d10;
+  --ink:#0f172a;
+  --muted:#64748b;
+  --line:#e5e7eb;
+  --bg:#fffaf5;
+  --card:#ffffff;
+  --green:#16a34a;
+  --red:#ef4444;
+  --blue:#0ea5e9;
+  --shadow:0 18px 45px rgba(15,23,42,.08);
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+body[data-page="admin"] *{box-sizing:border-box;}
+body[data-page="admin"] a{text-decoration:none;color:inherit;}
+body[data-page="admin"] .wrap{width:min(1440px,calc(100% - 36px));margin:0 auto;}
+body[data-page="admin"] .top{position:sticky;top:0;z-index:30;background:rgba(255,250,245,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+body[data-page="admin"] .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+body[data-page="admin"] .logo{height:38px;width:auto;object-fit:contain;}
+body[data-page="admin"] .admin-user{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+body[data-page="admin"] .admin-user-label{padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:14px;font-weight:600;color:#334155;}
+body[data-page="admin"] .admin-user-label b{color:#111827;}
+body[data-page="admin"] .logout-btn{border:1px solid #fed7aa;border-radius:999px;background:#fff7ed;color:#c2410c;padding:10px 14px;font-size:14px;font-weight:600;cursor:pointer;}
+body[data-page="admin"] nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+body[data-page="admin"] nav a{padding:11px 16px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:600;font-size:14px;}
+body[data-page="admin"] nav a.on{background:#111827;color:#fff;border-color:#111827;}
+body[data-page="admin"] main.wrap{padding-top:18px;}
+body[data-page="admin"] .hero{display:none;}
+body[data-page="admin"] .heroGrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:18px;align-items:stretch;}
+body[data-page="admin"] .panel,
+body[data-page="admin"] .card,
+body[data-page="admin"] .heroCard{background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:24px;max-width:none;width:100%;}
+body[data-page="admin"] .heroCard h1{margin:12px 0 12px;font-size:clamp(30px,4vw,52px);line-height:1.12;letter-spacing:-.05em;font-weight:700;color:var(--ink);}
+body[data-page="admin"] .lead,
+body[data-page="admin"] .muted{color:var(--muted);font-weight:500;line-height:1.65;}
+body[data-page="admin"] .badge{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;font-weight:600;font-size:13px;}
+body[data-page="admin"] .dot{width:8px;height:8px;border-radius:50%;background:var(--main);display:inline-block;}
+body[data-page="admin"] .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+body[data-page="admin"] .btn{width:auto;min-height:44px;height:auto;border:1px solid var(--line);border-radius:14px;padding:11px 16px;background:#fff;color:var(--ink);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;}
+body[data-page="admin"] .btn.orange,
+body[data-page="admin"] .btn.main{background:var(--main);border-color:var(--main);color:#fff;}
+body[data-page="admin"] .btn.blue{background:var(--blue);border-color:var(--blue);color:#fff;}
+body[data-page="admin"] .btn.dark{background:#111827;border-color:#111827;color:#fff;}
+body[data-page="admin"] .btn.ghost{background:#fff;color:var(--ink);border-color:var(--line);}
+body[data-page="admin"] .btn.cancel{background:#fff7ed;color:#c2410c;border-color:#fed7aa;}
+body[data-page="admin"] .logoBox{display:grid;place-items:center;min-height:200px;}
+body[data-page="admin"] .logoBox img{max-width:170px;width:58%;height:auto;object-fit:contain;}
+body[data-page="admin"] .section{margin:18px 0;}
+body[data-page="admin"] .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+body[data-page="admin"] .metric{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:104px;}
+body[data-page="admin"] .metric span{color:var(--muted);font-size:13px;font-weight:500;}
+body[data-page="admin"] .metric b{display:inline-block;margin-top:5px;font-size:28px;letter-spacing:-.04em;font-weight:650;}
+body[data-page="admin"] .tag{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;}
+body[data-page="admin"] .tag.green{background:#ecfdf5;color:#047857;}
+body[data-page="admin"] .tag.orange{background:#fff7ed;color:#c2410c;}
+body[data-page="admin"] .tag.blue{background:#ecfeff;color:#0369a1;}
+body[data-page="admin"] .tag.red{background:#fef2f2;color:#b91c1c;}
+body[data-page="admin"] .new-store-alert{background:#ff7a1a !important;color:#fff !important;border-color:#ff7a1a !important;}
+body[data-page="admin"] .adminLayout{display:grid;grid-template-columns:1fr;gap:0;align-items:start;margin-top:18px;}
+body[data-page="admin"] .adminLayout > aside{display:none;}
+body[data-page="admin"] .adminLayout > aside h2{margin:0 0 14px;font-size:20px;font-weight:700;}
+body[data-page="admin"] .side{display:grid;gap:8px;justify-items:stretch;}
+body[data-page="admin"] .side-btn{width:100%;justify-content:flex-start;}
+body[data-page="admin"] .side-btn.active{background:#111827;color:#fff;border-color:#111827;}
+body[data-page="admin"] .tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+body[data-page="admin"] .pill{border:1px solid var(--line);border-radius:999px;background:#fff;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;}
+body[data-page="admin"] .pill.active{background:#111827;color:#fff;border-color:#111827;}
+body[data-page="admin"] .tab{display:none !important;}
+body[data-page="admin"] .tab.active{display:block !important;}
+body[data-page="admin"] .tab h2{margin:0 0 8px;font-size:25px;letter-spacing:-.04em;font-weight:700;}
+body[data-page="admin"] .search-box{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:10px;align-items:center;margin:16px 0;}
+body[data-page="admin"] #newStores .search-box{grid-template-columns:minmax(220px,1fr);}
+body[data-page="admin"] input,
+body[data-page="admin"] select,
+body[data-page="admin"] textarea,
+body[data-page="admin"] .input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:13px;background:#fff;padding:12px 13px;font-size:14px;font-weight:500;color:var(--ink);outline:none;}
+body[data-page="admin"] textarea{min-height:110px;resize:vertical;}
+body[data-page="admin"] .meridiem-time{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;}
+body[data-page="admin"] .meridiem-time input{text-align:center;}
+body[data-page="admin"] label{display:block;margin:8px 0 6px;font-size:13px;font-weight:600;color:#334155;}
+body[data-page="admin"] .table-wrap,
+body[data-page="admin"] .order-table-wrap{width:100%;overflow-x:auto;}
+body[data-page="admin"] .table{width:100%;border-collapse:separate;border-spacing:0 9px;table-layout:auto;}
+body[data-page="admin"] .table th{text-align:left;padding:0 10px 4px;color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap;}
+body[data-page="admin"] .table td{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:13px 10px;font-size:14px;font-weight:500;vertical-align:middle;}
+body[data-page="admin"] .table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px;}
+body[data-page="admin"] .table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0;}
+body[data-page="admin"] .new-store-row{cursor:pointer;}
+body[data-page="admin"] .new-store-row:hover td{background:#fffaf5;}
+body[data-page="admin"] .new-store-row td{white-space:nowrap;}
+body[data-page="admin"] .new-store-row td:nth-child(3),
+body[data-page="admin"] .new-store-row td:nth-child(4){white-space:normal;min-width:180px;}
+body[data-page="admin"] .new-store-row td:nth-child(6){min-width:280px;}
+body[data-page="admin"] .new-store-row .detail-actions{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;}
+body[data-page="admin"] .new-store-row .detail-actions .btn{min-width:auto;padding:10px 13px;}
+body[data-page="admin"] .new-store-contact-lines{display:grid;gap:4px;line-height:1.35;}
+body[data-page="admin"] .new-store-contact-lines span{display:block;}
+body[data-page="admin"] .new-store-detail-row td{background:#fffaf5;border:1px solid #fed7aa;border-radius:16px;padding:16px;}
+body[data-page="admin"] .new-store-detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+body[data-page="admin"] .new-store-detail-box{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;}
+body[data-page="admin"] .new-store-detail-box span{display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:500;}
+body[data-page="admin"] .new-store-detail-box b{display:block;color:var(--ink);font-size:14px;font-weight:500;line-height:1.45;word-break:break-word;}
+body[data-page="admin"] .customer-click-row{cursor:pointer;}
+body[data-page="admin"] .customer-click-row:hover td{background:#fffaf5;}
+body[data-page="admin"] .customer-detail-row td{background:#fffaf5;border:1px solid #fed7aa;border-radius:16px;padding:16px;}
+body[data-page="admin"] .customer-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+body[data-page="admin"] .customer-detail-box{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;}
+body[data-page="admin"] .customer-detail-box.full{grid-column:1 / -1;}
+body[data-page="admin"] .customer-detail-box span{display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:500;}
+body[data-page="admin"] .customer-detail-box b{display:block;color:var(--ink);font-size:14px;font-weight:500;line-height:1.45;word-break:break-word;}
+body[data-page="admin"] .file-preview-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,.55);}
+body[data-page="admin"] .file-preview-modal.show{display:flex;}
+body[data-page="admin"] .file-preview-panel{width:min(920px,100%);max-height:92vh;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:0 24px 70px rgba(15,23,42,.25);overflow:hidden;display:flex;flex-direction:column;}
+body[data-page="admin"] .file-preview-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);}
+body[data-page="admin"] .file-preview-head b{font-size:15px;font-weight:600;}
+body[data-page="admin"] .file-preview-body{padding:14px;background:#f8fafc;overflow:auto;}
+body[data-page="admin"] .file-preview-body img{display:block;max-width:100%;height:auto;max-height:76vh;margin:0 auto;border-radius:12px;background:#fff;}
+body[data-page="admin"] .file-preview-body iframe{width:100%;height:76vh;border:0;border-radius:12px;background:#fff;}
+body[data-page="admin"] .pagination,
+body[data-page="admin"] .page-info{display:flex;justify-content:center;align-items:center;gap:6px;margin:14px 0;color:var(--muted);font-size:13px;font-weight:500;}
+body[data-page="admin"] .pagination button{border:1px solid var(--line);background:#fff;border-radius:11px;min-width:38px;height:38px;font-weight:600;cursor:pointer;}
+body[data-page="admin"] .pagination button.active{background:#111827;color:#fff;border-color:#111827;}
+body[data-page="admin"] .partner-detail-panel,
+body[data-page="admin"] .order-detail-panel{display:none;margin-top:18px;padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow);}
+body[data-page="admin"] .partner-detail-panel.show,
+body[data-page="admin"] .order-detail-panel.show{display:block;}
+body[data-page="admin"] .partner-inline-detail-row td{background:#fffaf5;border:1px solid #fed7aa;border-radius:16px;padding:16px;}
+body[data-page="admin"] .partner-inline-detail-row .partner-detail-panel{margin-top:0;box-shadow:none;}
+body[data-page="admin"] .detail-head,
+body[data-page="admin"] .order-detail-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px;}
+body[data-page="admin"] .detail-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+body[data-page="admin"] .detail-summary,
+body[data-page="admin"] .order-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0;}
+body[data-page="admin"] .detail-box,
+body[data-page="admin"] .order-detail-box{border:1px solid var(--line);border-radius:16px;background:#fbfdff;padding:14px;}
+body[data-page="admin"] .detail-box span,
+body[data-page="admin"] .order-detail-box span{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-bottom:5px;}
+body[data-page="admin"] .detail-box b,
+body[data-page="admin"] .order-detail-box b{font-size:16px;line-height:1.4;word-break:keep-all;}
+body[data-page="admin"] .operation-summary{margin:16px 0 20px;border:1px solid var(--line);border-radius:20px;background:#fbfdff;padding:16px;}
+body[data-page="admin"] .operation-summary h3{margin:0 0 6px;font-size:19px;}
+body[data-page="admin"] .operation-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;}
+body[data-page="admin"] .operation-summary-box{border:1px solid var(--line);border-radius:15px;background:#fff;padding:13px;}
+body[data-page="admin"] .operation-summary-box span{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-bottom:5px;}
+body[data-page="admin"] .operation-summary-box b{display:block;color:var(--ink);font-size:15px;font-weight:650;line-height:1.45;word-break:break-word;}
+body[data-page="admin"] .operation-summary-box.full{grid-column:1 / -1;}
+body[data-page="admin"] .operation-summary-edit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px;}
+body[data-page="admin"] .operation-summary-edit label{font-size:13px;font-weight:650;color:var(--ink);}
+body[data-page="admin"] .operation-summary-edit .full{grid-column:1 / -1;}
+body[data-page="admin"] .operation-summary-edit textarea{min-height:88px;resize:vertical;}
+body[data-page="admin"] .operation-summary-actions{margin-top:10px;}
+body[data-page="admin"] .operation-summary-actions .btn{width:100%;max-width:220px;}
+body[data-page="admin"] .order-detail-box.full{grid-column:1 / -1;}
+body[data-page="admin"] .detail-edit-form,
+body[data-page="admin"] #create form .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+body[data-page="admin"] .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+body[data-page="admin"] .partner-menu-manager{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);}
+body[data-page="admin"] .partner-menu-layout{display:grid;grid-template-columns:minmax(280px,380px) minmax(0,1fr);gap:14px;align-items:start;}
+body[data-page="admin"] .category-form{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;}
+body[data-page="admin"] .category-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+body[data-page="admin"] .category-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:999px;background:#f8fafc;color:#334155;font-size:12px;font-weight:700;}
+body[data-page="admin"] .category-chip button{border:0;background:transparent;color:#475569;font-weight:900;cursor:pointer;}
+body[data-page="admin"] .category-help{margin-top:8px;color:var(--muted);font-size:12px;font-weight:500;}
+body[data-page="admin"] .menu-image-preview{display:grid;place-items:center;min-height:110px;margin-top:8px;border:1px dashed #dbe3ed;border-radius:14px;background:#fbfdff;color:var(--muted);font-size:13px;font-weight:600;overflow:hidden;}
+body[data-page="admin"] .menu-image-preview img{width:100%;height:100%;object-fit:cover;}
+body[data-page="admin"] .menu-form-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+body[data-page="admin"] .menu-thumb{width:54px;height:54px;border-radius:12px;object-fit:cover;background:#f8fafc;border:1px solid #e5e7eb;}
+body[data-page="admin"] .menu-name-btn{border:0;background:transparent;padding:0;color:#0f172a;font-weight:700;cursor:pointer;text-align:left;}
+body[data-page="admin"] .menu-desc-small{display:block;margin-top:4px;color:var(--muted);font-size:12px;font-weight:500;line-height:1.35;}
+body[data-page="admin"] .partner-menu-manager .btn.orange{background:#111827;border-color:#111827;color:#fff;}
+body[data-page="admin"] .partner-menu-manager .table{border-spacing:0 10px;}
+body[data-page="admin"] .partner-menu-manager .table th{padding:0 10px 8px;}
+body[data-page="admin"] .partner-menu-manager .table td{padding:10px;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+body[data-page="admin"] .partner-menu-manager .table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px;}
+body[data-page="admin"] .partner-menu-manager .table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0;}
+body[data-page="admin"] .partner-menu-manager .table td:not(:first-child){border-left:0;}
+body[data-page="admin"] .partner-menu-manager .table td:not(:last-child){border-right:0;}
+body[data-page="admin"] .partner-menu-manager .tag.orange{background:#f1f5f9;color:#334155;}
+body[data-page="admin"] .form-section-title{grid-column:1 / -1;margin:10px 0 0;padding:10px 13px;border-left:5px solid var(--main);border-radius:12px;background:#fff7ed;color:#9a3412;font-weight:650;}
+body[data-page="admin"] .form-full{grid-column:1 / -1;}
+body[data-page="admin"] .detail-actions,
+body[data-page="admin"] .create-actions,
+body[data-page="admin"] .order-detail-actions{grid-column:1 / -1;display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+body[data-page="admin"] .order-detail-panel{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  padding:10px;
+  border:0;
+  border-radius:0;
+  background:rgba(15,23,42,.52);
+  box-shadow:none;
+}
+body[data-page="admin"] .order-detail-panel.show{display:flex;}
+body[data-page="admin"] .admin-order-detail-card{
+  width:min(96vw,700px);
+  border:1px solid rgba(226,232,240,.9);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 28px 80px rgba(15,23,42,.28);
+  overflow:hidden;
+}
+body[data-page="admin"] .order-detail-head{
+  align-items:flex-start;
+  margin:0;
+  padding:14px 18px 10px;
+  border-bottom:1px solid #eef2f7;
+}
+body[data-page="admin"] .order-detail-head small{
+  display:block;
+  margin-bottom:2px;
+  color:#ff7a00;
+  font-size:11px;
+  font-weight:900;
+}
+body[data-page="admin"] .order-detail-head h3{
+  margin:0;
+  color:#0f172a;
+  font-size:20px;
+  letter-spacing:0;
+}
+body[data-page="admin"] .order-detail-close{
+  width:36px;
+  height:36px;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  background:#fff;
+  color:#0f172a;
+  font-size:20px;
+  font-weight:500;
+  cursor:pointer;
+}
+body[data-page="admin"] .admin-order-detail-body{padding:12px 18px 16px;}
+body[data-page="admin"] .order-detail-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin:0;
+}
+body[data-page="admin"] .order-detail-item{
+  padding:10px 12px;
+  border:1px solid #edf1f5;
+  border-radius:14px;
+  background:#fbfdff;
+}
+body[data-page="admin"] .order-detail-item.full{grid-column:1 / -1;}
+body[data-page="admin"] .order-detail-item span{
+  display:block;
+  margin-bottom:4px;
+  color:#64748b;
+  font-size:11px;
+  font-weight:650;
+}
+body[data-page="admin"] .order-detail-item strong{
+  display:block;
+  color:#0f172a;
+  font-size:14px;
+  line-height:1.35;
+  word-break:keep-all;
+}
+body[data-page="admin"] .order-detail-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:10px 0;
+}
+body[data-page="admin"] .order-detail-summary div{
+  padding:10px 12px;
+  border:1px solid rgba(255,122,0,.18);
+  border-radius:14px;
+  background:#fff7ed;
+}
+body[data-page="admin"] .order-detail-summary span{
+  display:block;
+  margin-bottom:4px;
+  color:#9a3412;
+  font-size:11px;
+  font-weight:900;
+}
+body[data-page="admin"] .order-detail-summary b{
+  color:#0f172a;
+  font-size:17px;
+}
+body[data-page="admin"] .order-detail-actions{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+  margin-top:0;
+  padding-top:0;
+}
+body[data-page="admin"] .order-detail-actions .btn{
+  width:100%;
+  min-width:0;
+  min-height:42px;
+  padding:10px 8px;
+  font-size:14px;
+}
+body[data-page="admin"] .check-line{display:flex;align-items:center;gap:8px;margin:12px 0;font-size:13px;font-weight:500;color:#475569;}
+body[data-page="admin"] .check-line input{width:auto;min-height:0;}
+body[data-page="admin"] .notice{padding:14px;border-left:5px solid var(--main);border-radius:15px;background:#fff7ed;color:#9a3412;font-weight:500;line-height:1.55;}
+body[data-page="admin"] .notice-history{display:grid;gap:12px;margin-top:14px;max-height:420px;overflow:auto;}
+body[data-page="admin"] .notice-history-item{border:1px solid #e5eaf1;border-radius:14px;padding:14px;background:#fbfdff;}
+body[data-page="admin"] .notice-history-item h4{margin:0 0 7px;font-size:15px;font-weight:750;color:#0f172a;}
+body[data-page="admin"] .notice-history-item p{margin:0;color:#475569;line-height:1.55;white-space:pre-wrap;font-size:13px;}
+body[data-page="admin"] .notice-history-item small{display:block;margin-top:10px;color:#94a3b8;font-weight:650;}
+body[data-page="admin"] .notice-history-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+body[data-page="admin"] .notice-admin-layout{grid-template-columns:minmax(320px,.75fr) minmax(560px,1.35fr);}
+body[data-page="admin"] .notice-history-panel{border:1px solid #e5eaf1;border-radius:16px;background:#fff;padding:14px;}
+body[data-page="admin"] .notice-history-panel h4{margin:0 0 10px;font-size:16px;font-weight:750;color:#0f172a;}
+body[data-page="admin"] .notice-history-pager{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;color:#64748b;font-size:13px;font-weight:650;}
+body[data-page="admin"] .notice-history-pager button{min-width:38px;height:34px;border:1px solid #dbe3ed;border-radius:10px;background:#fff;color:#0f172a;font-weight:750;cursor:pointer;}
+body[data-page="admin"] .notice-history-pager button:disabled{opacity:.45;cursor:not-allowed;}
+body[data-page="admin"] .admin-media-preview{grid-column:1 / -1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:6px 0 8px;}
+body[data-page="admin"] .admin-media-preview figure{margin:0;min-height:116px;border:1px dashed #dbe3ed;border-radius:14px;background:#fbfdff;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:12px;font-weight:600;}
+body[data-page="admin"] .admin-media-preview figure.sign{grid-column:auto;height:auto;min-height:116px;}
+body[data-page="admin"] .admin-media-preview img{width:100%;height:100%;object-fit:cover;display:block;}
+body[data-page="admin"] .footer{padding:34px 0 48px;color:var(--muted);font-weight:500;text-align:center;}
+@media (max-width:980px){
+  body[data-page="admin"] .heroGrid,
+  body[data-page="admin"] .adminLayout{grid-template-columns:1fr;}
+  body[data-page="admin"] .stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+  body[data-page="admin"] .detail-summary,
+  body[data-page="admin"] .operation-summary-grid,
+  body[data-page="admin"] .operation-summary-edit,
+  body[data-page="admin"] .order-detail-grid,
+  body[data-page="admin"] .new-store-detail-grid,
+  body[data-page="admin"] .customer-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:640px){
+  body[data-page="admin"] .wrap{width:min(100% - 24px,1180px);}
+  body[data-page="admin"] .nav{height:auto;padding:12px 0;align-items:flex-start;}
+  body[data-page="admin"] .logo{height:34px;}
+  body[data-page="admin"] .stats,
+  body[data-page="admin"] .search-box,
+  body[data-page="admin"] .grid2,
+  body[data-page="admin"] .partner-menu-layout,
+  body[data-page="admin"] .category-form,
+  body[data-page="admin"] .menu-form-actions,
+  body[data-page="admin"] .detail-edit-form,
+  body[data-page="admin"] .admin-media-preview,
+  body[data-page="admin"] #create form .grid2,
+  body[data-page="admin"] .detail-summary,
+  body[data-page="admin"] .operation-summary-grid,
+  body[data-page="admin"] .operation-summary-edit,
+  body[data-page="admin"] .order-detail-grid,
+  body[data-page="admin"] .new-store-detail-grid,
+  body[data-page="admin"] .customer-detail-grid,
+  body[data-page="admin"] .notice-admin-layout,
+  body[data-page="admin"] .notice-history-grid{grid-template-columns:1fr;}
+  body[data-page="admin"] .panel,
+  body[data-page="admin"] .card,
+  body[data-page="admin"] .heroCard{padding:18px;}
+  body[data-page="admin"] .table{min-width:760px;}
+}
+
+/* 매출·정산 상점별 전체 목록 / 검색 / 10개 페이징 */
+body[data-page="admin"] #sales .sales-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:16px 0;
+}
+body[data-page="admin"] #sales .sales-summary-card{
+  background:#fbfdff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+}
+body[data-page="admin"] #sales .sales-summary-card span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:500;
+  margin-bottom:8px;
+}
+body[data-page="admin"] #sales .sales-summary-card b{
+  display:block;
+  color:var(--ink);
+  font-size:24px;
+  font-weight:650;
+  letter-spacing:-.04em;
+}
+body[data-page="admin"] #sales .sales-filter-box{
+  display:grid;
+  grid-template-columns:minmax(260px,1fr) 150px auto auto;
+  gap:10px;
+  align-items:end;
+  margin:18px 0 12px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fbfdff;
+}
+body[data-page="admin"] #sales .sales-filter-box label{
+  margin:0 0 6px;
+}
+body[data-page="admin"] #sales .sales-info{
+  margin:8px 0 12px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:500;
+}
+body[data-page="admin"] #sales .sales-table td:nth-child(3),
+body[data-page="admin"] #sales .sales-table td:nth-child(4),
+body[data-page="admin"] #sales .sales-table td:nth-child(5),
+body[data-page="admin"] #sales .sales-table td:nth-child(6){
+  text-align:right;
+  white-space:nowrap;
+}
+body[data-page="admin"] #sales .sales-table th:nth-child(3),
+body[data-page="admin"] #sales .sales-table th:nth-child(4),
+body[data-page="admin"] #sales .sales-table th:nth-child(5),
+body[data-page="admin"] #sales .sales-table th:nth-child(6){
+  text-align:right;
+}
+@media (max-width:980px){
+  body[data-page="admin"] #sales .sales-summary{grid-template-columns:repeat(2,minmax(0,1fr));}
+  body[data-page="admin"] #sales .sales-filter-box{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:640px){
+  body[data-page="admin"] #sales .sales-summary,
+  body[data-page="admin"] #sales .sales-filter-box{grid-template-columns:1fr;}
+}
+
+</style>
+</head>
+<body class="page-admin" data-page="admin">
+<header class="top">
+  <div class="wrap nav">
+    <img class="logo" src="assets/logo/logo.png" alt="우리꺼 로고">
+    <div class="admin-user">
+      <span class="admin-user-label">로그인 <b id="headAdminId">admin</b></span>
+      <button class="logout-btn" type="button" onclick="logoutHeadAdmin()">로그아웃</button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+<section class="hero">
+  <div class="heroGrid">
+    <div class="heroCard">
+      <span class="badge"><span class="dot"></span> 본사 통합 관리자</span>
+      <h2>상점 개설부터 주문·정산·공지를 관리합니다</h2>
+      <p class="lead">상점 생성, 전체 주문 현황, 매출, 정산, 공지 발송을 관리하는 운영자 화면</p>
+      <div class="actions"><button class="btn orange" onclick="openAdmin('partners')">상점 관리</button><button class="btn blue" onclick="openAdmin('sales')">매출 분석</button><button class="btn ghost" onclick="openAdmin('create')">신규 개설</button></div>
+    </div>
+    <div class="panel logoBox"><img src="assets/logo/logo.png" alt="우리꺼 로고"></div>
+  </div>
+</section>
+<section class="section stats">
+  <div class="card metric"><div><span>전체 상점</span><br><b id="dashboardStoreCount">0곳</b></div><span class="tag orange">대기</span></div>
+  <div class="card metric"><div><span>오늘 전체 주문</span><br><b id="dashboardTodayOrders">0건</b></div><span class="tag orange">대기</span></div>
+  <div class="card metric"><div><span>오늘 거래액</span><br><b id="dashboardTodaySales">0원</b></div><span class="tag blue">실시간</span></div>
+  <div class="card metric"><div><span>정산금액</span><br><b id="dashboardSettlement">0원</b></div><span class="tag green">정산</span></div>
+</section>
+
+<section class="section adminLayout" id="adminWork">
+  <aside class="panel">
+    <h2>관리 메뉴</h2>
+    <div class="side">
+      <button class="btn side-btn" data-tab="newStores" onclick="openAdmin('newStores')">신규상점</button>
+      <button class="btn side-btn active" data-tab="partners" onclick="openAdmin('partners')">상점현황</button>
+      <button class="btn side-btn" data-tab="customers" onclick="openAdmin('customers')">고객현황</button>
+      <button class="btn side-btn" data-tab="orders" onclick="openAdmin('orders')">전체 주문</button>
+      <button class="btn side-btn" data-tab="sales" onclick="openAdmin('sales')">매출·정산</button>
+      <button class="btn side-btn" data-tab="create" onclick="openAdmin('create')">상점개설</button>
+      <button class="btn side-btn" data-tab="notice" onclick="openAdmin('notice')">공지·마케팅</button>
+    </div>
+    <br><div class="notice">본사용은 여러 상점을 통합 관리하지만, 고객용 페이지는 반드시 특정 상점 하나만 보이도록 링크를 분리합니다.</div>
+  </aside>
+  <div class="panel">
+    <div class="tabs" aria-label="관리 메뉴"><button class="pill" data-tab="newStores" onclick="openAdmin('newStores')">신규상점</button><button class="pill active" data-tab="partners" onclick="openAdmin('partners')">상점현황</button><button class="pill" data-tab="customers" onclick="openAdmin('customers')">고객현황</button><button class="pill" data-tab="orders" onclick="openAdmin('orders')">주문관리</button><button class="pill" data-tab="sales" onclick="openAdmin('sales')">정산관리</button><button class="pill" data-tab="create" onclick="openAdmin('create')">상점개설</button><button class="pill" data-tab="notice" onclick="openAdmin('notice')">공지사항</button></div>
+    <div id="newStores" class="tab">
+      <h2>신규상점</h2>
+      <p class="muted">상점전용웹 제작 신청 내역을 확인하고 승인 여부를 결정합니다.</p>
+
+      <div class="search-box">
+        <input class="input" id="newStoreSearchInput" type="search" placeholder="상호명, 대표자, 연락처로 검색" oninput="searchNewStores()" />
+      </div>
+
+      <div class="page-info" id="newStoreInfo">신규상점을 클릭하면 신청 목록을 자동으로 불러옵니다.</div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>접수일</th>
+              <th>상호명</th>
+              <th>대표자 / 연락처</th>
+              <th>주소</th>
+              <th>상태</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody id="newStoreTableBody">
+            <tr><td colspan="6" class="no-result">신규 신청을 불러오려면 버튼을 눌러주세요.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="partners" class="tab active">
+      <h2>상점 현황</h2>
+      <p class="muted">전국 상점의 사업장명, 대표자명, 지역, 고객용 링크, 주문상태, 매출을 관리합니다.</p>
+
+      <div class="search-box">
+        <input class="input" id="partnerSearchInput" type="search" placeholder="사업장명 또는 대표자 이름으로 검색" oninput="searchPartners()" />
+        <button class="btn ghost" type="button" onclick="resetPartnerSearch()">검색 초기화</button>
+        <button class="btn orange" type="button" onclick="loadSavedApplications()">신청 불러오기</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>지역</th>
+              <th>사업장명</th>
+              <th>대표자</th>
+              <th>고객용 링크</th>
+              <th>오늘 주문</th>
+              <th>오늘 매출</th>
+              <th>상태</th>
+              <th>주문웹 고객방문수</th>
+            </tr>
+          </thead>
+          <tbody id="partnerTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="partnerPagination" aria-label="상점현황 페이지 이동"></div>
+      <div class="page-info" id="partnerPageInfo"></div>
+
+      <div class="partner-detail-panel" id="partnerDetailPanel">
+        <div class="detail-head">
+          <div>
+            <h3 id="detailTitle">상점 상세현황</h3>
+            <p class="muted" id="detailSubText">상점을 선택하면 상세정보와 수정 화면이 표시됩니다.</p>
+          </div>
+          <div class="detail-head-actions">
+            <button class="btn dark" id="partnerApproveBtn" type="button" onclick="changeSelectedPartnerApproval(event, '승인완료')">승인완료</button>
+            <button class="btn orange" id="partnerPendingBtn" type="button" onclick="changeSelectedPartnerApproval(event, '승인대기')">승인대기</button>
+            <button class="btn cancel" id="partnerDeleteBtn" type="button" onclick="deleteSelectedPartnerApplication(event)">삭제</button>
+            <button class="btn ghost" type="button" onclick="closePartnerDetail()">닫기</button>
+          </div>
+        </div>
+
+        <div class="detail-summary">
+          <div class="detail-box"><span>오늘 주문</span><b id="detailOrders">-</b></div>
+          <div class="detail-box"><span>오늘 매출</span><b id="detailSales">-</b></div>
+          <div class="detail-box"><span>운영상태</span><b id="detailStatus">-</b></div>
+          <div class="detail-box"><span>고객용 링크</span><b id="detailLink">-</b></div>
+        </div>
+
+        <div class="operation-summary">
+          <h3>상점 운영 요약</h3>
+          <p class="muted">고객 주문웹에 노출되는 주요 운영 정보를 확인합니다.</p>
+          <div class="operation-summary-grid">
+            <div class="operation-summary-box"><span>상호명</span><b id="detailOpStoreName">-</b></div>
+            <div class="operation-summary-box"><span>업종</span><b id="detailOpCategory">-</b></div>
+            <div class="operation-summary-box"><span>주문방식</span><b id="detailOpOrderType">-</b></div>
+            <div class="operation-summary-box"><span>최소주문</span><b id="detailOpMinOrder">-</b></div>
+            <div class="operation-summary-box"><span>기본배달비</span><b id="detailOpDeliveryFee">-</b></div>
+            <div class="operation-summary-box"><span>영업시간</span><b id="detailOpHours">-</b></div>
+            <div class="operation-summary-box full"><span>가게 소개</span><b id="detailOpDescription">-</b></div>
+          </div>
+          <div class="operation-summary-edit">
+            <label>주문방식
+              <select class="input" id="opEditOrderType">
+                <option value="delivery">배달 주문</option>
+                <option value="pickup">포장 주문</option>
+                <option value="both">배달 + 포장</option>
+              </select>
+            </label>
+            <label>최소주문
+              <input class="input" id="opEditMinOrderPrice" type="number" placeholder="예: 15000">
+            </label>
+            <label>기본배달비
+              <input class="input" id="opEditDeliveryFee" type="number" placeholder="예: 3000">
+            </label>
+            <label class="full">가게 소개
+              <textarea class="input" id="opEditDescription" placeholder="주문웹 소개 박스에 표시될 내용을 입력해주세요."></textarea>
+            </label>
+          </div>
+          <div class="operation-summary-actions">
+            <button class="btn dark" type="button" onclick="savePartnerOperationSummary(event)">수정완료</button>
+          </div>
+        </div>
+
+        <form class="detail-edit-form" onsubmit="savePartnerDetail(event)">
+          <div class="form-section-title">1. 대표자 정보</div>
+
+          <div>
+            <label for="editOwner">대표자명</label>
+            <input class="input" id="editOwner" name="owner" type="text">
+          </div>
+          <div>
+            <label for="editOwnerPhone">대표자 연락처</label>
+            <input class="input" id="editOwnerPhone" name="ownerPhone" type="tel" placeholder="010-0000-0000">
+          </div>
+          <div class="form-full">
+            <label for="editOwnerEmail">대표자 이메일</label>
+            <input class="input" id="editOwnerEmail" name="ownerEmail" type="email" placeholder="example@email.com">
+          </div>
+
+          <div class="form-section-title">2. 상점 기본 정보</div>
+
+          <div>
+            <label for="editStoreId">상점아이디</label>
+            <input class="input" id="editStoreId" name="storeId" type="text" placeholder="영문/숫자 조합 아이디">
+          </div>
+          <div>
+            <label for="editStorePassword">패스워드</label>
+            <input class="input" id="editStorePassword" name="storePassword" type="text" placeholder="비밀번호">
+          </div>
+          <div>
+            <label for="editName">상호명</label>
+            <input class="input" id="editName" name="name" type="text">
+          </div>
+          <div>
+            <label for="editStoreCategory">업종</label>
+            <select class="input" id="editStoreCategory" name="storeCategory">
+              <option value="korean">한식</option>
+              <option value="chinese">중식</option>
+              <option value="japanese">일식</option>
+              <option value="chicken">치킨</option>
+              <option value="pizza">피자</option>
+              <option value="cafe">카페/디저트</option>
+              <option value="snack">분식</option>
+              <option value="etc">기타</option>
+            </select>
+          </div>
+          <div>
+            <label for="editRegion">지역</label>
+            <input class="input" id="editRegion" name="region" type="text">
+          </div>
+          <div>
+            <label for="editLink">고객용 링크</label>
+            <input class="input" id="editLink" name="link" type="text">
+          </div>
+          <div class="form-full">
+            <label for="editDescription">가게 소개</label>
+            <textarea class="input" id="editDescription" name="description" rows="4" placeholder="주문웹 소개 박스에 표시될 내용을 입력해주세요."></textarea>
+          </div>
+          <div class="form-full">
+            <label for="editStoreAddress">상점 주소</label>
+            <input class="input" id="editStoreAddress" name="storeAddress" type="text" placeholder="클릭해서 도로명 주소 검색 또는 직접 입력">
+          </div>
+          <div class="form-full">
+            <label for="editStoreDetailAddress">상세 주소</label>
+            <input class="input" id="editStoreDetailAddress" name="storeDetailAddress" type="text" placeholder="층, 호수 등 상세 주소">
+          </div>
+          <div>
+            <label for="editOpenTime">영업 시작 시간</label>
+            <input class="input" id="editOpenTime" name="openTime" type="time">
+          </div>
+          <div>
+            <label for="editCloseTime">영업 종료 시간</label>
+            <input class="input" id="editCloseTime" name="closeTime" type="time">
+          </div>
+          <div class="form-full">
+            <label for="editClosedDay">휴무일</label>
+            <input class="input" id="editClosedDay" name="closedDay" type="text" placeholder="예: 매주 월요일 / 연중무휴">
+          </div>
+
+          <div class="form-section-title">3. 사업자 정보</div>
+
+          <div>
+            <label for="editBusinessNumber">사업자등록번호</label>
+            <input class="input" id="editBusinessNumber" name="businessNumber" type="text" placeholder="000-00-00000">
+          </div>
+          <div>
+            <label for="editBusinessFile">사업자등록증 첨부</label>
+            <input class="input" id="editBusinessFile" name="businessFile" type="file" accept="image/*,.pdf">
+          </div>
+          <div class="form-full">
+            <label for="editBusinessFileName">사업자등록증 파일명</label>
+            <input class="input" id="editBusinessFileName" name="businessFileName" type="text" placeholder="첨부된 파일명">
+            <button class="btn ghost" id="businessFileViewBtn" type="button" style="display:none;margin-top:8px;" onclick="openBusinessFile()">사업자등록증 보기</button>
+          </div>
+
+          <div class="form-section-title">4. 간판사진</div>
+          <div class="form-full">
+            <label for="editSignImage">간판사진 1장</label>
+            <input class="input" id="editSignImage" name="signImage" type="file" accept="image/*" onchange="previewPartnerMedia()">
+          </div>
+          <div class="form-full">
+            <label>등록된 간판사진</label>
+            <div class="admin-media-preview" id="editSignImagePreview">
+              <figure class="sign">간판사진 없음</figure>
+            </div>
+          </div>
+
+          <div class="form-section-title">5. 가게사진</div>
+          <div>
+            <label for="editStorePhoto1">가게사진 1</label>
+            <input class="input store-photo-input" id="editStorePhoto1" name="storePhoto1" type="file" accept="image/*" onchange="previewPartnerMedia()">
+          </div>
+          <div>
+            <label for="editStorePhoto2">가게사진 2</label>
+            <input class="input store-photo-input" id="editStorePhoto2" name="storePhoto2" type="file" accept="image/*" onchange="previewPartnerMedia()">
+          </div>
+          <div>
+            <label for="editStorePhoto3">가게사진 3</label>
+            <input class="input store-photo-input" id="editStorePhoto3" name="storePhoto3" type="file" accept="image/*" onchange="previewPartnerMedia()">
+          </div>
+          <div>
+            <label for="editStorePhoto4">가게사진 4</label>
+            <input class="input store-photo-input" id="editStorePhoto4" name="storePhoto4" type="file" accept="image/*" onchange="previewPartnerMedia()">
+          </div>
+          <div class="form-full">
+            <label>등록된 가게사진</label>
+            <div class="admin-media-preview" id="editStorePhotoPreview">
+              <figure>가게사진 1</figure>
+              <figure>가게사진 2</figure>
+              <figure>가게사진 3</figure>
+              <figure>가게사진 4</figure>
+            </div>
+          </div>
+
+          <div class="form-section-title">6. 주문 및 배달 설정</div>
+
+          <div>
+            <label for="editOrderType">주문 방식</label>
+            <select class="input" id="editOrderType" name="orderType">
+              <option value="delivery">배달 주문</option>
+              <option value="pickup">포장 주문</option>
+              <option value="both">배달 + 포장</option>
+            </select>
+          </div>
+          <div>
+            <label for="editDeliveryFee">기본 배달비</label>
+            <input class="input" id="editDeliveryFee" name="deliveryFee" type="number" placeholder="예: 3000">
+          </div>
+          <div>
+            <label for="editMinOrderPrice">최소 주문금액</label>
+            <input class="input" id="editMinOrderPrice" name="minOrderPrice" type="number" placeholder="예: 15000">
+          </div>
+          <div>
+            <label for="editStatus">운영상태</label>
+            <select class="input" id="editStatus" name="status">
+              <option value="영업중">영업중</option>
+              <option value="마감">마감</option>
+            </select>
+          </div>
+          <div>
+            <label for="editOrders">오늘 주문</label>
+            <input class="input" id="editOrders" name="orders" type="text">
+          </div>
+          <div>
+            <label for="editSales">오늘 매출</label>
+            <input class="input" id="editSales" name="sales" type="text">
+          </div>
+
+          <div class="form-section-title">7. 정산 계좌 정보</div>
+
+          <div>
+            <label for="editBankName">은행명</label>
+            <input class="input" id="editBankName" name="bankName" type="text" placeholder="예: 국민은행">
+          </div>
+          <div>
+            <label for="editAccountHolder">예금주</label>
+            <input class="input" id="editAccountHolder" name="accountHolder" type="text" placeholder="예금주명">
+          </div>
+          <div class="form-full">
+            <label for="editAccountNumber">계좌번호</label>
+            <input class="input" id="editAccountNumber" name="accountNumber" type="text" placeholder="계좌번호 입력">
+          </div>
+
+          <div class="form-section-title">8. 관리 메모</div>
+          <div class="form-full">
+            <label for="editMemo">관리 메모</label>
+            <textarea class="input" id="editMemo" name="memo" rows="4" placeholder="예: 계약서 확인 완료"></textarea>
+          </div>
+
+          <div class="detail-actions">
+            <button class="btn dark" type="submit">수정 저장</button>
+            <button class="btn ghost" type="button" onclick="closePartnerDetail()">닫기</button>
+          </div>
+        </form>
+
+        <div class="partner-menu-manager">
+          <div class="detail-head">
+            <div>
+              <h3>메뉴 등록·수정</h3>
+              <p class="muted">상점관리자와 동일하게 카테고리와 메뉴를 등록하고 수정합니다.</p>
+            </div>
+          </div>
+
+          <div class="card category-panel">
+            <h3>카테고리 관리</h3>
+            <form class="category-form" onsubmit="addPartnerCategory(event)">
+              <div>
+                <label for="adminCategoryName">카테고리명</label>
+                <input class="input" id="adminCategoryName" type="text" placeholder="예: 후라이드, 양념/간장, 순살치킨">
+              </div>
+              <button class="btn orange" type="submit">카테고리 추가</button>
+            </form>
+            <div class="category-list" id="adminCategoryList"></div>
+            <div class="category-help">등록된 카테고리는 메뉴 등록 화면의 카테고리 선택 목록에 자동 반영됩니다.</div>
+          </div>
+
+          <div class="partner-menu-layout">
+            <div class="card">
+              <h3>메뉴 정보 입력</h3>
+              <form id="adminMenuForm" onsubmit="savePartnerMenu(event)">
+                <input type="hidden" id="adminMenuEditIndex" value="">
+
+                <label for="adminMenuName">메뉴명</label>
+                <input class="input" id="adminMenuName" type="text" placeholder="예: 후라이드치킨" required>
+
+                <label for="adminMenuDesc">메뉴 설명</label>
+                <textarea class="input" id="adminMenuDesc" rows="3" placeholder="메뉴 소개를 입력하세요."></textarea>
+
+                <label for="adminMenuCategory">카테고리</label>
+                <select class="input" id="adminMenuCategory" required></select>
+
+                <label for="adminMenuPrice">가격</label>
+                <input class="input" id="adminMenuPrice" type="number" min="0" step="100" placeholder="예: 18000" required>
+
+                <label for="adminMenuStatus">판매상태</label>
+                <select class="input" id="adminMenuStatus">
+                  <option value="판매중">판매중</option>
+                  <option value="품절">품절</option>
+                  <option value="숨김">숨김</option>
+                </select>
+
+                <label for="adminMenuImage">이미지 등록</label>
+                <input class="input" id="adminMenuImage" type="file" accept="image/*" onchange="previewPartnerMenuImage(event)">
+                <div class="menu-image-preview" id="adminMenuImagePreview">이미지 미리보기</div>
+
+                <div class="menu-form-actions">
+                  <button class="btn dark" type="submit">메뉴 저장하기</button>
+                  <button class="btn ghost" type="button" onclick="resetPartnerMenuForm()">새 메뉴 입력</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>현재 등록 메뉴</h3>
+              <p class="muted">메뉴명을 클릭하면 왼쪽 입력칸에서 바로 수정할 수 있습니다.</p>
+              <div class="table-wrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>이미지</th>
+                      <th>메뉴</th>
+                      <th>카테고리</th>
+                      <th>가격</th>
+                      <th>상태</th>
+                      <th>관리</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminMenuTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="customers" class="tab">
+      <h2>고객 현황</h2>
+      <p class="muted">상점별 고객 이름, 연락처, 주문 횟수, 최근 주문일을 관리합니다.</p>
+
+      <div class="search-box">
+        <input class="input" id="customerSearchInput" type="search" placeholder="고객명, 연락처, 상점명으로 검색" oninput="searchCustomers()" />
+        <button class="btn ghost" type="button" onclick="resetCustomerSearch()">검색 초기화</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>고객명</th>
+              <th>연락처</th>
+              <th>이용 상점</th>
+              <th>주문 횟수</th>
+              <th>누적 주문액</th>
+              <th>최근 주문일</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody id="customerTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="customerPagination" aria-label="고객현황 페이지 이동"></div>
+      <div class="page-info" id="customerPageInfo"></div>
+    </div>
+    <div id="orders" class="tab">
+      <h2>전체 주문 모니터링</h2>
+      <p class="muted">전체상점의 실시간 주문관리상태를 한눈에 확인하고 변경할 수 있습니다.</p>
+
+      <div class="search-box order-search-box">
+        <input class="input" id="adminOrderSearchInput" type="search" placeholder="상점명 또는 고객명으로 검색" oninput="searchAdminOrders()" />
+        <button class="btn ghost" type="button" onclick="resetAdminOrderSearch()">검색 초기화</button>
+      </div>
+
+      <div class="page-info" id="adminOrderSearchInfo"></div>
+
+      <div class="order-table-wrap">
+        <table class="table order-table">
+          <thead>
+            <tr>
+              <th>주문번호</th>
+              <th>상점</th>
+              <th>고객</th>
+              <th>전화번호</th>
+              <th>주문구분</th>
+              <th>배달건수</th>
+              <th>금액</th>
+              <th>상태</th>
+              <th>시간</th>
+              <th>삭제</th>
+            </tr>
+          </thead>
+          <tbody id="adminOrderTableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="adminOrderPagination" aria-label="전체 주문 모니터링 페이지 이동"></div>
+
+      <div class="order-detail-panel" id="adminOrderDetailPanel">
+        <div class="admin-order-detail-card">
+          <div class="order-detail-head">
+            <div>
+              <small>ORDER DETAIL</small>
+              <h3 id="adminOrderDetailTitle">주문 상세정보</h3>
+            </div>
+            <button class="order-detail-close" type="button" onclick="closeAdminOrderDetail()" aria-label="주문 상세정보 닫기">×</button>
+          </div>
+          <div class="admin-order-detail-body" id="adminOrderDetailBody"></div>
+        </div>
+      </div>
+    </div>
+    <div id="sales" class="tab">
+      <h2>매출·정산</h2>
+      <p class="muted">상점별 주문금액, 수수료, 정산완료 금액, 입금일을 전체 목록으로 확인하고 검색할 수 있습니다.</p>
+
+      <div class="sales-summary" aria-label="매출 정산 요약">
+        <div class="sales-summary-card"><span>조회 상점수</span><b id="salesStoreCount">0곳</b></div>
+        <div class="sales-summary-card"><span>총 주문금액</span><b id="salesTotalOrder">0원</b></div>
+        <div class="sales-summary-card"><span>총 수수료</span><b id="salesTotalFee">0원</b></div>
+        <div class="sales-summary-card"><span>총 정산완료</span><b id="salesTotalDeposit">0원</b></div>
+      </div>
+
+      <div class="sales-filter-box" aria-label="상점별 매출 정산 검색">
+        <div>
+          <label for="salesSearchInput">상점명 / 대표자 / 지역 검색</label>
+          <input class="input" id="salesSearchInput" type="search" placeholder="예: 리조트일마레, 안정길, 제주" oninput="searchAdminSales()">
+        </div>
+        <div>
+          <label for="salesStatusFilter">상태</label>
+          <select class="input" id="salesStatusFilter" onchange="searchAdminSales()">
+            <option value="">전체</option>
+            <option value="영업중">영업중</option>
+            <option value="준비중">준비중</option>
+            <option value="점검중">점검중</option>
+          </select>
+        </div>
+        <button class="btn dark" type="button" onclick="searchAdminSales()">검색</button>
+        <button class="btn ghost" type="button" onclick="resetAdminSalesSearch()">초기화</button>
+      </div>
+
+      <div class="sales-info" id="salesPageInfo">상점별 매출·정산 내역을 불러오는 중입니다.</div>
+
+      <div class="table-wrap">
+        <table class="table sales-table">
+          <thead>
+            <tr>
+              <th>지역</th>
+              <th>상점</th>
+              <th>주문금액</th>
+              <th>수수료</th>
+              <th>정산완료</th>
+              <th>입금일</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody id="salesTableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="salesPagination" aria-label="매출 정산 페이지 이동"></div>
+    </div>
+    <div id="create" class="tab">
+      <h2>신규 상점개설</h2>
+
+      <form action="#" method="post" enctype="multipart/form-data" onsubmit="createStoreFromAdmin(event)">
+        <div class="grid2">
+          <div class="form-section-title">1. 대표자 정보</div>
+
+          <div>
+            <label for="adminOwnerName">대표자명</label>
+            <input class="input" type="text" id="adminOwnerName" name="ownerName" placeholder="대표자 이름" required>
+          </div>
+
+          <div>
+            <label for="adminOwnerPhone">대표자 연락처</label>
+            <input class="input" type="tel" id="adminOwnerPhone" name="ownerPhone" placeholder="010-0000-0000" required>
+          </div>
+
+          <div class="form-full">
+            <label for="adminOwnerEmail">대표자 이메일</label>
+            <input class="input" type="email" id="adminOwnerEmail" name="ownerEmail" placeholder="example@email.com">
+          </div>
+
+          <div class="form-section-title">2. 상점 기본 정보</div>
+
+          <div>
+            <label for="adminStoreId">상점아이디</label>
+            <input class="input" type="text" id="adminStoreId" name="storeId" placeholder="영문/숫자 조합 아이디" required>
+          </div>
+
+          <div>
+            <label for="adminStorePassword">패스워드</label>
+            <input class="input" type="password" id="adminStorePassword" name="storePassword" placeholder="비밀번호 입력" required>
+          </div>
+
+          <div>
+            <label for="adminStoreName">상호명</label>
+            <input class="input" type="text" id="adminStoreName" name="storeName" placeholder="예: 우리꺼 치킨" required>
+          </div>
+
+          <div>
+            <label for="adminStoreCategory">업종</label>
+            <select class="input" id="adminStoreCategory" name="storeCategory" required>
+              <option value="">업종 선택</option>
+              <option value="korean">한식</option>
+              <option value="chinese">중식</option>
+              <option value="japanese">일식</option>
+              <option value="chicken">치킨</option>
+              <option value="pizza">피자</option>
+              <option value="cafe">카페/디저트</option>
+              <option value="snack">분식</option>
+              <option value="etc">기타</option>
+            </select>
+          </div>
+
+          <div class="form-full">
+            <label for="adminStoreAddress">상점 주소</label>
+            <input class="input" type="text" id="adminStoreAddress" name="storeAddress" placeholder="클릭해서 도로명 주소 검색 또는 직접 입력" required>
+          </div>
+
+          <div class="form-full">
+            <label for="adminStoreDetailAddress">상세 주소</label>
+            <input class="input" type="text" id="adminStoreDetailAddress" name="storeDetailAddress" placeholder="층, 호수 등 상세 주소">
+          </div>
+
+          <div>
+            <label for="adminOpenTimeText">영업 시작 시간</label>
+            <div class="meridiem-time">
+              <select class="input" id="adminOpenMeridiem" name="openMeridiem">
+                <option value="AM">오전</option>
+                <option value="PM">오후</option>
+              </select>
+              <input class="input" type="text" id="adminOpenTimeText" name="openTimeText" placeholder="10:00" inputmode="numeric">
+            </div>
+          </div>
+
+          <div>
+            <label for="adminCloseTimeText">영업 종료 시간</label>
+            <div class="meridiem-time">
+              <select class="input" id="adminCloseMeridiem" name="closeMeridiem">
+                <option value="AM">오전</option>
+                <option value="PM" selected>오후</option>
+              </select>
+              <input class="input" type="text" id="adminCloseTimeText" name="closeTimeText" placeholder="09:00" inputmode="numeric">
+            </div>
+          </div>
+
+          <div class="form-full">
+            <label for="adminClosedDay">휴무일</label>
+            <input class="input" type="text" id="adminClosedDay" name="closedDay" placeholder="예: 매주 월요일 / 연중무휴">
+          </div>
+
+          <div class="form-section-title">3. 사업자 정보</div>
+
+          <div>
+            <label for="adminBusinessNumber">사업자등록번호</label>
+            <input class="input" type="text" id="adminBusinessNumber" name="businessNumber" placeholder="000-00-00000" required>
+          </div>
+
+          <div>
+            <label for="adminBusinessFile">사업자등록증 첨부</label>
+            <input class="input" type="file" id="adminBusinessFile" name="businessFile" accept="image/*,.pdf">
+          </div>
+
+          <div class="form-section-title">4. 주문 및 배달 설정</div>
+
+          <div>
+            <label for="adminOrderType">주문 방식</label>
+            <select class="input" id="adminOrderType" name="orderType" required>
+              <option value="">선택</option>
+              <option value="delivery">배달 주문</option>
+              <option value="pickup">포장 주문</option>
+              <option value="both">배달 + 포장</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="adminDeliveryFee">기본 배달비</label>
+            <input class="input" type="number" id="adminDeliveryFee" name="deliveryFee" placeholder="예: 3000">
+          </div>
+
+          <div>
+            <label for="adminMinOrderPrice">최소 주문금액</label>
+            <input class="input" type="number" id="adminMinOrderPrice" name="minOrderPrice" placeholder="예: 15000">
+          </div>
+
+          <div class="form-section-title">5. 정산 계좌 정보</div>
+
+          <div>
+            <label for="adminBankName">은행명</label>
+            <input class="input" type="text" id="adminBankName" name="bankName" placeholder="예: 국민은행">
+          </div>
+
+          <div>
+            <label for="adminAccountHolder">예금주</label>
+            <input class="input" type="text" id="adminAccountHolder" name="accountHolder" placeholder="예금주명">
+          </div>
+
+          <div class="form-full">
+            <label for="adminAccountNumber">계좌번호</label>
+            <input class="input" type="text" id="adminAccountNumber" name="accountNumber" placeholder="계좌번호 입력">
+          </div>
+        </div>
+
+        <label class="check-line">
+          <input type="checkbox" required>
+          상점가입등록을 위해 개인정보 및 사업자정보 수집·이용에 동의합니다.
+        </label>
+
+        <label class="check-line">
+          <input type="checkbox" required>
+          입력한 상점 정보가 사실과 다름없음을 확인합니다.
+        </label>
+
+        <div class="create-actions">
+          <button type="submit" class="btn dark">상점 생성 및 링크 발급</button>
+          <button type="reset" class="btn ghost">입력 초기화</button>
+        </div>
+      </form>
+    </div>
+    <div id="notice" class="tab">
+      <h2>공지·마케팅 발송</h2>
+      <div class="grid2 notice-admin-layout">
+        <form class="card" onsubmit="sendAdminNotice(event)">
+          <label for="adminNoticeTarget">대상 상점</label>
+          <select class="input" id="adminNoticeTarget">
+            <option value="all">전체 상점</option>
+            <option value="pending">준비중 상점</option>
+            <option value="open">영업중 상점</option>
+          </select>
+          <label for="adminNoticeTitle">공지 제목</label>
+          <input class="input" id="adminNoticeTitle" value="우리꺼 신규 기능 안내" required>
+          <label for="adminNoticeMessage">내용</label>
+          <textarea class="input" id="adminNoticeMessage" rows="6" required>고객용 링크 홍보용 QR과 테이블 스티커를 적극 활용해 주세요.</textarea>
+          <button class="btn orange" type="submit">공지 발송</button>
+        </form>
+        <div class="card">
+          <h3>공지사항 작성 기록</h3>
+          <div class="notice-history-grid">
+            <section class="notice-history-panel">
+              <h4>본사공지</h4>
+              <div class="notice-history" id="adminNoticeHistoryHead">
+                <div class="notice-history-item"><p>아직 작성한 본사공지 사항이 없습니다.</p></div>
+              </div>
+              <div class="notice-history-pager" id="adminNoticePagerHead"></div>
+            </section>
+            <section class="notice-history-panel">
+              <h4>상점공지</h4>
+              <div class="notice-history" id="adminNoticeHistoryStore">
+                <div class="notice-history-item"><p>아직 작성한 상점공지 사항이 없습니다.</p></div>
+              </div>
+              <div class="notice-history-pager" id="adminNoticePagerStore"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<div class="file-preview-modal" id="businessFilePreviewModal" onclick="closeBusinessFilePreview(event)">
+  <div class="file-preview-panel" onclick="event.stopPropagation()">
+    <div class="file-preview-head">
+      <b id="businessFilePreviewTitle">사업자등록증</b>
+      <button class="btn ghost" type="button" onclick="closeBusinessFilePreview()">닫기</button>
+    </div>
+    <div class="file-preview-body" id="businessFilePreviewBody"></div>
+  </div>
+</div>
+<footer class="wrap footer">© 우리꺼 본사 관리자</footer>
+<script src="https://t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+const adminOrderData = [];
+
+let filteredAdminOrderData = [...adminOrderData];
+const adminOrdersPerPage = 7;
+let currentAdminOrderPage = 1;
+let selectedAdminOrderIndex = null;
+
+const customerData = [];
+let filteredCustomerData = [...customerData];
+const customersPerPage = 10;
+let currentCustomerPage = 1;
+let selectedCustomerDetailKey = '';
+let adminAddressSearchOpening = false;
+let businessFilePreviewUrl = '';
+
+function openKakaoAddressSearch(addressInputId, detailInputId) {
+  if (adminAddressSearchOpening) return;
+
+  if (!window.daum || !window.daum.Postcode) {
+    alert('주소 검색을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+
+  adminAddressSearchOpening = true;
+  new window.daum.Postcode({
+    oncomplete(data) {
+      const address = data.roadAddress || data.jibunAddress || '';
+      const addressInput = document.getElementById(addressInputId);
+      const detailInput = detailInputId ? document.getElementById(detailInputId) : null;
+
+      if (addressInput) {
+        addressInput.value = address;
+        addressInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      adminAddressSearchOpening = false;
+
+      if (detailInput) {
+        detailInput.focus();
+      }
+    },
+    onclose() {
+      adminAddressSearchOpening = false;
+    }
+  }).open();
+}
+
+function setupAdminAddressSearch() {
+  const addressPairs = [
+    ['adminStoreAddress', 'adminStoreDetailAddress'],
+    ['editStoreAddress', 'editStoreDetailAddress']
+  ];
+
+  addressPairs.forEach(([addressInputId, detailInputId]) => {
+    const addressInput = document.getElementById(addressInputId);
+    if (!addressInput) return;
+    addressInput.addEventListener('click', () => openKakaoAddressSearch(addressInputId, detailInputId));
+    addressInput.addEventListener('focus', () => openKakaoAddressSearch(addressInputId, detailInputId));
+  });
+}
+
+function orderStatusClass(status) {
+  if (status === '주문') return 'status-order';
+  if (status === '준비중') return 'status-ready';
+  if (status === '조리완료' || status === '배달중' || status === '배달') return 'status-delivery';
+  if (status === '완료') return 'status-complete';
+  if (status === '취소') return 'status-cancel';
+  return 'status-order';
+}
+
+function getAdminDisplayOrderStatus(status) {
+  return status === '배달' ? '배달중' : (status || '주문');
+}
+
+function getAdminOrderKind(order) {
+  const raw = String(order?.type || order?.orderType || order?.address || '').trim();
+  return raw.includes('포장') ? '포장' : '배달';
+}
+
+function renderAdminOrders(page = currentAdminOrderPage) {
+  const tbody = document.getElementById('adminOrderTableBody');
+  const info = document.getElementById('adminOrderSearchInfo');
+  const pagination = document.getElementById('adminOrderPagination');
+  if (!tbody) return;
+  updateDashboardMetrics();
+
+  if (filteredAdminOrderData.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="10" class="no-result">검색 결과가 없습니다.</td></tr>';
+    if (info) info.textContent = '검색 결과 0건';
+    if (pagination) pagination.innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filteredAdminOrderData.length / adminOrdersPerPage));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  currentAdminOrderPage = safePage;
+  const startIndex = (safePage - 1) * adminOrdersPerPage;
+  const currentItems = filteredAdminOrderData.slice(startIndex, startIndex + adminOrdersPerPage);
+
+  tbody.innerHTML = currentItems.map((order) => {
+    const originalIndex = adminOrderData.indexOf(order);
+    return `
+    <tr class="order-click-row" onclick="openAdminOrderDetail(${originalIndex})">
+      <td><button class="order-no-btn" type="button" onclick="event.stopPropagation(); openAdminOrderDetail(${originalIndex})">${order.no}</button></td>
+      <td>${order.store}</td>
+      <td>${order.customer}</td>
+      <td>${order.phone}</td>
+      <td><span class="tag ${getAdminOrderKind(order) === '포장' ? 'status-delivery' : 'status-complete'}">${getAdminOrderKind(order)}</span></td>
+      <td>${getAdminCustomerCumulativeOrderCount(order)}건</td>
+      <td>${order.amount}</td>
+      <td><span class="tag ${orderStatusClass(order.status)}">${getAdminDisplayOrderStatus(order.status)}</span></td>
+      <td>${order.time}</td>
+      <td><button class="btn cancel small" type="button" onclick="event.stopPropagation(); deleteAdminOrder(${originalIndex})">삭제</button></td>
+    </tr>
+  `}).join('');
+
+  if (info) {
+    info.textContent = `총 ${adminOrderData.length}건 중 ${filteredAdminOrderData.length}건 / ${startIndex + 1}~${Math.min(startIndex + adminOrdersPerPage, filteredAdminOrderData.length)}건 표시`;
+  }
+
+  if (pagination) {
+    let buttons = `<button class="page-btn" onclick="renderAdminOrders(${safePage - 1})" ${safePage === 1 ? 'disabled' : ''}>이전</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      buttons += `<button class="page-btn ${i === safePage ? 'active' : ''}" onclick="renderAdminOrders(${i})">${i}</button>`;
+    }
+    buttons += `<button class="page-btn" onclick="renderAdminOrders(${safePage + 1})" ${safePage === totalPages ? 'disabled' : ''}>다음</button>`;
+    pagination.innerHTML = buttons;
+  }
+}
+
+function searchAdminOrders() {
+  const input = document.getElementById('adminOrderSearchInput');
+  const keyword = input ? input.value.trim().toLowerCase() : '';
+
+  filteredAdminOrderData = adminOrderData.filter((order) => {
+    return order.store.toLowerCase().includes(keyword) ||
+           order.customer.toLowerCase().includes(keyword);
+  });
+
+  renderAdminOrders(1);
+  closeAdminOrderDetail();
+}
+
+function resetAdminOrderSearch() {
+  const input = document.getElementById('adminOrderSearchInput');
+  if (input) input.value = '';
+  filteredAdminOrderData = [...adminOrderData];
+  renderAdminOrders(1);
+  closeAdminOrderDetail();
+}
+
+function normalizeAdminOrderCustomerKey(value) {
+  return String(value || '').replace(/[^0-9a-zA-Z가-힣]/g, '').toLowerCase();
+}
+
+function getAdminCustomerCumulativeOrderCount(order) {
+  if (!order) return 0;
+  const storeKey = normalizeAdminOrderCustomerKey(order.storeId || order.store);
+  const phoneKey = normalizeAdminOrderCustomerKey(order.phone);
+  const nameKey = normalizeAdminOrderCustomerKey(order.customer);
+  return adminOrderData.filter((item) => {
+    const sameStore = !storeKey || normalizeAdminOrderCustomerKey(item.storeId || item.store) === storeKey;
+    if (!sameStore) return false;
+    if (phoneKey) return normalizeAdminOrderCustomerKey(item.phone) === phoneKey;
+    return nameKey && normalizeAdminOrderCustomerKey(item.customer) === nameKey;
+  }).length || 1;
+}
+
+async function loadAdminOrders(page = currentAdminOrderPage) {
+  const tbody = document.getElementById('adminOrderTableBody');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="9" class="no-result">주문을 불러오는 중입니다.</td></tr>';
+  try {
+    const response = await fetch('/api/orders?admin=1', { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.message || '주문내역을 불러오지 못했습니다.');
+    adminOrderData.length = 0;
+    adminOrderData.push(...(result.orders || []));
+    filteredAdminOrderData = [...adminOrderData];
+    updateDashboardMetrics();
+    renderPartners(currentPartnerPage);
+    renderAdminOrders(page);
+    closeAdminOrderDetail();
+  } catch (error) {
+    console.warn('admin_orders_load_failed', error);
+    adminOrderData.length = 0;
+    filteredAdminOrderData = [];
+    updateDashboardMetrics();
+    renderPartners(currentPartnerPage);
+    renderAdminOrders(1);
+  }
+}
+
+function getKoreaDateKey(value = new Date()) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date);
+}
+
+function isTodayAdminOrder(order) {
+  return getKoreaDateKey(order && (order.createdAt || order.updatedAt || order.time)) === getKoreaDateKey();
+}
+
+function getAdminOrderStoreKey(order) {
+  return normalizeAdminOrderCustomerKey(order && (order.storeId || order.store || order.storeName));
+}
+
+function getAdminOrderAmount(order) {
+  return Number(order && order.amountNumber) || parseWon(order && order.amount);
+}
+
+function refreshPartnerOrderCounters() {
+  const todayOrders = adminOrderData.filter(isTodayAdminOrder);
+  partnerData.forEach((store) => {
+    const storeKeys = [
+      store.storeId,
+      store.applicationId,
+      store.loginId,
+      store.name,
+      createSlug(store.name)
+    ].map(normalizeAdminOrderCustomerKey).filter(Boolean);
+    const storeOrders = todayOrders.filter((order) => storeKeys.includes(getAdminOrderStoreKey(order)));
+    const sales = storeOrders.reduce((sum, order) => order.status === '취소' ? sum : sum + getAdminOrderAmount(order), 0);
+    store.orders = `${storeOrders.length.toLocaleString('ko-KR')}건`;
+    store.sales = formatWon(sales);
+  });
+}
+
+function updateDashboardMetrics() {
+  refreshPartnerOrderCounters();
+  const todayOrders = adminOrderData.filter(isTodayAdminOrder);
+  const todaySales = todayOrders.reduce((sum, order) => order.status === '취소' ? sum : sum + getAdminOrderAmount(order), 0);
+  const settlement = Math.max(Math.round(todaySales * 0.97), 0);
+  const storeCount = document.getElementById('dashboardStoreCount');
+  const todayOrderCount = document.getElementById('dashboardTodayOrders');
+  const todaySalesAmount = document.getElementById('dashboardTodaySales');
+  const settlementAmount = document.getElementById('dashboardSettlement');
+  if (storeCount) storeCount.textContent = `${partnerData.length.toLocaleString('ko-KR')}곳`;
+  if (todayOrderCount) todayOrderCount.textContent = `${todayOrders.length.toLocaleString('ko-KR')}건`;
+  if (todaySalesAmount) todaySalesAmount.textContent = formatWon(todaySales);
+  if (settlementAmount) settlementAmount.textContent = formatWon(settlement);
+}
+
+function openAdminOrderDetail(index) {
+  selectedAdminOrderIndex = index;
+  const order = adminOrderData[index];
+  const panel = document.getElementById('adminOrderDetailPanel');
+  const body = document.getElementById('adminOrderDetailBody');
+  if (!order || !panel || !body) return;
+  const cumulativeOrderCount = getAdminCustomerCumulativeOrderCount(order);
+  const nextStatus = getAdminOrderKind(order) === '배달' ? '배달중' : '조리완료';
+
+  document.getElementById('adminOrderDetailTitle').textContent = `${order.no} 주문 상세정보`;
+  body.innerHTML = `
+    <div class="order-detail-grid">
+      <div class="order-detail-item">
+        <span>상점명</span>
+        <strong>${order.store || '-'}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>고객명</span>
+        <strong>${order.customer || '-'}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>전화번호</span>
+        <strong>${order.phone || '-'}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>주문방식</span>
+        <strong>${order.type || '-'}</strong>
+      </div>
+      <div class="order-detail-item full">
+        <span>주소</span>
+        <strong>${order.address || '-'}</strong>
+      </div>
+      <div class="order-detail-item full">
+        <span>주문 메뉴</span>
+        <strong>${order.menu || '-'}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>고객구분</span>
+        <strong>${order.customerType || '-'}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>주문구분</span>
+        <strong>${getAdminOrderKind(order)}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>누적 배달건수</span>
+        <strong>${cumulativeOrderCount}건</strong>
+      </div>
+    </div>
+
+    <div class="order-detail-summary">
+      <div><span>주문번호</span><b>${order.no || '-'}</b></div>
+      <div><span>주문금액</span><b>${order.amount || '-'}</b></div>
+      <div><span>현재상태</span><b>${getAdminDisplayOrderStatus(order.status)}</b></div>
+    </div>
+
+    <div class="order-detail-grid">
+      <div class="order-detail-item">
+        <span>주문시간</span>
+        <strong>${order.time || '-'}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>결제방식</span>
+        <strong>${order.paymentMethod === 'manual-card' ? '신용카드 수기결제' : (order.paymentMethod || '-')}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>카드사</span>
+        <strong>${order.cardCompany || '-'}</strong>
+      </div>
+      <div class="order-detail-item">
+        <span>할부</span>
+        <strong>${order.installment || '-'}</strong>
+      </div>
+      <div class="order-detail-item full">
+        <span>요청사항</span>
+        <strong>${order.memo || '-'}</strong>
+      </div>
+    </div>
+
+    <div class="order-detail-actions">
+      <button class="btn orange" type="button" onclick="updateSelectedAdminOrderStatus('준비중')">준비중</button>
+      <button class="btn blue" type="button" onclick="updateSelectedAdminOrderStatus('${nextStatus}')">${nextStatus}</button>
+      <button class="btn dark" type="button" onclick="updateSelectedAdminOrderStatus('완료')">완료</button>
+      <button class="btn cancel" type="button" onclick="updateSelectedAdminOrderStatus('취소')">취소</button>
+      <button class="btn cancel" type="button" onclick="deleteSelectedAdminOrder()">삭제</button>
+    </div>
+  `;
+
+  panel.classList.add('show');
+}
+
+function closeAdminOrderDetail() {
+  const panel = document.getElementById('adminOrderDetailPanel');
+  if (panel) panel.classList.remove('show');
+}
+
+document.addEventListener('click', function(event) {
+  const panel = document.getElementById('adminOrderDetailPanel');
+  if (panel && event.target === panel) closeAdminOrderDetail();
+});
+
+async function updateAdminOrderStatus(index, status) {
+  const order = adminOrderData[index];
+  if (!order) return;
+  const previousStatus = order.status;
+  order.status = status;
+  updateDashboardMetrics();
+  renderPartners(currentPartnerPage);
+  renderAdminOrders(currentAdminOrderPage);
+  if (selectedAdminOrderIndex === index) openAdminOrderDetail(index);
+  try {
+    const response = await fetch('/api/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: order.id, no: order.no, status })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.message || '주문상태를 저장하지 못했습니다.');
+  } catch (error) {
+    order.status = previousStatus;
+    updateDashboardMetrics();
+    renderPartners(currentPartnerPage);
+    renderAdminOrders(currentAdminOrderPage);
+    if (selectedAdminOrderIndex === index) openAdminOrderDetail(index);
+    alert(error.message || '주문상태를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+async function deleteAdminOrder(index) {
+  const order = adminOrderData[index];
+  if (!order) return;
+  const ok = confirm('삭제하시면 복구가 불가합니다.\n정말 이 주문을 삭제하시겠습니까?');
+  if (!ok) return;
+  try {
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete', id: order.id, no: order.no })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.message || '주문을 삭제하지 못했습니다.');
+    adminOrderData.splice(index, 1);
+    filteredAdminOrderData = filteredAdminOrderData.filter(item => item !== order);
+    closeAdminOrderDetail();
+    updateDashboardMetrics();
+    renderPartners(currentPartnerPage);
+    renderAdminOrders(currentAdminOrderPage);
+  } catch (error) {
+    alert(error.message || '주문을 삭제하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+function renderCustomers(page = 1) {
+  currentCustomerPage = page;
+
+  const tbody = document.getElementById('customerTableBody');
+  const pagination = document.getElementById('customerPagination');
+  const pageInfo = document.getElementById('customerPageInfo');
+
+  if (!tbody || !pagination || !pageInfo) return;
+
+  const totalPages = Math.max(1, Math.ceil(filteredCustomerData.length / customersPerPage));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  currentCustomerPage = safePage;
+
+  const startIndex = (safePage - 1) * customersPerPage;
+  const currentItems = filteredCustomerData.slice(startIndex, startIndex + customersPerPage);
+
+  if (!currentItems.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="no-result">표시할 고객이 없습니다.</td></tr>';
+    pagination.innerHTML = '';
+    pageInfo.textContent = '고객 0명';
+    return;
+  }
+
+  tbody.innerHTML = currentItems.map((customer, itemIndex) => {
+    const dataIndex = startIndex + itemIndex;
+    const customerKey = getCustomerDetailKey(customer, dataIndex);
+    const isOpen = selectedCustomerDetailKey === customerKey;
+    return `
+      <tr class="customer-click-row" onclick="toggleCustomerDetail(${dataIndex})">
+        <td>${escapeHtml(customer.name || '-')}</td>
+        <td>${escapeHtml(customer.phone || '-')}</td>
+        <td>${escapeHtml(customer.store || '-')}</td>
+        <td>${escapeHtml(customer.ordersText || customer.orders || '0건')}</td>
+        <td>${escapeHtml(customer.salesText || customer.sales || '0원')}</td>
+        <td>${escapeHtml(customer.lastOrder || '-')}</td>
+        <td><span class="tag ${customer.tag || 'orange'}">${escapeHtml(customer.status || '대기')}</span></td>
+      </tr>
+      ${isOpen ? renderCustomerDetailRow(customer) : ''}
+    `;
+  }).join('');
+
+  let pageButtons = `<button class="page-btn" onclick="renderCustomers(${safePage - 1})" ${safePage === 1 ? 'disabled' : ''}>이전</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    pageButtons += `<button class="page-btn ${i === safePage ? 'active' : ''}" onclick="renderCustomers(${i})">${i}</button>`;
+  }
+  pageButtons += `<button class="page-btn" onclick="renderCustomers(${safePage + 1})" ${safePage === totalPages ? 'disabled' : ''}>다음</button>`;
+
+  pagination.innerHTML = pageButtons;
+  pageInfo.textContent = `총 ${filteredCustomerData.length}명 중 ${startIndex + 1}~${Math.min(startIndex + customersPerPage, filteredCustomerData.length)}명 표시`;
+}
+
+function getCustomerDetailKey(customer, fallbackIndex = 0) {
+  return [
+    customer.id,
+    customer.phone,
+    customer.name,
+    customer.store,
+    fallbackIndex
+  ].map(value => String(value || '').trim()).join('|');
+}
+
+function customerProviderText(provider) {
+  return provider === 'kakao' ? '카카오' : '일반';
+}
+
+function renderCustomerDetailRow(customer) {
+  return `
+    <tr class="customer-detail-row">
+      <td colspan="7">
+        <div class="customer-detail-grid">
+          <div class="customer-detail-box"><span>고객명</span><b>${escapeHtml(customer.name || '-')}</b></div>
+          <div class="customer-detail-box"><span>아이디</span><b>${escapeHtml(customer.id || '-')}</b></div>
+          <div class="customer-detail-box"><span>비밀번호</span><b>${escapeHtml(customer.password || '-')}</b></div>
+          <div class="customer-detail-box"><span>연락처</span><b>${escapeHtml(customer.phone || '-')}</b></div>
+          <div class="customer-detail-box"><span>이용 상점</span><b>${escapeHtml(customer.store || '-')}</b></div>
+          <div class="customer-detail-box"><span>상태</span><b>${escapeHtml(customer.status || '대기')}</b></div>
+          <div class="customer-detail-box"><span>가입방식</span><b>${escapeHtml(customerProviderText(customer.provider))}</b></div>
+          <div class="customer-detail-box"><span>가입일</span><b>${escapeHtml(customer.createdAt || '-')}</b></div>
+          <div class="customer-detail-box"><span>주문 횟수</span><b>${escapeHtml(customer.ordersText || customer.orders || '0건')}</b></div>
+          <div class="customer-detail-box"><span>누적 주문액</span><b>${escapeHtml(customer.salesText || customer.sales || '0원')}</b></div>
+          <div class="customer-detail-box"><span>최근 주문일</span><b>${escapeHtml(customer.lastOrder || '-')}</b></div>
+          <div class="customer-detail-box full"><span>주소</span><b>${escapeHtml(customer.address || '-')}</b></div>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
+function toggleCustomerDetail(index) {
+  const customer = filteredCustomerData[index];
+  if (!customer) return;
+  const key = getCustomerDetailKey(customer, index);
+  selectedCustomerDetailKey = selectedCustomerDetailKey === key ? '' : key;
+  renderCustomers(currentCustomerPage);
+}
+
+function searchCustomers() {
+  const input = document.getElementById('customerSearchInput');
+  const keyword = input ? input.value.trim().toLowerCase() : '';
+
+  filteredCustomerData = customerData.filter((customer) => (
+    String(customer.name || '').toLowerCase().includes(keyword) ||
+    String(customer.phone || '').toLowerCase().includes(keyword) ||
+    String(customer.store || '').toLowerCase().includes(keyword)
+  ));
+
+  selectedCustomerDetailKey = '';
+  renderCustomers(1);
+}
+
+function resetCustomerSearch() {
+  const input = document.getElementById('customerSearchInput');
+  if (input) input.value = '';
+  filteredCustomerData = [...customerData];
+  selectedCustomerDetailKey = '';
+  renderCustomers(1);
+}
+
+async function loadCustomers(page = currentCustomerPage) {
+  const tbody = document.getElementById('customerTableBody');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="7" class="no-result">고객 정보를 불러오는 중입니다.</td></tr>';
+  }
+
+  try {
+    const response = await fetch('/api/customers?admin=1', { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.message || '고객 정보를 불러오지 못했습니다.');
+
+    customerData.length = 0;
+    customerData.push(...(Array.isArray(result.customers) ? result.customers : []));
+    filteredCustomerData = [...customerData];
+    renderCustomers(page);
+  } catch (error) {
+    console.warn('customers_load_failed', error);
+    filteredCustomerData = [...customerData];
+    renderCustomers(1);
+  }
+}
+
+function updateSelectedAdminOrderStatus(status) {
+  if (selectedAdminOrderIndex === null) return;
+  updateAdminOrderStatus(selectedAdminOrderIndex, status);
+}
+
+function deleteSelectedAdminOrder() {
+  if (selectedAdminOrderIndex === null) return;
+  deleteAdminOrder(selectedAdminOrderIndex);
+}
+
+const partnerData = [];
+
+const storeApplicationsKey = 'wooreccoStoreApplications';
+const adminAccessSessionKey = 'wooreccoAdminAccessKey';
+let savedStoreApplications = [];
+let filteredNewStoreApplications = [];
+let selectedNewStoreApplicationId = '';
+
+function getAdminAccessKey() {
+  const savedKey = sessionStorage.getItem(adminAccessSessionKey);
+  if (savedKey) return savedKey;
+  sessionStorage.setItem(adminAccessSessionKey, '1234');
+  return '1234';
+}
+
+function handleAdminAuthExpired() {
+  sessionStorage.removeItem('wooreccoHeadAdminLogin');
+  sessionStorage.removeItem('wooreccoHeadAdminId');
+  sessionStorage.removeItem(adminAccessSessionKey);
+  window.location.href = 'admin-login.html';
+}
+
+function setupHeadAdminBar() {
+  const idLabel = document.getElementById('headAdminId');
+  const adminId = sessionStorage.getItem('wooreccoHeadAdminId') || 'admin';
+  if (idLabel) idLabel.textContent = adminId;
+}
+
+function logoutHeadAdmin() {
+  sessionStorage.removeItem('wooreccoHeadAdminLogin');
+  sessionStorage.removeItem('wooreccoHeadAdminId');
+  sessionStorage.removeItem(adminAccessSessionKey);
+  window.location.href = 'admin-login.html';
+}
+
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
+}
+
+function approvalToTag(status) {
+  if (status === '승인완료') return 'green';
+  if (status === '반려') return 'red';
+  return 'orange';
+}
+
+function normalizeApplicationApproval(status) {
+  return ['승인대기', '승인완료', '반려'].includes(status) ? status : '승인대기';
+}
+
+function formatApplicationDate(value) {
+  if (!value) return '-';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '-';
+  return date.toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function orderTypeLabel(value) {
+  if (value === 'delivery') return '배달 주문';
+  if (value === 'pickup') return '포장 주문';
+  if (value === 'both') return '배달 + 포장';
+  return value || '-';
+}
+
+function storeCategoryLabel(value) {
+  const options = {
+    korean: '한식',
+    chinese: '중식',
+    japanese: '일식',
+    chicken: '치킨',
+    pizza: '피자',
+    cafe: '카페/디저트',
+    snack: '분식',
+    etc: '기타'
+  };
+  return options[value] || value || '-';
+}
+
+function noticeTargetLabel(value) {
+  if (value === 'pending') return '준비중 상점';
+  if (value === 'open') return '영업중 상점';
+  return '전체 상점';
+}
+
+function formatNoticeDate(value) {
+  if (!value) return '-';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '-';
+  return date.toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function formatMeridiemTime(value) {
+  const match = String(value || '').match(/^(\d{1,2}):(\d{2})/);
+  if (!match) return '--:--';
+  const hour = Number(match[1]);
+  const minute = match[2];
+  if (Number.isNaN(hour) || hour < 0 || hour > 23) return '--:--';
+  const period = hour < 12 ? '오전' : '오후';
+  const displayHour = hour % 12 || 12;
+  return `${period} ${displayHour}:${minute}`;
+}
+
+function formatBusinessHours(openTime, closeTime) {
+  return `${formatMeridiemTime(openTime)} ~ ${formatMeridiemTime(closeTime)}`;
+}
+
+function normalizeTypedTime(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const digits = raw.replace(/[^0-9]/g, '');
+  let hour = '';
+  let minute = '';
+
+  if (raw.includes(':')) {
+    const parts = raw.split(':');
+    hour = parts[0] || '';
+    minute = parts[1] || '';
+  } else if (digits.length <= 2) {
+    hour = digits;
+    minute = '00';
+  } else {
+    hour = digits.slice(0, -2);
+    minute = digits.slice(-2);
+  }
+
+  const hourNumber = Number(hour);
+  const minuteNumber = Number(minute);
+  if (!Number.isFinite(hourNumber) || !Number.isFinite(minuteNumber)) return '';
+  if (hourNumber < 1 || hourNumber > 12 || minuteNumber < 0 || minuteNumber > 59) return '';
+  return `${String(hourNumber).padStart(2, '0')}:${String(minuteNumber).padStart(2, '0')}`;
+}
+
+function toTwentyFourHourTime(meridiem, value) {
+  const normalized = normalizeTypedTime(value);
+  if (!normalized) return '';
+  const [hourText, minute] = normalized.split(':');
+  let hour = Number(hourText);
+  if (meridiem === 'PM' && hour < 12) hour += 12;
+  if (meridiem === 'AM' && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, '0')}:${minute}`;
+}
+
+function getAdminCreateForm() {
+  return document.querySelector('#create form');
+}
+
+function readAdminBusinessFile(form) {
+  const field = form?.elements?.businessFile;
+  const file = field && field.files ? field.files[0] : null;
+  if (!file) return Promise.resolve(null);
+
+  if (file.size > 3 * 1024 * 1024) {
+    return Promise.reject(new Error('사업자등록증 파일은 3MB 이하로 첨부해주세요.'));
+  }
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve({
+      name: file.name,
+      contentType: file.type || 'application/octet-stream',
+      size: file.size,
+      data: reader.result
+    });
+    reader.onerror = () => reject(new Error('사업자등록증 파일을 읽지 못했습니다.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function getCreateFieldValue(form, name) {
+  const field = form?.elements?.[name];
+  return field ? String(field.value || '').trim() : '';
+}
+
+async function buildAdminCreatePayload(form) {
+  const businessFile = form.elements.businessFile;
+  const businessFileData = await readAdminBusinessFile(form);
+  return {
+    ownerName: getCreateFieldValue(form, 'ownerName'),
+    ownerPhone: getCreateFieldValue(form, 'ownerPhone'),
+    ownerEmail: getCreateFieldValue(form, 'ownerEmail'),
+    storeId: getCreateFieldValue(form, 'storeId'),
+    storePassword: getCreateFieldValue(form, 'storePassword'),
+    storeName: getCreateFieldValue(form, 'storeName'),
+    storeCategory: getCreateFieldValue(form, 'storeCategory'),
+    storeAddress: getCreateFieldValue(form, 'storeAddress'),
+    storeDetailAddress: getCreateFieldValue(form, 'storeDetailAddress'),
+    openTime: toTwentyFourHourTime(getCreateFieldValue(form, 'openMeridiem'), getCreateFieldValue(form, 'openTimeText')),
+    closeTime: toTwentyFourHourTime(getCreateFieldValue(form, 'closeMeridiem'), getCreateFieldValue(form, 'closeTimeText')),
+    closedDay: getCreateFieldValue(form, 'closedDay'),
+    businessNumber: getCreateFieldValue(form, 'businessNumber'),
+    businessFileName: businessFile && businessFile.files.length ? businessFile.files[0].name : '',
+    businessFile: businessFileData,
+    orderType: getCreateFieldValue(form, 'orderType'),
+    deliveryFee: getCreateFieldValue(form, 'deliveryFee'),
+    minOrderPrice: getCreateFieldValue(form, 'minOrderPrice'),
+    bankName: getCreateFieldValue(form, 'bankName'),
+    accountHolder: getCreateFieldValue(form, 'accountHolder'),
+    accountNumber: getCreateFieldValue(form, 'accountNumber'),
+    approvalStatus: '승인완료'
+  };
+}
+
+async function approveCreatedApplication(application) {
+  if (!application?.id) return application;
+  const response = await fetch('/api/applications', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-admin-key': getAdminAccessKey()
+    },
+    body: JSON.stringify({
+      id: application.id,
+      approvalStatus: '승인완료',
+      approvalMemo: '본사관리자 신규 상점개설에서 바로 승인'
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.ok) {
+    throw new Error(result.message || '상점 승인 처리에 실패했습니다.');
+  }
+  return result.application || application;
+}
+
+async function createStoreFromAdmin(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
+  const openTime = toTwentyFourHourTime(getCreateFieldValue(form, 'openMeridiem'), getCreateFieldValue(form, 'openTimeText'));
+  const closeTime = toTwentyFourHourTime(getCreateFieldValue(form, 'closeMeridiem'), getCreateFieldValue(form, 'closeTimeText'));
+  if ((getCreateFieldValue(form, 'openTimeText') && !openTime) || (getCreateFieldValue(form, 'closeTimeText') && !closeTime)) {
+    alert('영업시간은 예: 10:00 또는 1000 형식으로 입력해주세요.');
+    return;
+  }
+
+  const button = form.querySelector('button[type="submit"]');
+  const originalText = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = '생성중...';
+  }
+
+  try {
+    const response = await fetch('/api/applications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(await buildAdminCreatePayload(form))
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) {
+      throw new Error(result.message || '상점 생성에 실패했습니다.');
+    }
+
+    const approved = await approveCreatedApplication(result.application);
+    await loadNewStoreApplications(false);
+    syncApplicationsToPartners(savedStoreApplications);
+    renderPartners(currentPartnerPage);
+
+    const storeId = approved.storeId || approved.id || createSlug(approved.storeName);
+    const link = `https://woorecco.vercel.app/order.html?store=${encodeURIComponent(storeId)}`;
+    form.reset();
+    alert(`상점 생성 및 링크 발급이 완료되었습니다.\n\n${link}`);
+    openAdmin('partners');
+  } catch (error) {
+    alert(error.message || '상점 생성 및 링크 발급에 실패했습니다. 잠시 후 다시 시도해주세요.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  }
+}
+
+const noticePageSize = 5;
+const adminNoticeState = {
+  head: { page: 1, notices: [] },
+  store: { page: 1, notices: [] }
+};
+
+function noticeAudienceLabel(notice) {
+  return notice.audience === 'customer' ? '상점공지' : '본사공지';
+}
+
+function noticeStoreName(storeId) {
+  const target = String(storeId || '').trim();
+  if (!target) return '상점';
+  const partner = partnerData.find((store) => (
+    store.storeId === target ||
+    store.applicationId === target ||
+    createSlug(store.name) === target
+  ));
+  if (partner?.name) return partner.name;
+  const application = savedStoreApplications.find((store) => (
+    store.storeId === target ||
+    store.id === target ||
+    createSlug(store.storeName) === target
+  ));
+  return application?.storeName || `상점 ${target}`;
+}
+
+function noticeMetaText(notice) {
+  if (notice.audience === 'customer') {
+    const store = noticeStoreName(notice.storeId);
+    return `${store} · ${notice.startsAt || '-'} ~ ${notice.endsAt || '-'} · ${formatNoticeDate(notice.createdAt)}`;
+  }
+  return `${noticeTargetLabel(notice.target)} · ${formatNoticeDate(notice.createdAt)}`;
+}
+
+function renderNoticePager(targetId, total, page, onClickName) {
+  const pager = document.getElementById(targetId);
+  if (!pager) return;
+  const pages = Math.max(1, Math.ceil(total / noticePageSize));
+  if (total <= noticePageSize) {
+    pager.innerHTML = '';
+    return;
+  }
+  pager.innerHTML = `
+    <button type="button" onclick="${onClickName}(${page - 1})" ${page <= 1 ? 'disabled' : ''}>이전</button>
+    <span>${page} / ${pages}</span>
+    <button type="button" onclick="${onClickName}(${page + 1})" ${page >= pages ? 'disabled' : ''}>다음</button>
+  `;
+}
+
+function renderAdminNoticeGroup(kind) {
+  const state = adminNoticeState[kind];
+  const history = document.getElementById(kind === 'head' ? 'adminNoticeHistoryHead' : 'adminNoticeHistoryStore');
+  if (!history || !state) return;
+  const emptyText = kind === 'head' ? '아직 작성한 본사공지 사항이 없습니다.' : '아직 작성한 상점공지 사항이 없습니다.';
+  const totalPages = Math.max(1, Math.ceil(state.notices.length / noticePageSize));
+  state.page = Math.min(Math.max(1, state.page), totalPages);
+  const start = (state.page - 1) * noticePageSize;
+  const items = state.notices.slice(start, start + noticePageSize);
+  if (!items.length) {
+    history.innerHTML = `<div class="notice-history-item"><p>${emptyText}</p></div>`;
+  } else {
+    history.innerHTML = items.map((notice) => `
+      <article class="notice-history-item">
+        <h4><span>${escapeHtml(noticeAudienceLabel(notice))}</span> ${escapeHtml(notice.title || '공지사항')}</h4>
+        <p>${escapeHtml(notice.message || '')}</p>
+        <small>${escapeHtml(noticeMetaText(notice))}</small>
+      </article>
+    `).join('');
+  }
+  renderNoticePager(
+    kind === 'head' ? 'adminNoticePagerHead' : 'adminNoticePagerStore',
+    state.notices.length,
+    state.page,
+    kind === 'head' ? 'goAdminHeadNoticePage' : 'goAdminStoreNoticePage'
+  );
+}
+
+function goAdminHeadNoticePage(page) {
+  adminNoticeState.head.page = page;
+  renderAdminNoticeGroup('head');
+}
+
+function goAdminStoreNoticePage(page) {
+  adminNoticeState.store.page = page;
+  renderAdminNoticeGroup('store');
+}
+
+function renderAdminNoticeHistory(notices = []) {
+  adminNoticeState.head.notices = notices.filter((notice) => notice.audience !== 'customer');
+  adminNoticeState.store.notices = notices.filter((notice) => notice.audience === 'customer');
+  adminNoticeState.head.page = 1;
+  adminNoticeState.store.page = 1;
+  renderAdminNoticeGroup('head');
+  renderAdminNoticeGroup('store');
+}
+
+async function loadAdminNotices() {
+  try {
+    if (!savedStoreApplications.length) {
+      await loadNewStoreApplications(false);
+    }
+    const response = await fetch('/api/notices?admin=1', {
+      cache: 'no-store',
+      headers: { 'x-admin-key': getAdminAccessKey() }
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) return;
+    renderAdminNoticeHistory(Array.isArray(result.notices) ? result.notices : []);
+  } catch (error) {
+    renderAdminNoticeHistory([]);
+  }
+}
+
+async function sendAdminNotice(event) {
+  event.preventDefault();
+  const button = event.currentTarget.querySelector('button[type="submit"]');
+  const originalText = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = '발송중...';
+  }
+  try {
+    const response = await fetch('/api/notices', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': getAdminAccessKey()
+      },
+      body: JSON.stringify({
+        audience: 'store-admin',
+        target: document.getElementById('adminNoticeTarget')?.value || 'all',
+        title: document.getElementById('adminNoticeTitle')?.value || '',
+        message: document.getElementById('adminNoticeMessage')?.value || ''
+      })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.message || '공지사항을 저장하지 못했습니다.');
+    renderAdminNoticeHistory(Array.isArray(result.notices) ? result.notices : []);
+    alert('공지사항이 발송되었습니다.');
+  } catch (error) {
+    alert(error.message || '공지사항을 저장하지 못했습니다.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalText || '공지 발송';
+    }
+  }
+}
+
+function syncApplicationsToPartners(applications) {
+  const applicationIds = new Set(applications.map((application) => application.id));
+  for (let index = partnerData.length - 1; index >= 0; index -= 1) {
+    const store = partnerData[index];
+    if (store.applicationId && !applicationIds.has(store.applicationId)) {
+      partnerData.splice(index, 1);
+    }
+  }
+
+  applications.forEach((application) => {
+    const approvalStatus = normalizeApplicationApproval(application.approvalStatus);
+    const existingIndex = partnerData.findIndex((store) => store.applicationId === application.id);
+
+    if (approvalStatus !== '승인완료') {
+      if (existingIndex >= 0) partnerData.splice(existingIndex, 1);
+      return;
+    }
+
+    const partner = mapApplicationToPartner(application);
+    if (existingIndex >= 0) {
+      Object.assign(partnerData[existingIndex], partner);
+    } else {
+      partnerData.unshift(partner);
+    }
+  });
+
+  filteredPartnerData = [...partnerData];
+  renderPartners(currentPartnerPage || 1);
+  resetAdminSalesSearch();
+}
+
+function renderNewStores() {
+  const tbody = document.getElementById('newStoreTableBody');
+  const info = document.getElementById('newStoreInfo');
+  if (!tbody || !info) return;
+
+  if (!filteredNewStoreApplications.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="no-result">표시할 신규 신청이 없습니다.</td></tr>';
+    info.textContent = '신규 신청 0건';
+    updateNewStoreBlink(0);
+    return;
+  }
+
+  tbody.innerHTML = filteredNewStoreApplications.map((application) => {
+    const status = normalizeApplicationApproval(application.approvalStatus);
+    const isSelected = selectedNewStoreApplicationId === application.id;
+    const address = `${application.storeAddress || ''} ${application.storeDetailAddress || ''}`.trim() || '-';
+    const fileButton = application.businessFilePath
+      ? `<button class="btn ghost" type="button" onclick="event.stopPropagation(); openApplicationBusinessFile('${escapeHtml(application.id)}')">사업자등록증</button>`
+      : '';
+    const ownerLine = escapeHtml(application.ownerName || '-');
+    const phoneLine = escapeHtml(application.ownerPhone || '-');
+    const addressLine = escapeHtml(address);
+    const detailRow = isSelected ? `
+      <tr class="new-store-detail-row">
+        <td colspan="6">
+          <div class="new-store-detail-grid">
+            <div class="new-store-detail-box"><span>대표자 정보</span><b>${escapeHtml(application.ownerName || '-')} / ${escapeHtml(application.ownerPhone || '-')}<br>${escapeHtml(application.ownerEmail || '-')}</b></div>
+            <div class="new-store-detail-box"><span>상점 계정</span><b>아이디: ${escapeHtml(application.storeId || '-')}<br>비밀번호: ${escapeHtml(application.storePassword || '신청 시 입력됨')}</b></div>
+            <div class="new-store-detail-box"><span>상점 정보</span><b>${escapeHtml(application.storeName || '-')}<br>${escapeHtml(application.storeCategory || '-')}</b></div>
+            <div class="new-store-detail-box"><span>주소</span><b>${escapeHtml(address)}</b></div>
+            <div class="new-store-detail-box"><span>영업 정보</span><b>${escapeHtml(application.openTime || '-')} ~ ${escapeHtml(application.closeTime || '-')}<br>휴무: ${escapeHtml(application.closedDay || '-')}</b></div>
+            <div class="new-store-detail-box"><span>사업자 정보</span><b>${escapeHtml(application.businessNumber || '-')}<br>${escapeHtml(application.businessFileName || '첨부파일 없음')}</b></div>
+            <div class="new-store-detail-box"><span>주문 설정</span><b>${escapeHtml(orderTypeLabel(application.orderType))}<br>배달비: ${escapeHtml(application.deliveryFee || '-')} / 최소주문: ${escapeHtml(application.minOrderPrice || '-')}</b></div>
+            <div class="new-store-detail-box"><span>정산 계좌</span><b>${escapeHtml(application.bankName || '-')} / ${escapeHtml(application.accountHolder || '-')}<br>${escapeHtml(application.accountNumber || '-')}</b></div>
+            <div class="new-store-detail-box"><span>처리 상태</span><b>${escapeHtml(status)}<br>${escapeHtml(application.approvalMemo || '메모 없음')}</b></div>
+          </div>
+        </td>
+      </tr>
+    ` : '';
+
+    return `
+      <tr class="new-store-row" onclick="toggleNewStoreDetail('${escapeHtml(application.id)}')">
+        <td>${formatApplicationDate(application.submittedAt)}</td>
+        <td><b>${escapeHtml(application.storeName || '신규 신청 상점')}</b><br><small class="muted">${escapeHtml(application.storeCategory || '-')}</small></td>
+        <td><div class="new-store-contact-lines"><span>${ownerLine}</span><span>${phoneLine}</span></div></td>
+        <td>${addressLine}</td>
+        <td><span class="tag ${approvalToTag(status)}">${status}</span></td>
+        <td>
+          <div class="detail-actions" style="margin-top:0;">
+            ${fileButton}
+            <button class="btn orange" type="button" onclick="changeApplicationApproval(event,'${escapeHtml(application.id)}','승인대기')">대기</button>
+            <button class="btn dark" type="button" onclick="changeApplicationApproval(event,'${escapeHtml(application.id)}','승인완료')">승인</button>
+            <button class="btn cancel" type="button" onclick="changeApplicationApproval(event,'${escapeHtml(application.id)}','반려')">반려</button>
+          </div>
+        </td>
+      </tr>
+      ${detailRow}
+    `;
+  }).join('');
+
+  const pendingCount = savedStoreApplications.filter((application) => normalizeApplicationApproval(application.approvalStatus) === '승인대기').length;
+  info.textContent = `총 ${filteredNewStoreApplications.length}건 표시 · 승인대기 ${pendingCount}건`;
+  updateNewStoreBlink(pendingCount);
+}
+
+function toggleNewStoreDetail(id) {
+  selectedNewStoreApplicationId = selectedNewStoreApplicationId === id ? '' : id;
+  renderNewStores();
+}
+
+function updateNewStoreBlink(pendingCount) {
+  document.querySelectorAll('[data-tab="newStores"]').forEach((button) => {
+    button.classList.toggle('new-store-alert', pendingCount > 0);
+    button.textContent = pendingCount > 0 ? `신규상점 ${pendingCount}` : '신규상점';
+  });
+}
+
+function searchNewStores() {
+  const keyword = (document.getElementById('newStoreSearchInput')?.value || '').trim().toLowerCase();
+
+  filteredNewStoreApplications = savedStoreApplications.filter((application) => {
+    const approvalStatus = normalizeApplicationApproval(application.approvalStatus);
+    const target = `${application.storeName || ''} ${application.ownerName || ''} ${application.ownerPhone || ''} ${application.storeAddress || ''}`.toLowerCase();
+    const keywordMatched = !keyword || target.includes(keyword);
+    return approvalStatus === '승인대기' && keywordMatched;
+  });
+
+  if (selectedNewStoreApplicationId && !filteredNewStoreApplications.some((application) => application.id === selectedNewStoreApplicationId)) {
+    selectedNewStoreApplicationId = '';
+  }
+
+  renderNewStores();
+}
+
+async function loadNewStoreApplications(showAlert = false) {
+  const applications = await fetchSavedStoreApplications();
+  savedStoreApplications = applications.map((application) => ({
+    ...application,
+    approvalStatus: normalizeApplicationApproval(application.approvalStatus)
+  }));
+  filteredNewStoreApplications = [...savedStoreApplications];
+  searchNewStores();
+  syncApplicationsToPartners(savedStoreApplications);
+
+  if (showAlert) {
+    alert(`신규 신청 ${savedStoreApplications.length}건을 불러왔습니다.`);
+  }
+}
+
+async function changeApplicationApproval(event, id, approvalStatus) {
+  if (event) event.stopPropagation();
+  const adminKey = getAdminAccessKey();
+  const button = event?.currentTarget || null;
+  const originalText = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = '처리중';
+  }
+
+  try {
+    const response = await fetch('/api/applications', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': adminKey
+      },
+      body: JSON.stringify({ id, approvalStatus })
+    });
+
+    if (response.status === 401) {
+      handleAdminAuthExpired();
+      return;
+    }
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) {
+      alert(result.message || '승인 상태를 저장하지 못했습니다.');
+      return;
+    }
+
+    savedStoreApplications = savedStoreApplications.map((application) => (
+      application.id === id ? { ...application, ...result.application } : application
+    ));
+    await loadNewStoreApplications(false);
+    syncApplicationsToPartners(savedStoreApplications);
+    alert(`승인 상태가 ${approvalStatus}(으)로 저장되었습니다.`);
+  } catch (error) {
+    alert('승인 상태를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  }
+}
+
+async function changeSelectedPartnerApproval(event, approvalStatus) {
+  if (event) event.stopPropagation();
+  const store = getSelectedPartnerStore();
+  if (!store || !store.applicationId) {
+    alert('연결된 상점 신청 정보가 없습니다.');
+    return;
+  }
+
+  const message = approvalStatus === '승인대기'
+    ? '승인대기로 변경하면 상점현황에서 빠지고 신규상점으로 이동합니다. 변경할까요?'
+    : '승인완료 상태로 변경할까요?';
+  if (!confirm(message)) return;
+
+  const button = event?.currentTarget || null;
+  const originalText = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = '처리중';
+  }
+
+  try {
+    const response = await fetch('/api/applications', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': getAdminAccessKey()
+      },
+      body: JSON.stringify({ id: store.applicationId, approvalStatus })
+    });
+
+    if (response.status === 401) {
+      handleAdminAuthExpired();
+      return;
+    }
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) {
+      alert(result.message || '승인 상태를 저장하지 못했습니다.');
+      return;
+    }
+
+    await loadNewStoreApplications(false);
+    const nextIndex = partnerData.findIndex((item) => item.applicationId === store.applicationId);
+    if (nextIndex >= 0) {
+      selectedPartnerIndex = nextIndex;
+      renderPartners(currentPartnerPage || 1);
+      openPartnerDetail(nextIndex, { forceOpen: true });
+    } else {
+      closePartnerDetail();
+    }
+    alert(`승인 상태가 ${approvalStatus}(으)로 저장되었습니다.`);
+  } catch (error) {
+    alert('승인 상태를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  }
+}
+
+async function deleteSelectedPartnerApplication(event) {
+  if (event) event.stopPropagation();
+  const store = getSelectedPartnerStore();
+  if (!store || !store.applicationId) {
+    alert('삭제할 상점 신청 정보가 없습니다.');
+    return;
+  }
+
+  if (!confirm(`${store.name || '선택한 상점'} 신청 정보를 삭제할까요? 삭제 후 상점현황과 신규상점 목록에서 사라집니다.`)) {
+    return;
+  }
+
+  const button = event?.currentTarget || null;
+  const originalText = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = '삭제중';
+  }
+
+  try {
+    const response = await fetch('/api/applications', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': getAdminAccessKey()
+      },
+      body: JSON.stringify({ id: store.applicationId })
+    });
+
+    if (response.status === 401) {
+      handleAdminAuthExpired();
+      return;
+    }
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) {
+      alert(result.message || '상점 신청 정보를 삭제하지 못했습니다.');
+      return;
+    }
+
+    selectedPartnerIndex = null;
+    await loadNewStoreApplications(false);
+    closePartnerDetail();
+    alert('상점 신청 정보가 삭제되었습니다.');
+  } catch (error) {
+    alert('상점 신청 정보를 삭제하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  }
+}
+
+function openApplicationBusinessFile(id) {
+  const application = savedStoreApplications.find((item) => item.id === id);
+  if (!application || !application.businessFilePath) {
+    alert('첨부된 사업자등록증 파일이 없습니다.');
+    return;
+  }
+
+  openBusinessFileByPath(application.businessFilePath, application.businessFileName || '사업자등록증');
+}
+
+async function fetchSavedStoreApplications() {
+  const adminKey = getAdminAccessKey();
+
+  const response = await fetch('/api/applications', {
+    headers: { 'x-admin-key': adminKey }
+  });
+
+  if (response.status === 401) {
+    handleAdminAuthExpired();
+    return [];
+  }
+
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.ok) {
+    alert(result.message || '신청 목록을 불러오지 못했습니다.');
+    return [];
+  }
+
+  return Array.isArray(result.applications) ? result.applications : [];
+}
+
+function getRegionFromAddress(address) {
+  const value = String(address || '').trim();
+  const matched = value.match(/^(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)/);
+  return matched ? matched[1] : '신청';
+}
+
+function createSlug(value) {
+  const text = String(value || 'store')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9가-힣]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return encodeURIComponent(text || `store-${Date.now()}`);
+}
+
+function mapApplicationToPartner(application) {
+  const name = application.storeName || '신규 신청 상점';
+  const approvalStatus = normalizeApplicationApproval(application.approvalStatus);
+  const partnerStatus = approvalStatus === '승인완료'
+    ? (application.businessStatus === '마감' ? '마감' : '영업중')
+    : '준비중';
+  return {
+    applicationId: application.id,
+    approvalStatus,
+    approvalUpdatedAt: application.approvalUpdatedAt || '',
+    region: getRegionFromAddress(application.storeAddress),
+    name,
+    owner: application.ownerName || '-',
+    link: `order.html?store=${encodeURIComponent(application.storeId || application.id || createSlug(name))}`,
+    orders: '0건',
+    sales: '0원',
+    tag: statusToTag(partnerStatus),
+    status: partnerStatus,
+    businessStatus: partnerStatus,
+    businessStatusUpdatedAt: application.businessStatusUpdatedAt || '',
+    ownerPhone: application.ownerPhone || '',
+    ownerEmail: application.ownerEmail || '',
+    storeId: application.storeId || '',
+    storePassword: application.storePassword || '신청 시 입력됨',
+    storeCategory: application.storeCategory || 'etc',
+    description: application.description || '',
+    storeAddress: application.storeAddress || '',
+    storeDetailAddress: application.storeDetailAddress || '',
+    openTime: application.openTime || '',
+    closeTime: application.closeTime || '',
+    closedDay: application.closedDay || '',
+    businessNumber: application.businessNumber || '',
+    businessFileName: application.businessFileName || '',
+    businessFilePath: application.businessFilePath || '',
+    businessFileType: application.businessFileType || '',
+    businessFileSize: application.businessFileSize || 0,
+    signImageName: application.signImageName || '',
+    signImageUrl: application.signImageUrl || '',
+    storePhotoNames: Array.isArray(application.storePhotoNames) ? application.storePhotoNames : [],
+    storePhotoUrls: Array.isArray(application.storePhotoUrls) ? application.storePhotoUrls : [],
+    visits: Number(application.visits || 0) || 0,
+    orderType: application.orderType || 'both',
+    deliveryFee: application.deliveryFee || '',
+    minOrderPrice: application.minOrderPrice || '',
+    bankName: application.bankName || '',
+    accountHolder: application.accountHolder || '',
+    accountNumber: application.accountNumber || '',
+    menuCategories: Array.isArray(application.menuCategories) ? application.menuCategories : [],
+    menus: Array.isArray(application.menus) ? application.menus : [],
+    memo: `상점전용웹 제작 신청 접수: ${application.submittedAt ? new Date(application.submittedAt).toLocaleString('ko-KR') : '접수일 확인 필요'}`
+  };
+}
+
+async function loadSavedApplications() {
+  await loadNewStoreApplications(false);
+  alert(`신규 신청 ${savedStoreApplications.length}건을 상점현황에 반영했습니다.`);
+}
+
+partnerData.forEach((store, index) => {
+  const categoryMap = {
+    "분식": "snack", "한상": "korean", "카페": "cafe", "야식": "korean", "치킨": "chicken",
+    "국밥": "korean", "푸드": "etc", "도시락": "korean", "돈까스": "japanese", "브런치": "cafe",
+    "피자": "pizza", "반점": "chinese", "라면": "korean", "김밥": "snack", "탕수육": "chinese"
+  };
+  const foundCategory = Object.keys(categoryMap).find((key) => store.name.includes(key));
+  const numericId = String(index + 1).padStart(3, '0');
+
+  Object.assign(store, {
+    ownerPhone: store.ownerPhone || `010-${String(2300 + index).padStart(4, '0')}-${String(1000 + index).padStart(4, '0')}`,
+    ownerEmail: store.ownerEmail || `owner${numericId}@woorikkeo.co.kr`,
+    storeId: store.storeId || store.link.replace('/s/', '').replace(/-/g, '_'),
+    storePassword: store.storePassword || `wk${numericId}!2026`,
+    storeCategory: store.storeCategory || (foundCategory ? categoryMap[foundCategory] : 'etc'),
+    description: store.description || `${store.name} 전용 주문웹입니다.`,
+    storeAddress: store.storeAddress || `${store.region} ${store.name} 본점 도로명 주소`,
+    storeDetailAddress: store.storeDetailAddress || '1층',
+    openTime: store.openTime || '10:00',
+    closeTime: store.closeTime || '22:00',
+    closedDay: store.closedDay || '연중무휴',
+    businessNumber: store.businessNumber || `${100 + index}-${10 + (index % 80)}-${String(10000 + index).padStart(5, '0')}`,
+    businessFileName: store.businessFileName || `${store.name}_사업자등록증.pdf`,
+    signImageName: store.signImageName || '',
+    signImageUrl: store.signImageUrl || '',
+    storePhotoNames: store.storePhotoNames || [],
+    storePhotoUrls: store.storePhotoUrls || [],
+    orderType: store.orderType || 'both',
+    deliveryFee: store.deliveryFee || String(2500 + (index % 4) * 500),
+    minOrderPrice: store.minOrderPrice || String(12000 + (index % 5) * 1000),
+    bankName: store.bankName || ['국민은행', '신한은행', '우리은행', '농협은행', '카카오뱅크'][index % 5],
+    accountHolder: store.accountHolder || store.owner,
+    accountNumber: store.accountNumber || `110-${String(1000 + index).padStart(4, '0')}-${String(900000 + index).padStart(6, '0')}`,
+    memo: store.memo || '상점 개설 정보 확인 필요'
+  });
+});
+
+const partnersPerPage = 10;
+let currentPartnerPage = 1;
+let filteredPartnerData = [...partnerData];
+
+function renderPartners(page = 1) {
+  currentPartnerPage = page;
+  updateDashboardMetrics();
+
+  const tbody = document.getElementById('partnerTableBody');
+  const pagination = document.getElementById('partnerPagination');
+  const pageInfo = document.getElementById('partnerPageInfo');
+
+  if (!tbody || !pagination || !pageInfo) return;
+  parkPartnerDetailPanel();
+
+  const totalPages = Math.max(1, Math.ceil(filteredPartnerData.length / partnersPerPage));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  currentPartnerPage = safePage;
+
+  const startIndex = (safePage - 1) * partnersPerPage;
+  const currentItems = filteredPartnerData.slice(startIndex, startIndex + partnersPerPage);
+
+  if (currentItems.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" class="no-result">검색 결과가 없습니다.</td></tr>';
+    pagination.innerHTML = '';
+    pageInfo.textContent = '검색 결과 0개';
+    return;
+  }
+
+  tbody.innerHTML = currentItems.map((store) => {
+    const originalIndex = partnerData.indexOf(store);
+    const detailRow = selectedPartnerIndex === originalIndex ? `
+      <tr class="partner-inline-detail-row">
+        <td colspan="8"><div id="partnerInlineDetailMount"></div></td>
+      </tr>
+    ` : '';
+    return `
+    <tr>
+      <td>${store.region}</td>
+      <td><button class="partner-link-btn" type="button" onclick="openPartnerDetail(${originalIndex})">${store.name}</button></td>
+      <td>${store.owner}</td>
+      <td><a href="${store.link}" target="_blank" rel="noopener">${store.link}</a></td>
+      <td>${store.orders}</td>
+      <td>${store.sales}</td>
+      <td><span class="tag ${store.tag}">${store.status}</span></td>
+      <td><span id="partnerVisitCount-${originalIndex}">${Number(store.visits || 0).toLocaleString('ko-KR')}회</span></td>
+    </tr>
+    ${detailRow}
+  `}).join('');
+
+  let pageButtons = `
+    <button class="page-btn" onclick="renderPartners(${safePage - 1})" ${safePage === 1 ? 'disabled' : ''}>이전</button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    pageButtons += `
+      <button class="page-btn ${i === safePage ? 'active' : ''}" onclick="renderPartners(${i})">${i}</button>
+    `;
+  }
+
+  pageButtons += `
+    <button class="page-btn" onclick="renderPartners(${safePage + 1})" ${safePage === totalPages ? 'disabled' : ''}>다음</button>
+  `;
+
+  pagination.innerHTML = pageButtons;
+  pageInfo.textContent = `총 ${filteredPartnerData.length}개 상점 중 ${startIndex + 1}~${Math.min(startIndex + partnersPerPage, filteredPartnerData.length)}개 표시`;
+  mountPartnerDetailPanel();
+  loadPartnerVisitCounts(currentItems);
+}
+
+async function loadPartnerVisitCounts(stores) {
+  await Promise.all((stores || []).map(async (store) => {
+    const originalIndex = partnerData.indexOf(store);
+    const target = document.getElementById(`partnerVisitCount-${originalIndex}`);
+    const storeId = store.storeId || store.applicationId || createSlug(store.name);
+    if (!target || !storeId) return;
+    try {
+      const response = await fetch(`/api/store-visits?store=${encodeURIComponent(storeId)}`, { cache: 'no-store' });
+      const result = await response.json().catch(() => ({}));
+      const visits = response.ok && result.ok ? Number(result.visits || 0) : 0;
+      store.visits = visits;
+      target.textContent = `${visits.toLocaleString('ko-KR')}회`;
+    } catch (error) {
+      target.textContent = `${Number(store.visits || 0).toLocaleString('ko-KR')}회`;
+    }
+  }));
+}
+
+function searchPartners() {
+  const input = document.getElementById('partnerSearchInput');
+  const keyword = input ? input.value.trim().toLowerCase() : '';
+
+  filteredPartnerData = partnerData.filter((store) => {
+    return store.name.toLowerCase().includes(keyword) ||
+           store.owner.toLowerCase().includes(keyword) ||
+           store.region.toLowerCase().includes(keyword);
+  });
+
+  if (selectedPartnerIndex !== null && !filteredPartnerData.includes(partnerData[selectedPartnerIndex])) {
+    selectedPartnerIndex = null;
+    parkPartnerDetailPanel();
+  }
+  renderPartners(1);
+}
+
+function resetPartnerSearch() {
+  const input = document.getElementById('partnerSearchInput');
+  if (input) input.value = '';
+  filteredPartnerData = [...partnerData];
+  selectedPartnerIndex = null;
+  parkPartnerDetailPanel();
+  renderPartners(1);
+}
+
+let selectedPartnerIndex = null;
+let currentPartnerMenuImage = '';
+
+const defaultPartnerCategories = ['인기메뉴', '후라이드', '양념/간장', '순살치킨', '사이드', '음료', '세트메뉴'];
+const defaultPartnerMenus = [
+  { name: '후라이드치킨', desc: '겉은 바삭하고 속은 촉촉한 대표 메뉴', category: '후라이드', price: 18000, status: '판매중', image: '' },
+  { name: '양념치킨', desc: '달콤매콤한 특제 양념소스 메뉴', category: '양념/간장', price: 19000, status: '판매중', image: '' },
+  { name: '간장마늘치킨', desc: '간장소스와 마늘향이 살아있는 메뉴', category: '양념/간장', price: 20000, status: '판매중', image: '' },
+  { name: '반반치킨', desc: '후라이드와 양념을 한 번에 즐기는 메뉴', category: '인기메뉴', price: 19000, status: '판매중', image: '' },
+  { name: '감자튀김', desc: '주문과 함께 먹기 좋은 사이드 메뉴', category: '사이드', price: 5000, status: '판매중', image: '' },
+  { name: '콜라 1.25L', desc: '기본 탄산음료', category: '음료', price: 3000, status: '판매중', image: '' }
+];
+
+function statusToTag(status) {
+  if (status === '영업중') return 'green';
+  if (status === '마감') return 'red';
+  if (status === '준비중') return 'orange';
+  if (status === '점검중') return 'blue';
+  return 'green';
+}
+
+function ensurePartnerMenuData(store) {
+  if (!store) return;
+  const storageKey = getPartnerMenuStorageKey(store);
+  if (!store.partnerMenuLoaded) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      if (saved && Array.isArray(saved.categories) && Array.isArray(saved.menus)) {
+        store.menuCategories = saved.categories;
+        store.menus = saved.menus;
+      }
+    } catch (error) {
+      console.warn('상점 메뉴 저장 데이터를 불러오지 못했습니다.', error);
+    }
+    store.partnerMenuLoaded = true;
+  }
+  if (!store.partnerMenuLoadedFromServer && (!Array.isArray(store.menuCategories) || store.menuCategories.length === 0)) {
+    store.menuCategories = [...defaultPartnerCategories];
+  }
+  if (!store.partnerMenuLoadedFromServer && (!Array.isArray(store.menus) || store.menus.length === 0)) {
+    store.menus = defaultPartnerMenus.map((menu) => ({ ...menu }));
+  }
+}
+
+function getPartnerMenuStorageKey(store) {
+  return `wooreccoPartnerMenus:${store.storeId || store.name || 'store'}`;
+}
+
+async function loadPartnerMenuData(store) {
+  if (!store || !store.storeId) return;
+  try {
+    const response = await fetch(`/api/store-menus?store=${encodeURIComponent(store.storeId)}`, { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) return;
+    store.menuCategories = Array.isArray(result.categories) ? result.categories : store.menuCategories;
+    store.menus = Array.isArray(result.menus) ? result.menus : store.menus;
+    store.partnerMenuLoadedFromServer = true;
+    localStorage.setItem(getPartnerMenuStorageKey(store), JSON.stringify({
+      categories: store.menuCategories || [],
+      menus: store.menus || []
+    }));
+    renderPartnerMenuManager();
+  } catch (error) {
+    console.warn('상점 메뉴를 불러오지 못했습니다.', error);
+  }
+}
+
+async function savePartnerMenuData(store) {
+  if (!store) return;
+  localStorage.setItem(getPartnerMenuStorageKey(store), JSON.stringify({
+    categories: store.menuCategories || [],
+    menus: store.menus || []
+  }));
+  if (!store.storeId) return;
+  const response = await fetch(`/api/store-menus?store=${encodeURIComponent(store.storeId)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-admin-key': getAdminAccessKey()
+    },
+    body: JSON.stringify({
+      categories: store.menuCategories || [],
+      menus: store.menus || []
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.ok) {
+    throw new Error(result.message || 'menu_save_failed');
+  }
+}
+
+function getSelectedPartnerStore() {
+  if (selectedPartnerIndex === null) return null;
+  const store = partnerData[selectedPartnerIndex];
+  ensurePartnerMenuData(store);
+  return store;
+}
+
+function getPartnerMenuStatusTag(status) {
+  if (status === '판매중') return 'green';
+  if (status === '품절') return 'orange';
+  if (status === '숨김') return 'blue';
+  return 'green';
+}
+
+function getPartnerMenuImageMarkup(menu) {
+  if (menu.image) {
+    return `<img class="menu-thumb" src="${menu.image}" alt="${escapeHtml(menu.name)} 이미지">`;
+  }
+  return '<div class="menu-thumb" style="display:grid;place-items:center;color:#9ca3af;font-size:11px;font-weight:700;">NO IMG</div>';
+}
+
+function renderPartnerCategories(selectedValue = '') {
+  const store = getSelectedPartnerStore();
+  const categoryList = document.getElementById('adminCategoryList');
+  const menuCategory = document.getElementById('adminMenuCategory');
+  if (!store || !categoryList || !menuCategory) return;
+
+  categoryList.innerHTML = store.menuCategories.map((category, index) => `
+    <span class="category-chip">
+      ${escapeHtml(category)}
+      <button type="button" onclick="deletePartnerCategory(${index})" title="카테고리 삭제">×</button>
+    </span>
+  `).join('');
+
+  const current = selectedValue || menuCategory.value;
+  menuCategory.innerHTML = '<option value="">카테고리 선택</option>' + store.menuCategories.map((category) => `
+    <option value="${escapeHtml(category)}">${escapeHtml(category)}</option>
+  `).join('');
+  if (current && store.menuCategories.includes(current)) menuCategory.value = current;
+}
+
+function renderPartnerMenus() {
+  const store = getSelectedPartnerStore();
+  const tbody = document.getElementById('adminMenuTableBody');
+  if (!store || !tbody) return;
+
+  tbody.innerHTML = store.menus.map((menu, index) => `
+    <tr>
+      <td>${getPartnerMenuImageMarkup(menu)}</td>
+      <td>
+        <button type="button" class="menu-name-btn" onclick="editPartnerMenu(${index})">${escapeHtml(menu.name)}</button>
+        <span class="menu-desc-small">${escapeHtml(menu.desc || '')}</span>
+      </td>
+      <td>${escapeHtml(menu.category || '-')}</td>
+      <td>${Number(menu.price || 0).toLocaleString('ko-KR')}원</td>
+      <td><span class="tag ${getPartnerMenuStatusTag(menu.status)}">${escapeHtml(menu.status || '판매중')}</span></td>
+      <td><button type="button" class="btn ghost small" onclick="editPartnerMenu(${index})">수정</button></td>
+    </tr>
+  `).join('');
+}
+
+function renderPartnerMenuManager(selectedCategory = '') {
+  const store = getSelectedPartnerStore();
+  if (!store) return;
+  renderPartnerCategories(selectedCategory);
+  renderPartnerMenus();
+}
+
+async function addPartnerCategory(event) {
+  event.preventDefault();
+  const store = getSelectedPartnerStore();
+  const input = document.getElementById('adminCategoryName');
+  if (!store || !input) return;
+
+  const value = input.value.trim();
+  if (!value) {
+    alert('카테고리명을 입력해주세요.');
+    return;
+  }
+  if (store.menuCategories.includes(value)) {
+    alert('이미 등록된 카테고리입니다.');
+    return;
+  }
+
+  store.menuCategories.push(value);
+  try {
+    await savePartnerMenuData(store);
+    input.value = '';
+    renderPartnerMenuManager(value);
+    alert('카테고리가 추가되었습니다.');
+  } catch (error) {
+    store.menuCategories = store.menuCategories.filter((category) => category !== value);
+    alert('카테고리를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+async function deletePartnerCategory(index) {
+  const store = getSelectedPartnerStore();
+  if (!store || !store.menuCategories[index]) return;
+
+  const category = store.menuCategories[index];
+  const used = store.menus.some((menu) => menu.category === category);
+  if (used) {
+    alert('해당 카테고리를 사용하는 메뉴가 있어 삭제할 수 없습니다.');
+    return;
+  }
+
+  const removed = store.menuCategories[index];
+  store.menuCategories.splice(index, 1);
+  try {
+    await savePartnerMenuData(store);
+    renderPartnerMenuManager();
+  } catch (error) {
+    store.menuCategories.splice(index, 0, removed);
+    alert('카테고리를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+function previewPartnerMenuImage(event) {
+  const file = event.target.files && event.target.files[0];
+  const preview = document.getElementById('adminMenuImagePreview');
+  if (!file || !preview) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    currentPartnerMenuImage = e.target.result;
+    preview.innerHTML = `<img src="${currentPartnerMenuImage}" alt="메뉴 이미지 미리보기">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function savePartnerMenu(event) {
+  event.preventDefault();
+  const store = getSelectedPartnerStore();
+  if (!store) return;
+
+  const editIndexValue = document.getElementById('adminMenuEditIndex').value;
+  const previousMenus = store.menus.map((menu) => ({ ...menu }));
+  const menu = {
+    name: document.getElementById('adminMenuName').value.trim(),
+    desc: document.getElementById('adminMenuDesc').value.trim(),
+    category: document.getElementById('adminMenuCategory').value,
+    price: Number(document.getElementById('adminMenuPrice').value),
+    status: document.getElementById('adminMenuStatus').value,
+    image: currentPartnerMenuImage
+  };
+
+  if (editIndexValue === '') {
+    store.menus.push(menu);
+  } else {
+    const index = Number(editIndexValue);
+    store.menus[index] = {
+      ...store.menus[index],
+      ...menu,
+      image: currentPartnerMenuImage || store.menus[index].image
+    };
+  }
+
+  try {
+    await savePartnerMenuData(store);
+    renderPartnerMenus();
+    resetPartnerMenuForm();
+    alert('메뉴 정보가 저장되었습니다.');
+  } catch (error) {
+    store.menus = previousMenus;
+    renderPartnerMenus();
+    alert('메뉴 정보를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+function editPartnerMenu(index) {
+  const store = getSelectedPartnerStore();
+  if (!store || !store.menus[index]) return;
+
+  const menu = store.menus[index];
+  document.getElementById('adminMenuEditIndex').value = index;
+  document.getElementById('adminMenuName').value = menu.name || '';
+  document.getElementById('adminMenuDesc').value = menu.desc || '';
+  renderPartnerCategories(menu.category);
+  document.getElementById('adminMenuCategory').value = menu.category || '';
+  document.getElementById('adminMenuPrice').value = menu.price || '';
+  document.getElementById('adminMenuStatus').value = menu.status || '판매중';
+  currentPartnerMenuImage = menu.image || '';
+
+  const preview = document.getElementById('adminMenuImagePreview');
+  if (preview) {
+    preview.innerHTML = currentPartnerMenuImage
+      ? `<img src="${currentPartnerMenuImage}" alt="${escapeHtml(menu.name)} 이미지 미리보기">`
+      : '이미지 미리보기';
+  }
+}
+
+function resetPartnerMenuForm() {
+  const form = document.getElementById('adminMenuForm');
+  if (form) form.reset();
+  const editIndex = document.getElementById('adminMenuEditIndex');
+  if (editIndex) editIndex.value = '';
+  currentPartnerMenuImage = '';
+  const preview = document.getElementById('adminMenuImagePreview');
+  if (preview) preview.textContent = '이미지 미리보기';
+  renderPartnerCategories();
+}
+
+function renderPartnerMediaFigure(containerId, urls, labels) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = labels.map((label, index) => {
+    const url = urls[index] || '';
+    const className = containerId === 'editSignImagePreview' ? ' class="sign"' : '';
+    return `<figure${className}>${url ? `<img src="${url}" alt="${label}">` : label}</figure>`;
+  }).join('');
+}
+
+function applyPartnerMedia(store = {}) {
+  const signUrl = store.signImageUrl || '';
+  const photoUrls = Array.isArray(store.storePhotoUrls) ? store.storePhotoUrls : [];
+  renderPartnerMediaFigure('editSignImagePreview', [signUrl], ['간판사진 없음']);
+  renderPartnerMediaFigure('editStorePhotoPreview', photoUrls, ['가게사진 1', '가게사진 2', '가게사진 3', '가게사진 4']);
+}
+
+function previewPartnerMedia() {
+  const signFile = document.getElementById('editSignImage')?.files?.[0];
+  const photoInputs = Array.from(document.querySelectorAll('.store-photo-input'));
+  const signUrl = signFile ? URL.createObjectURL(signFile) : document.querySelector('#editSignImagePreview img')?.src || '';
+  const photoUrls = photoInputs.map((input, index) => (
+    input.files && input.files[0]
+      ? URL.createObjectURL(input.files[0])
+      : document.querySelectorAll('#editStorePhotoPreview img')[index]?.src || ''
+  ));
+  renderPartnerMediaFigure('editSignImagePreview', [signUrl], ['간판사진 없음']);
+  renderPartnerMediaFigure('editStorePhotoPreview', photoUrls, ['가게사진 1', '가게사진 2', '가게사진 3', '가게사진 4']);
+}
+
+function readPartnerFileAsDataUrl(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadPartnerImageFromFile(file){
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('이미지 파일을 읽지 못했습니다.'));
+    };
+    image.src = url;
+  });
+}
+
+function partnerCanvasToJpegBlob(canvas, quality){
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+}
+
+async function compressPartnerImageForUpload(file){
+  if (!file) return null;
+  if (!String(file.type || '').startsWith('image/')) {
+    throw new Error('이미지 파일만 등록할 수 있습니다.');
+  }
+  const maxBytes = 430 * 1024;
+  if (file.size <= maxBytes) {
+    return {
+      name: file.name,
+      contentType: file.type || 'image/jpeg',
+      data: await readPartnerFileAsDataUrl(file)
+    };
+  }
+
+  const image = await loadPartnerImageFromFile(file);
+  let maxSide = 1400;
+  let blob = null;
+  for (let sizeTry = 0; sizeTry < 5; sizeTry += 1) {
+    const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(image.width * scale));
+    canvas.height = Math.max(1, Math.round(image.height * scale));
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    for (const quality of [0.82, 0.74, 0.66, 0.58, 0.5, 0.42]) {
+      blob = await partnerCanvasToJpegBlob(canvas, quality);
+      if (blob && blob.size <= maxBytes) break;
+    }
+    if (blob && blob.size <= maxBytes) break;
+    maxSide = Math.round(maxSide * 0.82);
+  }
+
+  if (!blob) throw new Error('이미지를 압축하지 못했습니다.');
+  const safeName = String(file.name || 'photo.jpg').replace(/\.[^.]+$/, '') + '.jpg';
+  return {
+    name: safeName,
+    contentType: 'image/jpeg',
+    data: await readPartnerFileAsDataUrl(blob)
+  };
+}
+
+async function fileToPartnerMediaPayload(file){
+  return compressPartnerImageForUpload(file);
+}
+
+async function loadPartnerMediaData(store) {
+  if (!store || !store.storeId) return;
+  try {
+    const response = await fetch(`/api/store-media?store=${encodeURIComponent(store.storeId)}`, { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok || !result.media) return;
+    store.signImageName = result.media.signImageName || '';
+    store.signImageUrl = result.media.signImageUrl || '';
+    store.storePhotoNames = Array.isArray(result.media.storePhotoNames) ? result.media.storePhotoNames : [];
+    store.storePhotoUrls = Array.isArray(result.media.storePhotoUrls) ? result.media.storePhotoUrls : [];
+    applyPartnerMedia(store);
+  } catch (error) {
+    console.warn('상점 사진을 불러오지 못했습니다.', error);
+  }
+}
+
+async function savePartnerMediaData(store, signImage, storePhotos) {
+  if (!store || !store.storeId || (!signImage && !storePhotos.some(Boolean))) return null;
+  const uploadPhotos = [];
+  for (let index = 0; index < storePhotos.length; index += 1) {
+    if (storePhotos[index]) {
+      uploadPhotos.push({ slot: index, file: await fileToPartnerMediaPayload(storePhotos[index]) });
+    }
+  }
+  const response = await fetch(`/api/store-media?store=${encodeURIComponent(store.storeId)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-admin-key': getAdminAccessKey()
+    },
+    body: JSON.stringify({
+      signImage: await fileToPartnerMediaPayload(signImage),
+      storePhotos: uploadPhotos
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.ok) {
+    if (response.status === 413) throw new Error('사진 용량이 너무 큽니다. 사진을 줄인 뒤 다시 저장해주세요.');
+    throw new Error(result.message || '사진 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+  }
+  return result.media;
+}
+
+async function savePartnerBusinessStatus(store, status) {
+  if (!store || !store.storeId) return null;
+  const normalized = status === '마감' ? '마감' : '영업중';
+  const response = await fetch(`/api/store-status?store=${encodeURIComponent(store.storeId)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-admin-key': getAdminAccessKey()
+    },
+    body: JSON.stringify({ businessStatus: normalized })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.ok) {
+    throw new Error(result.message || '영업상태를 저장하지 못했습니다.');
+  }
+  return result.status;
+}
+
+async function savePartnerSettingsData(store) {
+  const storeKey = store?.applicationId || store?.storeId;
+  if (!storeKey) return null;
+  const response = await fetch(`/api/store-settings?store=${encodeURIComponent(storeKey)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-admin-key': getAdminAccessKey()
+    },
+    body: JSON.stringify({
+      ownerName: store.owner,
+      ownerPhone: store.ownerPhone,
+      ownerEmail: store.ownerEmail,
+      storePassword: store.storePassword,
+      storeName: store.name,
+      storeCategory: store.storeCategory,
+      description: store.description,
+      storeAddress: store.storeAddress,
+      storeDetailAddress: store.storeDetailAddress,
+      openTime: store.openTime,
+      closeTime: store.closeTime,
+      closedDay: store.closedDay,
+      businessNumber: store.businessNumber,
+      orderType: store.orderType,
+      deliveryFee: store.deliveryFee,
+      minOrderPrice: store.minOrderPrice,
+      bankName: store.bankName,
+      accountHolder: store.accountHolder,
+      accountNumber: store.accountNumber
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.ok) {
+    throw new Error(result.message || '상점 기본정보를 저장하지 못했습니다.');
+  }
+  return result.settings;
+}
+
+function parkPartnerDetailPanel() {
+  const panel = document.getElementById('partnerDetailPanel');
+  const partnersTab = document.getElementById('partners');
+  if (panel && partnersTab && panel.parentElement && panel.parentElement.id === 'partnerInlineDetailMount') {
+    panel.classList.remove('show');
+    partnersTab.appendChild(panel);
+  }
+}
+
+function mountPartnerDetailPanel() {
+  const panel = document.getElementById('partnerDetailPanel');
+  const mount = document.getElementById('partnerInlineDetailMount');
+  if (panel && mount && selectedPartnerIndex !== null) {
+    mount.appendChild(panel);
+    panel.classList.add('show');
+  }
+}
+
+function openPartnerDetail(index, options = {}) {
+  if (selectedPartnerIndex === index && !options.forceOpen) {
+    closePartnerDetail();
+    return;
+  }
+  selectedPartnerIndex = index;
+  renderPartners(currentPartnerPage);
+  const store = partnerData[index];
+  const panel = document.getElementById('partnerDetailPanel');
+  if (!store || !panel) return;
+
+  document.getElementById('detailTitle').textContent = `${store.name} 상세현황`;
+  document.getElementById('detailSubText').textContent = `${store.region} · 대표자 ${store.owner} · 상점정보를 확인하고 수정할 수 있습니다.`;
+  document.getElementById('detailOrders').textContent = store.orders;
+  document.getElementById('detailSales').textContent = store.sales;
+  document.getElementById('detailStatus').textContent = store.status;
+  document.getElementById('detailLink').textContent = store.link;
+  const settingWon = (value) => {
+    const number = Number(String(value || '').replace(/[^0-9]/g, ''));
+    return number ? `${number.toLocaleString('ko-KR')}원` : '-';
+  };
+  document.getElementById('detailOpStoreName').textContent = store.name || '-';
+  document.getElementById('detailOpCategory').textContent = storeCategoryLabel(store.storeCategory);
+  document.getElementById('detailOpOrderType').textContent = orderTypeLabel(store.orderType);
+  document.getElementById('detailOpMinOrder').textContent = settingWon(store.minOrderPrice);
+  document.getElementById('detailOpDeliveryFee').textContent = settingWon(store.deliveryFee);
+  document.getElementById('detailOpHours').textContent = formatBusinessHours(store.openTime, store.closeTime);
+  document.getElementById('detailOpDescription').textContent = store.description || '-';
+  document.getElementById('opEditOrderType').value = store.orderType || 'delivery';
+  document.getElementById('opEditMinOrderPrice').value = store.minOrderPrice || '';
+  document.getElementById('opEditDeliveryFee').value = store.deliveryFee || '';
+  document.getElementById('opEditDescription').value = store.description || '';
+
+  document.getElementById('editOwner').value = store.owner || '';
+  document.getElementById('editOwnerPhone').value = store.ownerPhone || '';
+  document.getElementById('editOwnerEmail').value = store.ownerEmail || '';
+
+  document.getElementById('editStoreId').value = store.storeId || '';
+  document.getElementById('editStorePassword').value = store.storePassword || '';
+  document.getElementById('editName').value = store.name || '';
+  document.getElementById('editStoreCategory').value = store.storeCategory || 'etc';
+  document.getElementById('editRegion').value = store.region || '';
+  document.getElementById('editLink').value = store.link || '';
+  document.getElementById('editDescription').value = store.description || '';
+  document.getElementById('editStoreAddress').value = store.storeAddress || '';
+  document.getElementById('editStoreDetailAddress').value = store.storeDetailAddress || '';
+  document.getElementById('editOpenTime').value = store.openTime || '';
+  document.getElementById('editCloseTime').value = store.closeTime || '';
+  document.getElementById('editClosedDay').value = store.closedDay || '';
+
+  document.getElementById('editBusinessNumber').value = store.businessNumber || '';
+  document.getElementById('editBusinessFileName').value = store.businessFileName || '';
+  document.getElementById('editSignImage').value = '';
+  document.querySelectorAll('.store-photo-input').forEach((input) => { input.value = ''; });
+  applyPartnerMedia(store);
+  const fileButton = document.getElementById('businessFileViewBtn');
+  if (fileButton) {
+    fileButton.dataset.pathname = store.businessFilePath || '';
+    fileButton.style.display = store.businessFilePath ? 'inline-flex' : 'none';
+  }
+
+  document.getElementById('editOrderType').value = store.orderType || 'both';
+  document.getElementById('editDeliveryFee').value = store.deliveryFee || '';
+  document.getElementById('editMinOrderPrice').value = store.minOrderPrice || '';
+  document.getElementById('editStatus').value = store.status || '영업중';
+  document.getElementById('editOrders').value = store.orders || '';
+  document.getElementById('editSales').value = store.sales || '';
+
+  document.getElementById('editBankName').value = store.bankName || '';
+  document.getElementById('editAccountHolder').value = store.accountHolder || '';
+  document.getElementById('editAccountNumber').value = store.accountNumber || '';
+  document.getElementById('editMemo').value = store.memo || '';
+  resetPartnerMenuForm();
+  renderPartnerMenuManager();
+  loadPartnerMenuData(store);
+  loadPartnerMediaData(store);
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closePartnerDetail() {
+  const panel = document.getElementById('partnerDetailPanel');
+  if (panel) panel.classList.remove('show');
+  resetPartnerMenuForm();
+  selectedPartnerIndex = null;
+  parkPartnerDetailPanel();
+  renderPartners(currentPartnerPage);
+}
+
+async function openBusinessFile() {
+  const button = document.getElementById('businessFileViewBtn');
+  const pathname = button ? button.dataset.pathname : '';
+  if (!pathname) {
+    alert('첨부된 사업자등록증 파일이 없습니다.');
+    return;
+  }
+
+  const title = document.getElementById('editBusinessFileName')?.value || '사업자등록증';
+  openBusinessFileByPath(pathname, title);
+}
+
+function closeBusinessFilePreview(event) {
+  if (event && event.target !== event.currentTarget) return;
+  const modal = document.getElementById('businessFilePreviewModal');
+  const body = document.getElementById('businessFilePreviewBody');
+  if (modal) modal.classList.remove('show');
+  if (body) body.innerHTML = '';
+  if (businessFilePreviewUrl) {
+    URL.revokeObjectURL(businessFilePreviewUrl);
+    businessFilePreviewUrl = '';
+  }
+}
+
+async function openBusinessFileByPath(pathname, title = '사업자등록증') {
+  const adminKey = getAdminAccessKey();
+
+  const response = await fetch(`/api/application-file?pathname=${encodeURIComponent(pathname)}`, {
+    headers: { 'x-admin-key': adminKey }
+  });
+
+  if (response.status === 401) {
+    handleAdminAuthExpired();
+    return;
+  }
+
+  if (!response.ok) {
+    alert('사업자등록증 파일을 열 수 없습니다.');
+    return;
+  }
+
+  const fileBlob = await response.blob();
+  closeBusinessFilePreview();
+  businessFilePreviewUrl = URL.createObjectURL(fileBlob);
+
+  const modal = document.getElementById('businessFilePreviewModal');
+  const titleEl = document.getElementById('businessFilePreviewTitle');
+  const body = document.getElementById('businessFilePreviewBody');
+  const contentType = fileBlob.type || '';
+
+  if (titleEl) titleEl.textContent = title;
+  if (body) {
+    if (contentType.startsWith('image/')) {
+      body.innerHTML = `<img src="${businessFilePreviewUrl}" alt="사업자등록증 이미지">`;
+    } else {
+      body.innerHTML = `<iframe src="${businessFilePreviewUrl}" title="사업자등록증 미리보기"></iframe>`;
+    }
+  }
+  if (modal) modal.classList.add('show');
+}
+
+async function savePartnerOperationSummary(event) {
+  const button = event?.currentTarget;
+  if (selectedPartnerIndex === null) return;
+
+  const store = partnerData[selectedPartnerIndex];
+  store.orderType = document.getElementById('opEditOrderType').value;
+  store.minOrderPrice = document.getElementById('opEditMinOrderPrice').value.trim();
+  store.deliveryFee = document.getElementById('opEditDeliveryFee').value.trim();
+  store.description = document.getElementById('opEditDescription').value.trim();
+
+  document.getElementById('editOrderType').value = store.orderType;
+  document.getElementById('editMinOrderPrice').value = store.minOrderPrice;
+  document.getElementById('editDeliveryFee').value = store.deliveryFee;
+  document.getElementById('editDescription').value = store.description;
+
+  const originalText = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = '저장중...';
+  }
+
+  try {
+    const settings = await savePartnerSettingsData(store);
+    if (settings) {
+      store.orderType = settings.orderType || store.orderType;
+      store.minOrderPrice = settings.minOrderPrice || store.minOrderPrice;
+      store.deliveryFee = settings.deliveryFee || store.deliveryFee;
+      store.description = settings.description || store.description;
+    }
+    searchPartners();
+    openPartnerDetail(selectedPartnerIndex, { forceOpen: true });
+    alert('상점 운영 요약이 수정되었습니다.');
+  } catch (error) {
+    alert(error.message || '상점 운영 요약을 저장하지 못했습니다.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalText || '수정완료';
+    }
+  }
+}
+
+async function savePartnerDetail(event) {
+  event.preventDefault();
+  if (selectedPartnerIndex === null) return;
+
+  const store = partnerData[selectedPartnerIndex];
+  store.owner = document.getElementById('editOwner').value.trim();
+  store.ownerPhone = document.getElementById('editOwnerPhone').value.trim();
+  store.ownerEmail = document.getElementById('editOwnerEmail').value.trim();
+
+  store.storeId = document.getElementById('editStoreId').value.trim();
+  store.storePassword = document.getElementById('editStorePassword').value.trim();
+  store.name = document.getElementById('editName').value.trim();
+  store.storeCategory = document.getElementById('editStoreCategory').value;
+  store.region = document.getElementById('editRegion').value.trim();
+  store.link = document.getElementById('editLink').value.trim();
+  store.description = document.getElementById('editDescription').value.trim();
+  store.storeAddress = document.getElementById('editStoreAddress').value.trim();
+  store.storeDetailAddress = document.getElementById('editStoreDetailAddress').value.trim();
+  store.openTime = document.getElementById('editOpenTime').value;
+  store.closeTime = document.getElementById('editCloseTime').value;
+  store.closedDay = document.getElementById('editClosedDay').value.trim();
+
+  store.businessNumber = document.getElementById('editBusinessNumber').value.trim();
+  const uploadedFile = document.getElementById('editBusinessFile').files[0];
+  store.businessFileName = uploadedFile ? uploadedFile.name : document.getElementById('editBusinessFileName').value.trim();
+
+  const signImage = document.getElementById('editSignImage').files[0];
+  const storePhotoInputs = Array.from(document.querySelectorAll('.store-photo-input'));
+  const storePhotos = storePhotoInputs.map((input) => input.files[0] || null);
+  try {
+    const media = await savePartnerMediaData(store, signImage, storePhotos);
+    if (media) {
+      store.signImageName = media.signImageName || store.signImageName || '';
+      store.signImageUrl = media.signImageUrl || store.signImageUrl || '';
+      store.storePhotoNames = Array.isArray(media.storePhotoNames) ? media.storePhotoNames : store.storePhotoNames;
+      store.storePhotoUrls = Array.isArray(media.storePhotoUrls) ? media.storePhotoUrls : store.storePhotoUrls;
+      applyPartnerMedia(store);
+    }
+  } catch (error) {
+    alert(error.message || '상점 사진을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+
+  store.orderType = document.getElementById('editOrderType').value;
+  store.deliveryFee = document.getElementById('editDeliveryFee').value.trim();
+  store.minOrderPrice = document.getElementById('editMinOrderPrice').value.trim();
+  const nextBusinessStatus = document.getElementById('editStatus').value === '마감' ? '마감' : '영업중';
+  try {
+    const savedStatus = await savePartnerBusinessStatus(store, nextBusinessStatus);
+    store.status = savedStatus?.businessStatus || nextBusinessStatus;
+    store.businessStatus = store.status;
+    store.businessStatusUpdatedAt = savedStatus?.businessStatusUpdatedAt || store.businessStatusUpdatedAt || '';
+  } catch (error) {
+    alert(error.message || '영업상태를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+  store.orders = document.getElementById('editOrders').value.trim();
+  store.sales = document.getElementById('editSales').value.trim();
+  store.tag = statusToTag(store.status);
+
+  store.bankName = document.getElementById('editBankName').value.trim();
+  store.accountHolder = document.getElementById('editAccountHolder').value.trim();
+  store.accountNumber = document.getElementById('editAccountNumber').value.trim();
+  store.memo = document.getElementById('editMemo').value.trim();
+
+  try {
+    const settings = await savePartnerSettingsData(store);
+    if (settings) {
+      store.owner = settings.ownerName || store.owner;
+      store.ownerPhone = settings.ownerPhone || store.ownerPhone;
+      store.ownerEmail = settings.ownerEmail || store.ownerEmail;
+      store.storeId = settings.storeId || store.storeId;
+      store.storePassword = settings.storePassword || store.storePassword;
+      store.name = settings.storeName || store.name;
+      store.storeCategory = settings.storeCategory || store.storeCategory;
+      store.description = settings.description || store.description;
+      store.storeAddress = settings.storeBaseAddress || store.storeAddress;
+      store.storeDetailAddress = settings.storeDetailAddress || store.storeDetailAddress;
+      store.openTime = settings.openTime || store.openTime;
+      store.closeTime = settings.closeTime || store.closeTime;
+      store.closedDay = settings.closedDay || store.closedDay;
+      store.businessNumber = settings.businessNumber || store.businessNumber;
+      store.orderType = settings.orderType || store.orderType;
+      store.deliveryFee = settings.deliveryFee || store.deliveryFee;
+      store.minOrderPrice = settings.minOrderPrice || store.minOrderPrice;
+      store.bankName = settings.bankName || store.bankName;
+      store.accountHolder = settings.accountHolder || store.accountHolder;
+      store.accountNumber = settings.accountNumber || store.accountNumber;
+    }
+  } catch (error) {
+    alert(error.message || '상점 기본정보를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+
+  searchPartners();
+  openPartnerDetail(selectedPartnerIndex, { forceOpen: true });
+  alert('상점 개설 정보가 수정되었습니다.');
+}
+
+const adminSalesPerPage = 10;
+let currentAdminSalesPage = 1;
+let filteredAdminSalesData = [];
+
+function parseWon(value){
+  return Number(String(value || '').replace(/[^0-9]/g, '')) || 0;
+}
+
+function formatWon(value){
+  return `${Math.round(value).toLocaleString('ko-KR')}원`;
+}
+
+function getAdminSalesData(){
+  return partnerData.map((store, index) => {
+    const orderAmount = parseWon(store.sales);
+    const fee = Math.round(orderAmount * 0.03);
+    const deposit = Math.max(orderAmount - fee, 0);
+    const date = new Date(2026, 4, 2 - (index % 10));
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return {
+      region: store.region,
+      name: store.name,
+      owner: store.owner,
+      orderAmount,
+      fee,
+      deposit,
+      date: `${y}.${m}.${d}`,
+      status: store.status,
+      tag: store.tag
+    };
+  }).sort((a, b) => b.orderAmount - a.orderAmount);
+}
+
+function updateAdminSalesSummary(data){
+  const storeCount = document.getElementById('salesStoreCount');
+  const totalOrder = document.getElementById('salesTotalOrder');
+  const totalFee = document.getElementById('salesTotalFee');
+  const totalDeposit = document.getElementById('salesTotalDeposit');
+
+  const orderSum = data.reduce((sum, item) => sum + item.orderAmount, 0);
+  const feeSum = data.reduce((sum, item) => sum + item.fee, 0);
+  const depositSum = data.reduce((sum, item) => sum + item.deposit, 0);
+
+  if (storeCount) storeCount.textContent = `${data.length}곳`;
+  if (totalOrder) totalOrder.textContent = formatWon(orderSum);
+  if (totalFee) totalFee.textContent = formatWon(feeSum);
+  if (totalDeposit) totalDeposit.textContent = formatWon(depositSum);
+}
+
+function renderAdminSales(page = currentAdminSalesPage){
+  const tbody = document.getElementById('salesTableBody');
+  const pagination = document.getElementById('salesPagination');
+  const info = document.getElementById('salesPageInfo');
+  if (!tbody) return;
+
+  if (!filteredAdminSalesData.length) {
+    updateAdminSalesSummary([]);
+    tbody.innerHTML = '<tr><td colspan="7" class="no-result">검색 결과가 없습니다.</td></tr>';
+    if (pagination) pagination.innerHTML = '';
+    if (info) info.textContent = '검색 결과 0개';
+    return;
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filteredAdminSalesData.length / adminSalesPerPage));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  currentAdminSalesPage = safePage;
+  const startIndex = (safePage - 1) * adminSalesPerPage;
+  const currentItems = filteredAdminSalesData.slice(startIndex, startIndex + adminSalesPerPage);
+
+  tbody.innerHTML = currentItems.map((item) => `
+    <tr>
+      <td>${item.region}</td>
+      <td><b>${item.name}</b><br><small class="muted">대표 ${item.owner}</small></td>
+      <td>${formatWon(item.orderAmount)}</td>
+      <td>${formatWon(item.fee)}</td>
+      <td>${formatWon(item.deposit)}</td>
+      <td>${item.date}</td>
+      <td><span class="tag ${item.tag}">${item.status}</span></td>
+    </tr>
+  `).join('');
+
+  updateAdminSalesSummary(filteredAdminSalesData);
+
+  if (info) {
+    info.textContent = `총 ${filteredAdminSalesData.length}개 상점 중 ${startIndex + 1}~${Math.min(startIndex + adminSalesPerPage, filteredAdminSalesData.length)}개 표시`;
+  }
+
+  if (pagination) {
+    let buttons = `<button class="page-btn" onclick="renderAdminSales(${safePage - 1})" ${safePage === 1 ? 'disabled' : ''}>이전</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      buttons += `<button class="page-btn ${i === safePage ? 'active' : ''}" onclick="renderAdminSales(${i})">${i}</button>`;
+    }
+    buttons += `<button class="page-btn" onclick="renderAdminSales(${safePage + 1})" ${safePage === totalPages ? 'disabled' : ''}>다음</button>`;
+    pagination.innerHTML = buttons;
+  }
+}
+
+function searchAdminSales(){
+  const keyword = (document.getElementById('salesSearchInput')?.value || '').trim().toLowerCase();
+  const status = document.getElementById('salesStatusFilter')?.value || '';
+  const allSales = getAdminSalesData();
+
+  filteredAdminSalesData = allSales.filter((item) => {
+    const target = `${item.region} ${item.name} ${item.owner} ${item.status}`.toLowerCase();
+    const keywordMatched = !keyword || target.includes(keyword);
+    const statusMatched = !status || item.status === status;
+    return keywordMatched && statusMatched;
+  });
+
+  renderAdminSales(1);
+}
+
+function resetAdminSalesSearch(){
+  const keyword = document.getElementById('salesSearchInput');
+  const status = document.getElementById('salesStatusFilter');
+  if (keyword) keyword.value = '';
+  if (status) status.value = '';
+  filteredAdminSalesData = getAdminSalesData();
+  renderAdminSales(1);
+}
+
+
+async function openAdmin(id) {
+  document.querySelectorAll('.tab').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.pill').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+  document.querySelectorAll('.side-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+  if (id === 'newStores') { await loadNewStoreApplications(false); }
+  if (id === 'customers') { await loadCustomers(currentCustomerPage); }
+  if (id === 'orders') { await loadAdminOrders(currentAdminOrderPage); }
+  if (id === 'sales') { renderAdminSales(currentAdminSalesPage); }
+  if (id === 'notice') { await loadAdminNotices(); }
+  document.getElementById('adminWork').scrollIntoView({ behavior: 'smooth' });
+}
+
+renderPartners(1);
+loadCustomers(1);
+loadAdminOrders(1);
+resetAdminSalesSearch();
+setupAdminAddressSearch();
+setupHeadAdminBar();
+loadNewStoreApplications(false).then(() => {
+  const pendingCount = savedStoreApplications.filter((application) => (
+    normalizeApplicationApproval(application.approvalStatus) === '승인대기'
+  )).length;
+  if (pendingCount > 0) openAdmin('newStores');
+});
+loadAdminNotices();
+</script>
+</body>
+</html>

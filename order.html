@@ -1,0 +1,2165 @@
+﻿<!doctype html>
+<html lang="ko" class="dynamic-store-loading">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+<link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<meta name="kakao-js-key" content="edd6b42e01e58b7488856b71ad41c9aa">
+<link href="https://woorecco.vercel.app/order.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="https://woorecco.vercel.app/order.html" property="og:url"/>
+<meta content="우리꺼" property="og:site_name"/>
+<meta content="오늘이닭 주문웹" property="og:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." property="og:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image:secure_url"/>
+<meta content="image/png" property="og:image:type"/>
+<meta content="1731" property="og:image:width"/>
+<meta content="909" property="og:image:height"/>
+<meta content="우리꺼 주문웹 소개 이미지" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://woorecco.vercel.app/order.html" name="twitter:url"/>
+<meta content="오늘이닭 주문웹" name="twitter:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." name="twitter:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image"/>
+<meta content="우리꺼 주문웹 소개 이미지" name="twitter:image:alt"/>
+<title>오늘이닭 주문웹</title>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" crossorigin="anonymous"></script>
+
+<script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(!params.get('store')){
+    document.documentElement.classList.remove('dynamic-store-loading');
+  }
+})();
+</script>
+
+  <link rel="stylesheet" href="common.css" />
+
+<style id="today-chicken-hero-css">
+html.dynamic-store-loading body{
+  visibility:hidden;
+}
+
+/* =========================================================
+   오늘이닭 주문웹 상단 매장영역 CSS
+   - woorikke_order_platform_03 전용
+   - 외부 common.css가 일부 누락되어도 상단 store-hero 영역이 정상 표시됩니다.
+   ========================================================= */
+body.page-order-03{
+  --brand:#ff9418;
+  --brand-2:#11aee3;
+  --ink:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --bg:#f7f8fb;
+  --card:#fff;
+  --shadow:0 18px 50px rgba(17,24,39,.09);
+  --radius:26px;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+  letter-spacing:-.3px;
+}
+body.page-order-03 *{box-sizing:border-box;}
+body.page-order-03 a{text-decoration:none;color:inherit;}
+body.page-order-03 button,
+body.page-order-03 input,
+body.page-order-03 select,
+body.page-order-03 textarea{font-family:inherit;}
+body.page-order-03 .wrap{max-width:1160px;margin:0 auto;padding:0 18px;}
+
+body.page-order-03 .store-hero{padding:18px 0 0;}
+body.page-order-03 .store-card{
+  overflow:hidden;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:0 0 28px 28px;
+  box-shadow:var(--shadow);
+}
+body.page-order-03 .cover{
+  height:clamp(320px, 34vw, 430px);
+  min-height:320px;
+  background:#fff7ed;
+  position:relative;
+}
+body.page-order-03 .cover-badges{
+  position:absolute;
+  left:22px;
+  bottom:22px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+body.page-order-03 .badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,.94);
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:950;
+  box-shadow:0 8px 20px rgba(17,24,39,.08);
+}
+body.page-order-03 .badge.closed{
+  background:#111827;
+  border-color:#111827;
+  color:#fff;
+}
+body.page-order-03 .store-info{
+  padding:24px 26px 22px;
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:18px;
+  align-items:start;
+}
+body.page-order-03 .store-title{
+  margin:0 0 6px;
+  font-size:34px;
+  line-height:1.14;
+  letter-spacing:-1.2px;
+  font-weight:1000;
+}
+body.page-order-03 .store-title-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:nowrap;
+  margin:0 0 6px;
+}
+body.page-order-03 .store-title-row .store-title{
+  margin:0;
+}
+body.page-order-03 .store-share-actions{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  flex:1 1 auto;
+}
+body.page-order-03 .recent-order-chip{
+  display:none;
+  align-items:center;
+  gap:7px;
+  margin-left:auto;
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid #fed7aa;
+  border-radius:12px;
+  background:#fff7ed;
+  color:#9a3412;
+  font-size:13px;
+  font-weight:800;
+  white-space:nowrap;
+  box-shadow:0 8px 18px rgba(17,24,39,.06);
+}
+body.page-order-03 .recent-order-chip.show{
+  display:inline-flex;
+}
+body.page-order-03 .recent-order-chip b{
+  font-weight:900;
+}
+body.page-order-03 .recent-order-chip.status-order,
+body.page-order-03 .recent-order-chip.status-orange{
+  background:#fff7ed;
+  border-color:#fed7aa;
+  color:#c2410c;
+}
+body.page-order-03 .recent-order-chip.status-blue{
+  background:#ecfeff;
+  border-color:#bae6fd;
+  color:#0369a1;
+}
+body.page-order-03 .recent-order-chip.status-green{
+  background:#f0fdf4;
+  border-color:#bbf7d0;
+  color:#15803d;
+}
+body.page-order-03 .recent-order-chip.status-dark{
+  background:#111827;
+  border-color:#111827;
+  color:#fff;
+}
+body.page-order-03 .recent-order-chip.status-red{
+  background:#fef2f2;
+  border-color:#fecaca;
+  color:#b91c1c;
+}
+body.page-order-03 .share-button{
+  width:52px;
+  height:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  box-shadow:0 8px 18px rgba(17,24,39,.08);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  color:#111827;
+  cursor:pointer;
+}
+body.page-order-03 .share-button:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,148,24,.45);
+  box-shadow:0 12px 24px rgba(17,24,39,.12);
+}
+body.page-order-03 .install-button{
+  color:#0f172a;
+}
+body.page-order-03 .install-button:hover{
+  border-color:rgba(34,197,94,.5);
+  color:#16a34a;
+}
+body.page-order-03 .share-button svg{
+  width:26px;
+  height:26px;
+  display:block;
+  stroke:currentColor;
+}
+body.page-order-03 .share-button img{
+  width:26px;
+  height:26px;
+  display:block;
+  object-fit:contain;
+}
+body.page-order-03 .store-desc{
+  margin:0;
+  color:#4b5563;
+  line-height:1.7;
+  font-size:15px;
+  font-weight:650;
+}
+body.page-order-03 .score{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin:14px 0;
+}
+body.page-order-03 .score span{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:800;
+}
+body.page-order-03 .score a{
+  color:#0f83ad;
+  font-weight:950;
+}
+body.page-order-03 .notice-box{
+  margin-top:14px;
+  margin-bottom:0;
+  border-left:5px solid var(--brand);
+  background:#fff7ed;
+  border-top:1px solid #fed7aa;
+  border-right:1px solid #fed7aa;
+  border-bottom:1px solid #fed7aa;
+  color:#7c2d12;
+  border-radius:14px;
+  padding:13px;
+  font-weight:800;
+  line-height:1.5;
+  font-size:14px;
+}
+body.page-order-03 .store-notice-modal{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(15,23,42,.46);
+}
+body.page-order-03 .store-notice-modal.show{display:flex;}
+body.page-order-03 .store-notice-card{
+  width:min(100%,420px);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 24px 80px rgba(15,23,42,.28);
+  overflow:hidden;
+}
+body.page-order-03 .store-notice-head{
+  padding:20px 22px 14px;
+  border-bottom:1px solid var(--line);
+}
+body.page-order-03 .store-notice-head h2{
+  margin:0;
+  font-size:22px;
+}
+body.page-order-03 .store-notice-body{
+  padding:18px 22px;
+  color:#334155;
+  line-height:1.7;
+  font-weight:700;
+  white-space:pre-wrap;
+}
+body.page-order-03 .store-notice-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:0 22px 22px;
+}
+body.page-order-03 .store-notice-actions button{
+  min-height:46px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-weight:950;
+  cursor:pointer;
+}
+body.page-order-03 .store-notice-actions button:last-child{
+  border-color:var(--brand);
+  background:var(--brand);
+  color:#fff;
+}
+body.page-order-03 .payment-summary{
+  display:grid;
+  gap:8px;
+  margin:14px 0;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#f9fafb;
+  text-align:left;
+}
+body.page-order-03 .payment-summary div{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  color:#4b5563;
+  font-size:14px;
+}
+body.page-order-03 .payment-summary b{
+  color:#111827;
+}
+body.page-order-03 .manual-payment-form{
+  display:grid;
+  gap:10px;
+  text-align:left;
+}
+body.page-order-03 .manual-payment-form label{
+  display:grid;
+  gap:6px;
+  color:#374151;
+  font-size:13px;
+  font-weight:650;
+}
+body.page-order-03 .manual-payment-form input,
+body.page-order-03 .manual-payment-form select{
+  width:100%;
+  min-height:44px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:0 12px;
+  font:inherit;
+}
+body.page-order-03 .payment-help{
+  margin:12px 0 0;
+  color:#64748b;
+  font-size:13px;
+  line-height:1.5;
+}
+body.page-order-03 .payment-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+body.page-order-03 .payment-actions .ghost{
+  background:#fff;
+  border:1px solid var(--line);
+  color:#111827;
+}
+body.page-order-03 .member-page-card{
+  width:min(720px,100%);
+  max-height:min(86vh,760px);
+  overflow:auto;
+  text-align:left;
+}
+body.page-order-03 .member-page-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:18px;
+}
+body.page-order-03 .member-page-head h2{
+  margin:0 0 6px;
+  font-size:24px;
+}
+body.page-order-03 .member-page-head p{
+  margin:0;
+  color:#64748b;
+  font-size:14px;
+  line-height:1.5;
+}
+body.page-order-03 .member-page-close{
+  width:42px !important;
+  height:42px;
+  padding:0 !important;
+  border:1px solid var(--line) !important;
+  border-radius:999px !important;
+  background:#fff !important;
+  color:#111827;
+  flex:0 0 auto;
+}
+body.page-order-03 .member-page-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+body.page-order-03 .member-page-grid label{
+  display:grid;
+  gap:6px;
+  color:#334155;
+  font-size:13px;
+  font-weight:650;
+}
+body.page-order-03 .member-page-grid label.full{
+  grid-column:1 / -1;
+}
+body.page-order-03 .member-page-grid input{
+  width:100%;
+  min-height:44px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:0 12px;
+  font:inherit;
+  font-weight:500;
+}
+body.page-order-03 .member-page-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:14px 0 22px;
+}
+body.page-order-03 .member-page-actions.full{
+  grid-column:1 / -1;
+}
+body.page-order-03 .member-page-actions .ghost{
+  background:#fff;
+  border:1px solid var(--line);
+  color:#111827;
+}
+body.page-order-03 .member-recent-status{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 16px;
+  padding:12px 14px;
+  border:1px solid #fed7aa;
+  border-radius:16px;
+  background:#fff7ed;
+  color:#7c2d12;
+  font-size:14px;
+  font-weight:750;
+}
+body.page-order-03 .member-recent-status b{
+  color:#111827;
+}
+body.page-order-03 .member-order-title{
+  margin:0 0 10px;
+  font-size:18px;
+}
+body.page-order-03 .member-order-list{
+  display:grid;
+  gap:10px;
+}
+body.page-order-03 .member-order-empty{
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#f9fafb;
+  color:#64748b;
+  text-align:center;
+  font-weight:650;
+}
+body.page-order-03 .member-order-item{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fff;
+  padding:14px;
+}
+body.page-order-03 .member-order-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:8px;
+}
+body.page-order-03 .member-order-top b{
+  display:block;
+  margin-bottom:4px;
+}
+body.page-order-03 .member-order-top small,
+body.page-order-03 .member-order-menu{
+  color:#64748b;
+  line-height:1.5;
+}
+body.page-order-03 .member-order-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:64px;
+  min-height:30px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+body.page-order-03 .member-order-bottom{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid #eef2f7;
+  font-weight:750;
+}
+@media (max-width:620px){
+  body.page-order-03 .member-page-grid,
+  body.page-order-03 .member-page-actions{
+    grid-template-columns:1fr;
+  }
+}
+body.page-order-03 .order-type{
+  background:#f9fafb;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:14px;
+}
+body.page-order-03 .switch{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:12px;
+}
+body.page-order-03 .switch button{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:11px 8px;
+  font-weight:950;
+  cursor:pointer;
+}
+body.page-order-03 .switch button.active{
+  background:var(--ink);
+  color:#fff;
+  border-color:var(--ink);
+}
+body.page-order-03 .delivery-meta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+body.page-order-03 .mini{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:11px;
+}
+body.page-order-03 .mini small{
+  display:block;
+  color:var(--muted);
+  font-weight:800;
+  margin-bottom:4px;
+}
+body.page-order-03 .mini b{font-size:14px;}
+body.page-order-03 .category-scroll{
+  gap:12px;
+  padding-top:14px;
+  padding-bottom:14px;
+}
+body.page-order-03 .cat-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:78px;
+  padding:12px 20px;
+  font-weight:650;
+  line-height:1.2;
+  text-align:center;
+}
+body.page-order-03 .search input{
+  font-weight:500;
+}
+body.page-order-03 .appbar .search{display:none;}
+body.page-order-03 .appbar-inner{
+  align-items:center;
+  height:74px;
+}
+body.page-order-03 .top-actions{
+  align-items:center;
+  display:flex;
+  gap:8px;
+  margin-left:auto;
+}
+body.page-order-03 .icon-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  height:42px;
+  padding:0 16px;
+  font-weight:650;
+  line-height:1;
+}
+body.page-order-03 .icon-btn.primary{
+  font-weight:650;
+}
+body.page-order-03 .member-login-link{
+  background:var(--brand);
+  border-color:var(--brand);
+  color:#fff;
+}
+body.page-order-03 .member-login-link.hide{
+  display:none;
+}
+body.page-order-03 .member-greeting{
+  max-width:220px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  cursor:default;
+}
+body.page-order-03 .member-logout{
+  display:none;
+  border-color:#fed7aa;
+  color:#c2410c;
+  background:#fff7ed;
+}
+body.page-order-03 .member-logout.show{
+  display:inline-flex;
+}
+body.page-order-03 .menu-category-group{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+body.page-order-03 .menu-category-group + .menu-category-group{
+  margin-top:22px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+}
+body.page-order-03 .album-empty{
+  grid-column:1 / -1;
+  min-height:124px;
+  border:1px dashed var(--line);
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font-weight:700;
+  background:#f8fafc;
+}
+body.page-order-03 .menu-category-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 2px 2px;
+}
+body.page-order-03 .menu-category-heading h3{
+  margin:0;
+  font-size:18px;
+  font-weight:900;
+  color:#111827;
+}
+body.page-order-03 .menu-category-heading span{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+
+@media (max-width:980px){
+  body.page-order-03 .wrap{padding-left:14px;padding-right:14px;}
+  body.page-order-03 .store-info{grid-template-columns:1fr;}
+  body.page-order-03 .layout{grid-template-columns:1fr;padding-top:16px;}
+  body.page-order-03 .cart-panel{position:static;}
+  body.page-order-03 .mobile-checkout{display:block;}
+  body.page-order-03{padding-bottom:92px;}
+}
+@media (max-width:620px){
+  body.page-order-03 .wrap{padding-left:12px;padding-right:12px;}
+  body.page-order-03 .appbar-inner{height:auto;min-height:64px;padding:10px 0;gap:8px;flex-wrap:wrap;}
+  body.page-order-03 .brand{min-width:auto;max-width:112px;}
+  body.page-order-03 .brand img{height:34px;max-width:112px;}
+  body.page-order-03 .search{order:3;flex:1 0 100%;width:100%;max-width:none;}
+  body.page-order-03 .search input{width:100%;height:42px;font-size:14px;}
+  body.page-order-03 .top-actions{display:flex;margin-left:auto;gap:6px;}
+  body.page-order-03 .icon-btn{height:34px;padding:0 10px;font-size:13px;font-weight:600;}
+  body.page-order-03 .store-hero{padding-top:8px;}
+  body.page-order-03 .cover{height:205px;min-height:205px;}
+  body.page-order-03 .cover-badges{left:12px;right:12px;bottom:12px;gap:6px;}
+  body.page-order-03 .badge{padding:7px 10px;font-size:12px;}
+  body.page-order-03 .store-card{border-radius:0 0 22px 22px;}
+  body.page-order-03 .store-info{padding:16px;gap:14px;}
+  body.page-order-03 .store-title{font-size:26px;line-height:1.18;letter-spacing:0;}
+  body.page-order-03 .store-title-row{gap:10px;}
+  body.page-order-03 .store-share-actions{gap:6px;}
+  body.page-order-03 .share-button{width:36px;height:36px;}
+  body.page-order-03 .share-button svg{width:20px;height:20px;}
+  body.page-order-03 .share-button img{width:20px;height:20px;}
+  body.page-order-03 .notice-box{margin-top:12px;padding:12px;font-size:13px;line-height:1.55;}
+  body.page-order-03 .order-type{padding:12px;border-radius:18px;}
+  body.page-order-03 .switch button{min-height:44px;padding:10px 8px;}
+  body.page-order-03 .delivery-meta{grid-template-columns:1fr 1fr;}
+  body.page-order-03 .category-bar{top:64px;margin-top:0;}
+  body.page-order-03 .category-scroll{gap:8px;padding-top:10px;padding-bottom:10px;}
+  body.page-order-03 .cat-btn{min-width:auto;padding:10px 14px;font-size:13px;}
+  body.page-order-03 .layout{padding-top:14px;padding-bottom:24px;}
+  body.page-order-03 .content{gap:14px;}
+  body.page-order-03 .section-card{padding:16px;border-radius:20px;}
+  body.page-order-03 .section-title{align-items:flex-start;gap:6px;flex-direction:column;margin-bottom:12px;}
+  body.page-order-03 .section-title h2{font-size:21px;}
+  body.page-order-03 .section-title p{font-size:13px;}
+  body.page-order-03 .menu-category-group{gap:10px;}
+  body.page-order-03 .menu-category-group + .menu-category-group{margin-top:18px;padding-top:18px;}
+  body.page-order-03 .menu-category-heading h3{font-size:17px;}
+  body.page-order-03 .menu-item{grid-template-columns:86px minmax(0,1fr);gap:12px;padding:12px;border-radius:18px;}
+  body.page-order-03 .menu-img{width:86px;height:86px;border-radius:16px;}
+  body.page-order-03 .menu-copy h3{font-size:17px;line-height:1.25;}
+  body.page-order-03 .menu-copy p{font-size:13px;line-height:1.45;}
+  body.page-order-03 .price{font-size:16px;}
+  body.page-order-03 .menu-item .add-btn{grid-column:1 / -1;width:100%;min-height:44px;border-radius:14px;}
+  body.page-order-03 .cart-panel{border-radius:20px;}
+  body.page-order-03 .cart-body{padding:16px;}
+  body.page-order-03 .form-line input,
+  body.page-order-03 .form-line textarea{font-size:16px;}
+  body.page-order-03 .album-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  body.page-order-03 .footer-inner{gap:20px;padding:28px 18px;grid-template-columns:1fr;}
+  body.page-order-03 .footer-apply-box{width:100%;}
+  body.page-order-03 .footer-apply-btn{width:100%;justify-content:center;}
+  body.page-order-03 .mobile-checkout{padding:10px 12px 14px;}
+  body.page-order-03 .mobile-checkout button{min-height:52px;border-radius:16px;font-size:15px;}
+}
+@media (max-width:380px){
+  body.page-order-03 .store-title{font-size:24px;}
+  body.page-order-03 .share-button{width:34px;height:34px;}
+  body.page-order-03 .menu-item{grid-template-columns:78px minmax(0,1fr);}
+  body.page-order-03 .menu-img{width:78px;height:78px;}
+  body.page-order-03 .cat-btn{padding-left:12px;padding-right:12px;}
+}
+@media (hover:none) and (pointer:coarse){
+  body.page-order-03 .wrap{padding-left:12px;padding-right:12px;}
+  body.page-order-03 .appbar-inner{height:auto;min-height:64px;padding:10px 0;gap:8px;flex-wrap:wrap;}
+  body.page-order-03 .brand{min-width:auto;max-width:112px;}
+  body.page-order-03 .brand img{height:34px;max-width:112px;}
+  body.page-order-03 .search{order:3;flex:1 0 100%;width:100%;max-width:none;}
+  body.page-order-03 .search input{width:100%;height:42px;font-size:14px;}
+  body.page-order-03 .top-actions{display:flex;margin-left:auto;gap:6px;}
+  body.page-order-03 .icon-btn{height:34px;padding:0 10px;font-size:13px;font-weight:600;}
+  body.page-order-03 .store-hero{padding-top:8px;}
+  body.page-order-03 .cover{height:205px;min-height:205px;}
+  body.page-order-03 .store-info,
+  body.page-order-03 .layout{grid-template-columns:1fr;}
+  body.page-order-03 .store-info{padding:16px;gap:14px;}
+  body.page-order-03 .store-title{font-size:26px;line-height:1.18;letter-spacing:0;}
+  body.page-order-03 .share-button{width:36px;height:36px;}
+  body.page-order-03 .share-button svg,
+  body.page-order-03 .share-button img{width:20px;height:20px;}
+  body.page-order-03 .category-bar{top:64px;margin-top:0;}
+  body.page-order-03 .category-scroll{gap:8px;padding-top:10px;padding-bottom:10px;}
+  body.page-order-03 .cat-btn{min-width:auto;padding:10px 14px;font-size:13px;}
+  body.page-order-03 .content{gap:14px;}
+  body.page-order-03 .section-card{padding:16px;border-radius:20px;}
+  body.page-order-03 .section-title{align-items:flex-start;gap:6px;flex-direction:column;margin-bottom:12px;}
+  body.page-order-03 .menu-item{grid-template-columns:86px minmax(0,1fr);gap:12px;padding:12px;border-radius:18px;}
+  body.page-order-03 .menu-img{width:86px;height:86px;border-radius:16px;}
+  body.page-order-03 .menu-copy h3{font-size:17px;line-height:1.25;}
+  body.page-order-03 .menu-copy p{font-size:13px;line-height:1.45;}
+  body.page-order-03 .menu-item .add-btn{grid-column:1 / -1;width:100%;min-height:44px;border-radius:14px;}
+  body.page-order-03 .cart-panel{position:static;border-radius:20px;}
+  body.page-order-03 .mobile-checkout{display:block;padding:10px 12px 14px;}
+  body.page-order-03 .mobile-checkout button{min-height:52px;border-radius:16px;font-size:15px;}
+  body.page-order-03{padding-bottom:92px;}
+}
+
+</style>
+</head>
+<body class="page-order-03" data-page="order-original">
+<header class="appbar">
+  <div class="wrap appbar-inner">
+    <a class="brand" href="#top" aria-label="우리꺼 홈">
+      <img class="footer-logo" src="assets/logo/logo.png" alt="우리꺼 본사 로고">
+    </a>
+    <div class="top-actions">
+      <a class="icon-btn primary" id="memberActionLink" href="member-register.html">회원가입</a>
+      <a class="icon-btn member-login-link" id="memberLoginActionLink" href="member-login.html">로그인</a>
+      <button class="icon-btn member-logout" id="memberLogoutButton" type="button" onclick="logoutMember()">로그아웃</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="store-hero wrap">
+    <div class="store-card">
+      <div class="cover">
+        <div class="cover-badges">
+          <span class="badge">🟢 영업중</span>
+          <span class="badge" id="deliveryBadge">🛵 배달</span>
+          <span class="badge" id="pickupBadge">🥡 포장</span>
+        </div>
+      </div>
+      <div class="store-info">
+        <div>
+          <div class="store-title-row">
+            <h1 class="store-title">오늘이닭</h1>
+          
+           <div class="store-share-actions" aria-label="오늘이닭 주문웹 공유">
+              <button class="share-button native-share-button" type="button" onclick="shareStorePage(event)" aria-label="오늘이닭 주문웹 공유하기">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M16 6.5 8.9 10.4M8.9 13.6 16 17.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="18" cy="5.5" r="3" stroke-width="2"/>
+                  <circle cx="6" cy="12" r="3" stroke-width="2"/>
+                  <circle cx="18" cy="18.5" r="3" stroke-width="2"/>
+                </svg>
+              </button>
+              <button class="share-button install-button" type="button" onclick="installStoreShortcut(event)" aria-label="오늘이닭 주문웹 휴대폰 바탕화면 바로가기 설치">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="7" y="2.5" width="10" height="19" rx="2.5" stroke-width="2"/>
+                  <path d="M10 18.5h4" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 7v7M9.5 9.5 12 7l2.5 2.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="recent-order-chip" id="recentOrderChip" type="button" onclick="openMemberMyPage(event)">
+                최근주문 <b>확인중</b>
+              </button>
+            </div>
+
+          </div>
+          <div class="notice-box">오늘이닭은 바삭한 후라이드와 매콤달콤한 양념치킨을 따뜻하게 준비하는 치킨 전문점입니다.</div>
+        </div>
+        <aside class="order-type">
+          <div class="switch" role="tablist">
+            <button id="deliveryBtn" class="active" onclick="setOrderType('배달')">배달</button>
+            <button id="pickupBtn" onclick="setOrderType('포장')">포장</button>
+          </div>
+          <div class="delivery-meta">
+            <div class="mini"><small>배달비</small><b id="feeText">3,000원</b></div>
+            <div class="mini"><small>최소주문</small><b>16,000원</b></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <nav class="category-bar">
+    <div class="wrap category-scroll" id="categoryList"></div>
+  </nav>
+
+  <section class="wrap layout">
+    <div class="content">
+      <section class="section-card" id="menuArea">
+        <div class="section-title">
+          <h2 id="categoryTitle">전체 메뉴</h2>
+          <p>담기 버튼을 누르면 장바구니에 추가됩니다.</p>
+        </div>
+        <div class="menu-list" id="menuList"></div>
+      </section>
+
+      <section class="section-card" id="storeInfo">
+        <div class="section-title"><h2>매장정보</h2><p>전용 주문웹 정보</p></div>
+        <div class="info-grid">
+          <div class="info-box">
+            <h3>가맹점 정보</h3>
+            <p>상호 : 오늘이닭<br>주소 : 인천광역시 동구 송림동 88<br>전화 : 032-654-1234 <br>후라이드치킨, 양념치킨, 반반치킨, 순살치킨, 포장, 배달 가능</p>
+          </div>
+          <div class="info-box">
+            <h3>QR코드</h3>
+            <div class="brand01">
+          <img src="assets/qr.png" alt="오늘이닭 QR코드">
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-title"><h2>가게사진</h2><p>매장 분위기</p></div>
+        <div class="album-grid">
+          <div class="album-empty">가게사진 준비중입니다.</div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="cart-panel" id="cart">
+      <div class="cart-head">
+        <h2>장바구니</h2>
+        <button class="cart-clear" onclick="clearCart()">비우기</button>
+      </div>
+      <div class="cart-body">
+        <div id="cartList" class="empty">아직 담긴 메뉴가 없습니다.<br>먹고 싶은 메뉴를 담아주세요.</div>
+        <div class="sum"><b>주문금액</b><b id="subtotal">0원</b></div>
+        <div class="sum"><span>배달비</span><span id="deliveryFee">3,000원</span></div>
+        <div class="sum"><b>총 결제금액</b><b id="total">0원</b></div>
+        <div class="form-line"><label>주문자명</label><input id="name" placeholder="예: 홍길동"></div>
+        <div class="form-line"><label>연락처</label><input id="phone" placeholder="010-0000-0000"></div>
+        <div class="form-line"><label>주소</label><input id="address" placeholder=""></div>
+        <div class="form-line"><label>요청사항</label><textarea id="memo" rows="3" placeholder="배달주소 또는 요청사항을 입력해주세요"></textarea></div>
+        <button class="checkout" onclick="submitOrder()">주문결제하기</button>
+        <div class="done" id="done">주문이 접수되었습니다. 매장에서 확인 후 준비를 시작합니다.</div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<div class="mobile-checkout">
+  <button onclick="goCart()"><span class="mobile-count" id="mobileCount">0</span><span id="mobileText">장바구니 보기 · 0원</span></button>
+</div>
+
+<footer class="footer" id="company">
+  <div class="footer-inner">
+    <div>
+      <img class="footer-logo" src="assets/logo/logo_w.png" alt="우리꺼 본사 로고">
+      <p class="footer-desc">우리는 내일도 최선을 다하겠습니다.</p>
+    </div>
+    <div>
+      <ul class="footer-info-list">
+        <li>상호 : 오늘이닭</li>
+        <li>전화 : 032-654-1234</li>
+        <li>사업자번호 : 123-45-67890호</li>
+		<li>대표 : 홍길동</li>
+        <li>주소 : 인천광역시 동구 송림동 88</li>
+      </ul>
+    </div>
+    <div class="footer-apply-box">
+
+      <a class="footer-apply-btn" href="#" role="button" onclick="shareStorePage(event)" aria-label="오늘이닭 주문웹 공유하기">상점공유하기</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 우리꺼 · 우리 가게 손님은 우리꺼로</span>
+    <!-- <span>본 서비스는 판매자와 구매자를 연결하는 중개서비스입니다.<br>
+상품의 상태, 진위 여부, 배송, 환불 등 거래와 관련된 책임은 거래 당사자에게 있습니다.</span> -->
+  </div>
+</footer>
+
+<div class="modal" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
+  <div class="modal-card">
+    <div style="font-size:42px">💳</div>
+    <h2 id="paymentModalTitle">신용카드 수기결제</h2>
+    <p>주문 금액을 확인한 뒤 매장에서 신용카드 수기결제를 진행합니다.</p>
+    <div class="payment-summary">
+      <div><span>주문자</span><b id="paymentCustomerName">-</b></div>
+      <div><span>연락처</span><b id="paymentCustomerPhone">-</b></div>
+      <div><span>결제금액</span><b id="paymentTotalAmount">0원</b></div>
+    </div>
+    <div class="manual-payment-form">
+      <label>카드사
+        <select id="manualCardCompany">
+          <option value="">카드사 선택</option>
+          <option>신한카드</option>
+          <option>국민카드</option>
+          <option>현대카드</option>
+          <option>삼성카드</option>
+          <option>롯데카드</option>
+          <option>우리카드</option>
+          <option>하나카드</option>
+          <option>BC카드</option>
+          <option>농협카드</option>
+        </select>
+      </label>
+      <label>할부
+        <select id="manualCardInstallment">
+          <option>일시불</option>
+          <option>2개월</option>
+          <option>3개월</option>
+          <option>6개월</option>
+          <option>12개월</option>
+        </select>
+      </label>
+      <label>카드 명의자
+        <input id="manualCardHolder" type="text" placeholder="예: 홍길동">
+      </label>
+    </div>
+    <p class="payment-help">카드번호, 유효기간, CVC는 주문웹에 입력하지 않습니다. 매장에서 안전한 결제 단말 또는 승인 절차로 처리합니다.</p>
+    <div class="payment-actions">
+      <button class="ghost" type="button" onclick="closePaymentModal()">취소</button>
+      <button type="button" onclick="confirmManualCardPayment()">수기결제 요청</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="orderModal">
+  <div class="modal-card">
+    <div style="font-size:48px">✅</div>
+    <h2>주문이 접수되었습니다</h2>
+    <p>매장에서 주문을 확인한 뒤 준비가 시작됩니다.<br>우리꺼를 이용해주셔서 감사합니다.</p>
+    <button onclick="closeModal()">확인</button>
+  </div>
+</div>
+
+<div class="modal" id="memberPageModal" role="dialog" aria-modal="true" aria-labelledby="memberPageTitle">
+  <div class="modal-card member-page-card">
+    <div class="member-page-head">
+      <div>
+        <h2 id="memberPageTitle">회원 마이페이지</h2>
+        <p>회원정보를 수정하고 주문내역을 확인합니다.</p>
+      </div>
+      <button class="member-page-close" type="button" onclick="closeMemberMyPage()" aria-label="마이페이지 닫기">×</button>
+    </div>
+    <form class="member-page-grid" onsubmit="saveMemberMyPage(event)">
+      <label>이름
+        <input id="myPageName" type="text" placeholder="이름을 입력해주세요" required>
+      </label>
+      <label>휴대폰 번호
+        <input id="myPagePhone" type="tel" placeholder="010-0000-0000" required>
+      </label>
+      <label class="full">주소
+        <input id="myPageAddress" type="text" placeholder="주소를 입력해주세요">
+      </label>
+      <div class="member-page-actions full">
+        <button type="submit">정보수정 저장</button>
+        <button class="ghost" type="button" onclick="closeMemberMyPage()">닫기</button>
+      </div>
+    </form>
+    <div class="member-recent-status" id="memberRecentStatus">
+      <span>최근거래 상태</span>
+      <b>주문내역 확인 전</b>
+    </div>
+    <h3 class="member-order-title">주문내역</h3>
+    <div class="member-order-list" id="memberOrderHistory">
+      <div class="member-order-empty">주문내역을 불러오는 중입니다.</div>
+    </div>
+  </div>
+</div>
+
+<div class="store-notice-modal" id="storeNoticeModal" role="dialog" aria-modal="true" aria-labelledby="storeNoticeTitle">
+  <div class="store-notice-card">
+    <div class="store-notice-head">
+      <h2 id="storeNoticeTitle">공지사항</h2>
+    </div>
+    <div class="store-notice-body" id="storeNoticeBody"></div>
+    <div class="store-notice-actions">
+      <button type="button" onclick="hideStoreNoticeToday()">오늘 안 보기</button>
+      <button type="button" onclick="closeStoreNotice()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const categories=['전체','인기메뉴','치킨','세트','사이드'];
+const menus=[
+  {id:1,cat:'치킨',img:'assets/menu/t_01.png',name:'바삭 후라이드치킨',desc:'겉은 바삭하고 속은 촉촉한 오늘이닭 대표 후라이드',price:18000,popular:true},
+  {id:2,cat:'치킨',img:'assets/menu/t_02.png',name:'매콤 양념치킨',desc:'매콤달콤한 특제 양념을 듬뿍 입힌 인기 메뉴',price:19000,popular:true},
+  {id:3,cat:'치킨',img:'assets/menu/t_03.png',name:'간장마늘치킨',desc:'짭조름한 간장소스와 은은한 마늘향이 살아있는 치킨',price:19000},
+  {id:4,cat:'세트',img:'assets/menu/t_04.png',name:'반반치킨',desc:'후라이드와 양념을 한 번에 즐기는 오늘이닭 베스트 조합',price:20000,popular:true},
+  {id:5,cat:'치킨',img:'assets/menu/t_05.png',name:'순살 후라이드',desc:'먹기 편한 순살로 즐기는 바삭한 후라이드치킨',price:19000},
+  {id:6,cat:'사이드',img:'assets/menu/t_06.png',name:'치즈 시즈닝 치킨볼',desc:'고소한 치즈 시즈닝을 더한 바삭한 한입 치킨',price:12000}
+];
+let currentCategory='전체';
+let orderType='배달';
+let deliveryFee=3000;
+let baseDeliveryFee=3000;
+let cart={};
+let currentStoreNoticeId='';
+let currentStoreData=null;
+let memberOrderHistoryTimer=null;
+function won(n){return n.toLocaleString('ko-KR')+'원'}
+function attr(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function renderCategories(){
+  const box=document.getElementById('categoryList');
+  box.innerHTML=categories.map(c=>`<button class="cat-btn ${c===currentCategory?'active':''}" onclick="setCategory('${c}')">${c}</button>`).join('');
+}
+function setCategory(cat){currentCategory=cat;document.getElementById('categoryTitle').textContent=cat==='전체'?'전체 메뉴':cat;renderCategories();renderMenus();}
+function menuCardHtml(m){
+  const menuId = attr(m.id);
+  return `
+    <article class="menu-item" data-menu-id="${menuId}">
+      <div class="menu-img">
+        <img src="${m.img}" alt="${m.name}" onerror="this.style.display='none';this.parentElement.classList.add('no-image');this.parentElement.textContent='사진 준비중';">
+      </div>
+      <div class="menu-copy">
+        <h3>${m.name}${m.popular?'<span class="popular-mark">인기</span>':''}</h3>
+        <p>${m.desc || ''}</p>
+        <b class="price">${won(m.price)}</b>
+      </div>
+      <button class="add-btn" type="button" data-menu-id="${menuId}">담기</button>
+    </article>`;
+}
+function bindMenuClicks(box){
+  box.querySelectorAll('.menu-item').forEach(item=>{
+    item.addEventListener('click', event=>{
+      if(event.target.closest('.add-btn')) return;
+      addCart(item.dataset.menuId);
+    });
+  });
+  box.querySelectorAll('.add-btn').forEach(button=>{
+    button.addEventListener('click', event=>{
+      event.stopPropagation();
+      addCart(button.dataset.menuId);
+    });
+  });
+}
+function renderMenus(){
+  const q=(document.getElementById('searchInput')?.value||'').trim().toLowerCase();
+  const box=document.getElementById('menuList');
+  const filtered=menus.filter(m=>{
+    const category = m.cat || m.category || '';
+    const desc = m.desc || '';
+    const categoryOk=currentCategory==='전체'||category===currentCategory||(currentCategory==='인기메뉴'&&m.popular);
+    const searchOk=!q||m.name.toLowerCase().includes(q)||desc.toLowerCase().includes(q);
+    return categoryOk&&searchOk;
+  });
+  if(!filtered.length){box.innerHTML='<div class="empty">검색된 메뉴가 없습니다.</div>';return;}
+  if(currentCategory === '전체'){
+    const grouped = categories
+      .filter(category => category !== '전체' && category !== '인기메뉴')
+      .map(category => ({
+        category,
+        items: filtered.filter(menu => (menu.cat || menu.category || '') === category)
+      }))
+      .filter(group => group.items.length);
+    const popularItems = filtered.filter(menu => menu.popular);
+    if(popularItems.length){
+      grouped.unshift({ category:'인기메뉴', items:popularItems });
+    }
+    box.innerHTML=grouped.map(group=>`
+      <section class="menu-category-group">
+        <div class="menu-category-heading">
+          <h3>${group.category}</h3>
+          <span>${group.items.length}개</span>
+        </div>
+        ${group.items.map(menuCardHtml).join('')}
+      </section>
+    `).join('');
+  }else{
+    box.innerHTML=filtered.map(menuCardHtml).join('');
+  }
+  bindMenuClicks(box);
+}
+function setOrderType(type){
+  orderType=type;
+  deliveryFee=type==='배달'?baseDeliveryFee:0;
+  document.getElementById('deliveryBtn').classList.toggle('active',type==='배달');
+  document.getElementById('pickupBtn').classList.toggle('active',type==='포장');
+  document.getElementById('feeText').textContent=type==='배달'?won(baseDeliveryFee):'무료';
+  document.getElementById('deliveryFee').textContent=type==='배달'?won(baseDeliveryFee):'0원';
+  renderCart();
+}
+function addCart(id){cart[id]=(cart[id]||0)+1;renderCart();}
+function changeQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCart();}
+function clearCart(){cart={};renderCart();}
+function getCartTotals(){
+  const ids=Object.keys(cart);
+  const subtotal=ids.reduce((sum,id)=>{
+    const menu=menus.find(x=>String(x.id)===String(id));
+    return sum + (menu ? menu.price * cart[id] : 0);
+  },0);
+  return {
+    itemCount: ids.reduce((sum,id)=>sum+cart[id],0),
+    subtotal,
+    total: ids.length ? subtotal + deliveryFee : 0
+  };
+}
+function timeToMinutes(value){
+  const raw = text(value);
+  const match = raw.match(/(\d{1,2})\s*:\s*(\d{2})/);
+  if(!match) return null;
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if(!Number.isFinite(hour) || !Number.isFinite(minute) || hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+  return hour * 60 + minute;
+}
+function getKoreaMinutes(){
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone:'Asia/Seoul',
+    hour:'2-digit',
+    minute:'2-digit',
+    hourCycle:'h23'
+  }).formatToParts(new Date());
+  const hour = Number(parts.find(part => part.type === 'hour')?.value || 0);
+  const minute = Number(parts.find(part => part.type === 'minute')?.value || 0);
+  return hour * 60 + minute;
+}
+function isWithinBusinessHours(openTime, closeTime){
+  const open = timeToMinutes(openTime);
+  const close = timeToMinutes(closeTime);
+  if(open === null || close === null || open === close) return true;
+  const current = getKoreaMinutes();
+  return open < close ? current >= open && current < close : current >= open || current < close;
+}
+function isOrderClosedNow(){
+  if(currentStoreData?.businessStatus === '마감') return true;
+  if(currentStoreData?.openTime || currentStoreData?.closeTime){
+    return !isWithinBusinessHours(currentStoreData.openTime, currentStoreData.closeTime);
+  }
+  return false;
+}
+function guardBusinessHours(){
+  if(!isOrderClosedNow()) return true;
+  closePaymentModal();
+  alert('영업이 종료되었습니다.');
+  return false;
+}
+function renderCart(){
+  const ids=Object.keys(cart);
+  const list=document.getElementById('cartList');
+  let subtotal=0;
+  if(!ids.length){
+    list.className='empty';
+    list.innerHTML='아직 담긴 메뉴가 없습니다.<br>먹고 싶은 메뉴를 담아주세요.';
+  }else{
+    list.className='';
+    list.innerHTML=ids.map(id=>{
+      const m=menus.find(x=>String(x.id)===String(id));
+      if(!m) return '';
+      const q=cart[id];
+      const menuId = attr(id);
+      subtotal+=m.price*q;
+      return `<div class="cart-row"><div><div class="cart-row-name">${m.name}</div><small>${won(m.price)} × ${q}</small></div><div class="qty-control"><button type="button" data-menu-id="${menuId}" data-delta="-1">-</button><b>${q}</b><button type="button" data-menu-id="${menuId}" data-delta="1">+</button></div></div>`;
+    }).join('');
+    list.querySelectorAll('.qty-control button').forEach(button=>{
+      button.addEventListener('click', ()=>{
+        changeQty(button.dataset.menuId, Number(button.dataset.delta));
+      });
+    });
+  }
+  const itemCount=ids.reduce((a,id)=>a+cart[id],0);
+  const total=ids.length?subtotal+deliveryFee:0;
+  document.getElementById('subtotal').textContent=won(subtotal);
+  document.getElementById('total').textContent=won(total);
+  document.getElementById('mobileCount').textContent=itemCount;
+  document.getElementById('mobileText').textContent=`장바구니 보기 · ${won(total)}`;
+}
+function submitOrder(){
+  if(!Object.keys(cart).length){alert('메뉴를 먼저 담아주세요.');return;}
+  if(!guardBusinessHours()) return;
+  fillCartCustomerInfo();
+  const name = text(document.getElementById('name')?.value);
+  const phone = text(document.getElementById('phone')?.value);
+  const address = text(document.getElementById('address')?.value);
+  if(!name){alert('주문자명을 입력해주세요.');document.getElementById('name')?.focus();return;}
+  if(!phone){alert('연락처를 입력해주세요.');document.getElementById('phone')?.focus();return;}
+  if(orderType === '배달' && !address){alert('배달 주소를 입력해주세요.');document.getElementById('address')?.focus();return;}
+  openPaymentModal();
+}
+function openPaymentModal(){
+  const totals = getCartTotals();
+  document.getElementById('paymentCustomerName').textContent = text(document.getElementById('name')?.value, '-');
+  document.getElementById('paymentCustomerPhone').textContent = text(document.getElementById('phone')?.value, '-');
+  document.getElementById('paymentTotalAmount').textContent = won(totals.total);
+  const holder = document.getElementById('manualCardHolder');
+  if(holder && !holder.value) holder.value = text(document.getElementById('name')?.value);
+  document.getElementById('paymentModal').style.display='flex';
+}
+function closePaymentModal(){document.getElementById('paymentModal').style.display='none'}
+function getCurrentStoreId(){
+  const params = new URLSearchParams(window.location.search);
+  return params.get('store') || currentStoreData?.storeId || '';
+}
+function getCartOrderItems(){
+  return Object.keys(cart).map(id=>{
+    const menu=menus.find(x=>String(x.id)===String(id));
+    if(!menu) return null;
+    return {
+      id:String(id),
+      name:menu.name,
+      price:Number(menu.price || 0),
+      quantity:Number(cart[id] || 0)
+    };
+  }).filter(Boolean);
+}
+function getOrderMenuSummary(){
+  return getCartOrderItems().map(item=>`${item.name} ${item.quantity}`).join(', ');
+}
+async function saveCurrentOrder(paymentInfo){
+  const totals = getCartTotals();
+  const storeId = getCurrentStoreId();
+  const storeName = text(currentStoreData?.storeName || document.querySelector('.store-title')?.textContent, '우리꺼 상점');
+  const customer = text(document.getElementById('name')?.value);
+  const phone = text(document.getElementById('phone')?.value);
+  const address = orderType === '배달'
+    ? text(document.getElementById('address')?.value)
+    : '포장 주문';
+  const payload = {
+    storeId,
+    storeName,
+    customer,
+    phone,
+    address,
+    orderType,
+    type: orderType,
+    deliveryCount: orderType === '배달' ? 1 : 0,
+    customerType: '신규',
+    itemCount: totals.itemCount,
+    menu: getOrderMenuSummary(),
+    amountNumber: totals.total,
+    amount: won(totals.total),
+    memo: text(document.getElementById('memo')?.value),
+    paymentMethod: 'manual-card',
+    cardCompany: paymentInfo.company,
+    installment: paymentInfo.installment,
+    cardHolder: paymentInfo.holder
+  };
+  const response = await fetch('/api/orders', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body:JSON.stringify(payload)
+  });
+  const result = await response.json().catch(()=>({}));
+  if(!response.ok || !result.ok){
+    throw new Error(result.message || '주문 저장 중 오류가 발생했습니다.');
+  }
+  return result.order;
+}
+async function confirmManualCardPayment(){
+  if(!guardBusinessHours()) return;
+  const company = text(document.getElementById('manualCardCompany')?.value);
+  if(!company){alert('카드사를 선택해주세요.');document.getElementById('manualCardCompany')?.focus();return;}
+  const button = document.querySelector('#paymentModal .payment-actions button:last-child');
+  const originalText = button ? button.textContent : '';
+  if(button){button.disabled=true;button.textContent='주문 저장중...';}
+  try{
+    await saveCurrentOrder({
+      company,
+      installment: text(document.getElementById('manualCardInstallment')?.value, '일시불'),
+      holder: text(document.getElementById('manualCardHolder')?.value)
+    });
+    closePaymentModal();
+    document.getElementById('done').style.display='block';
+    document.getElementById('orderModal').style.display='flex';
+    clearCart();
+  }catch(error){
+    alert(error.message || '주문 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+  }finally{
+    if(button){button.disabled=false;button.textContent=originalText || '수기결제 요청';}
+  }
+}
+function closeModal(){document.getElementById('orderModal').style.display='none'}
+function goCart(){document.getElementById('cart').scrollIntoView({behavior:'smooth',block:'start'});}
+function placeCartForViewport(){
+  const layout = document.querySelector('.layout');
+  const content = document.querySelector('.layout .content');
+  const menuArea = document.getElementById('menuArea');
+  const cartPanel = document.getElementById('cart');
+  if(!layout || !content || !menuArea || !cartPanel) return;
+  const isMobile = window.matchMedia('(max-width: 980px)').matches;
+  if(isMobile){
+    if(cartPanel.parentElement !== content || menuArea.nextElementSibling !== cartPanel){
+      content.insertBefore(cartPanel, menuArea.nextElementSibling);
+    }
+  }else if(cartPanel.parentElement !== layout){
+    layout.appendChild(cartPanel);
+  }
+}
+function todayKey(){
+  const date = new Date();
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+function closeStoreNotice(){
+  const modal = document.getElementById('storeNoticeModal');
+  if(modal) modal.classList.remove('show');
+}
+function hideStoreNoticeToday(){
+  if(currentStoreNoticeId){
+    localStorage.setItem(`wooreccoCustomerNoticeHidden:${currentStoreNoticeId}`, todayKey());
+  }
+  closeStoreNotice();
+}
+function showStoreNotice(notice){
+  if(!notice || !notice.id) return;
+  if(localStorage.getItem(`wooreccoCustomerNoticeHidden:${notice.id}`) === todayKey()) return;
+  currentStoreNoticeId = notice.id;
+  const title = document.getElementById('storeNoticeTitle');
+  const body = document.getElementById('storeNoticeBody');
+  const modal = document.getElementById('storeNoticeModal');
+  if(title) title.textContent = notice.title || '공지사항';
+  if(body) body.textContent = notice.message || '';
+  if(modal) modal.classList.add('show');
+}
+async function loadCustomerNotice(storeId){
+  if(!storeId) return;
+  try{
+    const response = await fetch(`/api/notices?audience=customer&store=${encodeURIComponent(storeId)}`, { cache:'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if(response.ok && result.ok && result.notice) showStoreNotice(result.notice);
+  }catch(error){
+    console.warn('공지사항을 불러오지 못했습니다.', error);
+  }
+}
+function getShareUrl(){
+  if (window.location.protocol === 'file:') {
+    return 'order.html';
+  }
+  return window.location.href || 'order.html';
+}
+
+let deferredInstallPrompt = null;
+let dynamicManifestUrl = '';
+const kakaoJavascriptKey = text(document.querySelector('meta[name="kakao-js-key"]')?.content);
+const kakaoSdkSrc = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js';
+let kakaoSdkLoading = null;
+let kakaoShareReady = false;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+});
+
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
+function updateOrderManifest(storeName = '우리꺼 주문웹'){
+  const manifestLink = document.querySelector('link[rel="manifest"]');
+  if (!manifestLink || window.location.protocol === 'file:') return;
+
+  const manifest = {
+    name: `${storeName} 주문웹`,
+    short_name: storeName.slice(0, 12) || '우리꺼',
+    start_url: new URL(getShareUrl(), window.location.origin).pathname + window.location.search,
+    scope: '/',
+    display: 'standalone',
+    background_color: '#fff7ed',
+    theme_color: '#ff6b00',
+    icons: [
+      {
+        src: '/assets/logo/512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any maskable'
+      }
+    ]
+  };
+
+  if (dynamicManifestUrl) URL.revokeObjectURL(dynamicManifestUrl);
+  dynamicManifestUrl = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' }));
+  manifestLink.href = dynamicManifestUrl;
+}
+
+async function installStoreShortcut(event){
+  if (event) event.preventDefault();
+
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice.catch(() => null);
+    deferredInstallPrompt = null;
+    return;
+  }
+
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent || '');
+  if (isIos) {
+    alert('아이폰에서는 Safari 하단 공유 버튼을 누른 뒤 “홈 화면에 추가”를 선택해주세요.');
+    return;
+  }
+
+  alert('브라우저 메뉴에서 “앱 설치” 또는 “홈 화면에 추가”를 선택해주세요. 이미 설치되어 있거나 설치 조건이 준비 중이면 버튼이 바로 뜨지 않을 수 있습니다.');
+}
+
+function getStoreShareData(){
+  const storeName = text(document.querySelector('.store-title')?.textContent, '우리꺼 상점');
+  const description = text(
+    document.querySelector('.notice-box')?.textContent,
+    `${storeName} 전용 주문웹입니다. 메뉴를 확인하고 우리꺼에서 바로 주문할 수 있습니다.`
+  );
+  const shareUrl = new URL(getShareUrl(), window.location.origin).href;
+  const coverStyle = document.querySelector('.cover')?.style.backgroundImage || '';
+  const signImageMatch = coverStyle.match(/url\(["']?([^"')]+)["']?\)/);
+  const imageUrl = signImageMatch
+    ? new URL(signImageMatch[1], window.location.origin).href
+    : new URL('/assets/og_img01.png', window.location.origin).href;
+  return {
+    title: storeName,
+    text: description,
+    url: shareUrl,
+    imageUrl
+  };
+}
+
+async function copyShareUrl(url, message = '공유 링크가 복사되었습니다. 카카오톡, 문자, SNS에 붙여넣어 공유해주세요.'){
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(url);
+  } else {
+    const tempInput = document.createElement('input');
+    tempInput.value = url;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+  }
+  alert(message);
+}
+
+function initKakaoShare(){
+  if (!window.Kakao || !window.Kakao.Share || !kakaoJavascriptKey) {
+    kakaoShareReady = false;
+    return false;
+  }
+
+  try {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(kakaoJavascriptKey);
+    }
+    kakaoShareReady = window.Kakao.isInitialized();
+    return kakaoShareReady;
+  } catch (error) {
+    console.error('kakao_init_failed', error && (error.message || error));
+    kakaoShareReady = false;
+    return false;
+  }
+}
+
+function loadKakaoSdk(){
+  if (window.Kakao && window.Kakao.Share) return Promise.resolve(true);
+  if (kakaoSdkLoading) return kakaoSdkLoading;
+
+  kakaoSdkLoading = new Promise((resolve) => {
+    const existingScript = document.querySelector(`script[src="${kakaoSdkSrc}"]`);
+    const script = existingScript || document.createElement('script');
+    let checks = 0;
+
+    const waitForSdk = () => {
+      if (window.Kakao && window.Kakao.Share) {
+        resolve(true);
+        return;
+      }
+      checks += 1;
+      if (checks >= 30) {
+        resolve(false);
+        return;
+      }
+      setTimeout(waitForSdk, 100);
+    };
+
+    script.onload = waitForSdk;
+    script.onerror = () => resolve(false);
+
+    if (!existingScript) {
+      script.src = kakaoSdkSrc;
+      script.crossOrigin = 'anonymous';
+      document.head.appendChild(script);
+    }
+
+    waitForSdk();
+  });
+
+  return kakaoSdkLoading;
+}
+
+async function ensureKakaoShareReady(){
+  if (initKakaoShare()) return true;
+  const loaded = await loadKakaoSdk();
+  if (!loaded) return false;
+  return initKakaoShare();
+}
+
+function openKakaoTalkAppFallback(shareData){
+  const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent || '');
+  if (!isMobile) return false;
+
+  const shareUrl = new URL(shareData.url, window.location.origin).href;
+  const message = `${shareData.title}\n${shareData.text}`;
+  window.location.href = `kakaotalk://sendurl?msg=${encodeURIComponent(message)}&url=${encodeURIComponent(shareUrl)}`;
+  return true;
+}
+
+async function shareStorePageToKakao(event){
+  if (event) event.preventDefault();
+  const shareData = getStoreShareData();
+
+  try {
+    if (!kakaoShareReady && !initKakaoShare()) {
+      await ensureKakaoShareReady();
+    }
+
+    if (!kakaoShareReady || !window.Kakao || !window.Kakao.Share) {
+      if (openKakaoTalkAppFallback(shareData)) return;
+      await copyShareUrl(shareData.url, '카카오톡 공유창을 준비하지 못해 링크를 복사했습니다. 잠시 후 다시 누르거나 카카오 Developers의 Web 플랫폼 도메인을 확인해주세요.');
+      return;
+    }
+
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: shareData.title,
+        description: shareData.text,
+        imageUrl: shareData.imageUrl,
+        link: {
+          mobileWebUrl: shareData.url,
+          webUrl: shareData.url
+        }
+      },
+      buttons: [
+        {
+          title: '주문웹 열기',
+          link: {
+            mobileWebUrl: shareData.url,
+            webUrl: shareData.url
+          }
+        }
+      ]
+    });
+  } catch (error) {
+    console.error('kakao_share_failed', error && (error.message || error));
+    if (openKakaoTalkAppFallback(shareData)) return;
+    await copyShareUrl(shareData.url, '카카오톡 공유를 열지 못해 링크를 복사했습니다. 카카오톡에 붙여넣어 공유해주세요.');
+  }
+}
+
+loadKakaoSdk().then(initKakaoShare).catch(() => {});
+window.addEventListener('load', initKakaoShare);
+
+async function shareStorePage(event){
+  if (event) event.preventDefault();
+
+  const shareData = getStoreShareData();
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+
+    await copyShareUrl(shareData.url);
+  } catch (error) {
+    if (error && error.name === 'AbortError') return;
+    alert('공유 기능을 사용할 수 없습니다. 주소창의 링크를 복사해 공유해주세요.');
+  }
+}
+
+function text(value, fallback = '') {
+  return String(value || fallback || '').trim();
+}
+
+function readStoredMemberName(){
+  const directKeys = ['wooreccoMemberName', 'wooreccoCustomerName', 'memberName'];
+  for (const storage of [sessionStorage, localStorage]) {
+    for (const key of directKeys) {
+      const value = text(storage.getItem(key));
+      if (value) return value;
+    }
+  }
+
+  const objectKeys = ['wooreccoMember', 'wooreccoCustomerMember', 'wooreccoMemberLogin'];
+  for (const storage of [sessionStorage, localStorage]) {
+    for (const key of objectKeys) {
+      try {
+        const member = JSON.parse(storage.getItem(key) || '{}');
+        const name = text(member.name || member.memberName || member.customerName || member.id);
+        if (name) return name;
+      } catch (error) {}
+    }
+  }
+  return '';
+}
+
+function readStoredMember(){
+  const member = {};
+  for (const storage of [sessionStorage, localStorage]) {
+    for (const key of ['wooreccoMember', 'wooreccoCustomerMember', 'wooreccoMemberLogin']) {
+      try {
+        const parsed = JSON.parse(storage.getItem(key) || '{}');
+        if (parsed && typeof parsed === 'object') Object.assign(member, parsed);
+      } catch (error) {}
+    }
+  }
+
+  member.name = text(member.name || member.memberName || member.customerName || localStorage.getItem('wooreccoMemberName') || sessionStorage.getItem('wooreccoMemberName'));
+  member.phone = text(member.phone || member.mobile || member.tel || localStorage.getItem('wooreccoMemberPhone') || sessionStorage.getItem('wooreccoMemberPhone'));
+  member.address = text(member.address || member.addr || localStorage.getItem('wooreccoMemberAddress') || sessionStorage.getItem('wooreccoMemberAddress'));
+  member.id = text(member.id || member.memberId || member.loginId);
+  member.provider = text(member.provider || 'normal');
+  return member;
+}
+
+function normalizePhone(value){
+  return String(value || '').replace(/\D/g, '');
+}
+
+function getCurrentStoreId(){
+  const params = new URLSearchParams(window.location.search);
+  return text(params.get('store') || currentStoreData?.storeId || currentStoreData?.loginId || currentStoreData?.id);
+}
+
+function writeStoredMember(member){
+  const phoneKey = normalizePhone(member.phone);
+  const nextMember = {
+    id: text(member.id || (phoneKey ? `member-${phoneKey}` : '')),
+    name: text(member.name),
+    phone: text(member.phone),
+    address: text(member.address),
+    provider: text(member.provider || 'normal')
+  };
+  localStorage.setItem('wooreccoMemberName', nextMember.name);
+  localStorage.setItem('wooreccoMemberPhone', nextMember.phone);
+  localStorage.setItem('wooreccoMemberAddress', nextMember.address);
+  localStorage.setItem('wooreccoMember', JSON.stringify(nextMember));
+  sessionStorage.setItem('wooreccoMember', JSON.stringify(nextMember));
+  return nextMember;
+}
+
+async function saveMemberToServer(member){
+  try {
+    await fetch('/api/customers', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        ...member,
+        storeId:getCurrentStoreId(),
+        storeName:text(currentStoreData?.storeName || document.querySelector('.store-title')?.textContent)
+      })
+    });
+  } catch (error) {
+    console.warn('member_update_save_failed', error);
+  }
+}
+
+function setCartFieldIfEmpty(id, value){
+  const field = document.getElementById(id);
+  if (!field || !text(value) || text(field.value)) return;
+  field.value = value;
+}
+
+function fillCartCustomerInfo(){
+  const member = readStoredMember();
+  if (!member.name && !member.phone && !member.address) return;
+
+  setCartFieldIfEmpty('name', member.name);
+  setCartFieldIfEmpty('phone', member.phone);
+  setCartFieldIfEmpty('address', member.address);
+}
+
+function clearMemberCartFields(){
+  ['name','phone','address'].forEach(id => {
+    const field = document.getElementById(id);
+    if(field) field.value = '';
+  });
+}
+
+function logoutMember(){
+  const keys = [
+    'wooreccoMember',
+    'wooreccoCustomerMember',
+    'wooreccoMemberLogin',
+    'wooreccoMemberName',
+    'wooreccoCustomerName',
+    'memberName',
+    'wooreccoMemberPhone',
+    'wooreccoMemberAddress'
+  ];
+  for (const storage of [sessionStorage, localStorage]) {
+    keys.forEach(key => storage.removeItem(key));
+  }
+  if(memberOrderHistoryTimer) {
+    clearInterval(memberOrderHistoryTimer);
+    memberOrderHistoryTimer = null;
+  }
+  clearMemberCartFields();
+  updateMemberHeader();
+}
+
+function openMemberMyPage(event){
+  if(event) event.preventDefault();
+  const member = readStoredMember();
+  if(!member.name && !member.phone){
+    window.location.href = `member-register.html?redirect=${encodeURIComponent(window.location.href)}`;
+    return;
+  }
+  const modal = document.getElementById('memberPageModal');
+  if(!modal) return;
+  const nameInput = document.getElementById('myPageName');
+  const phoneInput = document.getElementById('myPagePhone');
+  const addressInput = document.getElementById('myPageAddress');
+  if(nameInput) nameInput.value = member.name || '';
+  if(phoneInput) phoneInput.value = member.phone || '';
+  if(addressInput) addressInput.value = member.address || '';
+  modal.style.display = 'flex';
+  loadMemberOrderHistory();
+}
+
+function closeMemberMyPage(){
+  const modal = document.getElementById('memberPageModal');
+  if(modal) modal.style.display = 'none';
+}
+
+async function saveMemberMyPage(event){
+  if(event) event.preventDefault();
+  const current = readStoredMember();
+  const nextMember = writeStoredMember({
+    ...current,
+    name:document.getElementById('myPageName')?.value,
+    phone:document.getElementById('myPagePhone')?.value,
+    address:document.getElementById('myPageAddress')?.value
+  });
+  await saveMemberToServer(nextMember);
+  ['name','phone','address'].forEach(id => {
+    const field = document.getElementById(id);
+    const value = nextMember[id];
+    if(field && value) field.value = value;
+  });
+  updateMemberHeader();
+  await loadMemberOrderHistory();
+  alert('회원정보가 수정되었습니다.');
+}
+
+function memberOrderMatches(order, member){
+  const phoneKey = normalizePhone(member.phone);
+  const orderPhoneKey = normalizePhone(order.phone);
+  if(phoneKey && orderPhoneKey) return phoneKey === orderPhoneKey;
+  const memberName = text(member.name).toLowerCase();
+  return memberName && text(order.customer).toLowerCase() === memberName;
+}
+
+function getRecentOrderStatusClass(status){
+  if(status === '주문') return 'status-order';
+  if(status === '준비중') return 'status-orange';
+  if(status === '조리완료' || status === '배달중' || status === '배달') return 'status-blue';
+  if(status === '완료') return 'status-dark';
+  if(status === '취소') return 'status-red';
+  return 'status-order';
+}
+
+function getCustomerOrderStatusText(status){
+  const current = text(status || '주문');
+  if(current === '배달') return '배달중';
+  return current;
+}
+
+function isCompletedOrderExpired(order){
+  if(text(order?.status) !== '완료') return false;
+  const base = new Date(order.updatedAt || order.createdAt || Date.now());
+  if(Number.isNaN(base.getTime())) return false;
+  return Date.now() - base.getTime() >= 60 * 60 * 1000;
+}
+
+function updateRecentOrderChip(order){
+  const chip = document.getElementById('recentOrderChip');
+  if(!chip) return;
+  chip.className = 'recent-order-chip';
+  if(!order || isCompletedOrderExpired(order)){
+    chip.classList.remove('show');
+    chip.innerHTML = '최근주문 <b>없음</b>';
+    return;
+  }
+  const status = text(order.status || '주문');
+  chip.classList.add('show', getRecentOrderStatusClass(status));
+  chip.innerHTML = `최근주문 <b>${attr(getCustomerOrderStatusText(status))}</b>`;
+}
+
+function renderMemberOrderHistory(orders){
+  const box = document.getElementById('memberOrderHistory');
+  const recentStatus = document.querySelector('#memberRecentStatus b');
+  if(!box) return;
+  if(!orders.length){
+    if(recentStatus) recentStatus.textContent = '주문내역 없음';
+    updateRecentOrderChip(null);
+    box.innerHTML = '<div class="member-order-empty">아직 주문내역이 없습니다.</div>';
+    return;
+  }
+  const latestOrder = orders[0];
+  updateRecentOrderChip(latestOrder);
+  if(recentStatus) recentStatus.textContent = `${getCustomerOrderStatusText(latestOrder.status)} · ${latestOrder.time || latestOrder.createdAt || ''}`;
+  box.innerHTML = orders.slice(0, 20).map(order => `
+    <article class="member-order-item">
+      <div class="member-order-top">
+        <div>
+          <b>${attr(order.store || document.querySelector('.store-title')?.textContent || '상점')}</b>
+          <small>${attr(order.time || order.createdAt || '')} · ${attr(order.no || '')}</small>
+        </div>
+        <span class="member-order-status">${attr(getCustomerOrderStatusText(order.status))}</span>
+      </div>
+      <div class="member-order-menu">${attr(order.menu || '주문 메뉴')}</div>
+      <div class="member-order-bottom">
+        <span>${attr(order.type || '주문')}</span>
+        <strong>${attr(order.amount || won(Number(order.amountNumber || 0)))}</strong>
+      </div>
+    </article>
+  `).join('');
+}
+
+async function loadMemberOrderHistory(options = {}){
+  const member = readStoredMember();
+  const box = document.getElementById('memberOrderHistory');
+  if(box && !options.silent) box.innerHTML = '<div class="member-order-empty">주문내역을 불러오는 중입니다.</div>';
+  try {
+    const storeId = getCurrentStoreId();
+    const url = storeId ? `/api/orders?store=${encodeURIComponent(storeId)}` : '/api/orders';
+    const response = await fetch(url, {cache:'no-store'});
+    const result = await response.json().catch(() => ({}));
+    if(!response.ok || !result.ok) throw new Error('orders_load_failed');
+    const orders = Array.isArray(result.orders) ? result.orders.filter(order => memberOrderMatches(order, member)) : [];
+    renderMemberOrderHistory(orders);
+  } catch (error) {
+    if(box) box.innerHTML = '<div class="member-order-empty">주문내역을 불러오지 못했습니다.</div>';
+  }
+}
+
+function startMemberOrderStatusSync(){
+  if(memberOrderHistoryTimer) clearInterval(memberOrderHistoryTimer);
+  if(!readStoredMemberName()){
+    updateRecentOrderChip(null);
+    return;
+  }
+  loadMemberOrderHistory();
+  memberOrderHistoryTimer = setInterval(() => {
+    if(!readStoredMemberName()){
+      clearInterval(memberOrderHistoryTimer);
+      memberOrderHistoryTimer = null;
+      updateRecentOrderChip(null);
+      return;
+    }
+    loadMemberOrderHistory({ silent:true });
+  }, 3000);
+}
+
+function updateMemberHeader(){
+  const memberLink = document.getElementById('memberActionLink');
+  const loginLink = document.getElementById('memberLoginActionLink');
+  const logoutButton = document.getElementById('memberLogoutButton');
+  if (!memberLink) return;
+
+  const memberName = readStoredMemberName();
+  if (memberName) {
+    memberLink.textContent = `${memberName}의 mypage`;
+    memberLink.href = '#member-page';
+    memberLink.onclick = openMemberMyPage;
+    memberLink.classList.remove('primary');
+    memberLink.classList.add('member-greeting');
+    memberLink.setAttribute('aria-label', `${memberName}의 mypage`);
+    if(loginLink) loginLink.classList.add('hide');
+    if(logoutButton) logoutButton.classList.add('show');
+    startMemberOrderStatusSync();
+    return;
+  }
+
+  memberLink.textContent = '회원가입';
+  memberLink.href = `member-register.html?redirect=${encodeURIComponent(window.location.href)}`;
+  memberLink.onclick = null;
+  memberLink.classList.add('primary');
+  memberLink.classList.remove('member-greeting');
+  memberLink.setAttribute('aria-label', '회원가입');
+  if(loginLink) {
+    loginLink.href = `member-login.html?redirect=${encodeURIComponent(window.location.href)}`;
+    loginLink.classList.remove('hide');
+  }
+  updateRecentOrderChip(null);
+  if(logoutButton) logoutButton.classList.remove('show');
+}
+
+function formatWonText(value, fallback) {
+  const raw = text(value);
+  if (!raw) return fallback;
+  const number = Number(raw.replace(/[^0-9]/g, ''));
+  return Number.isFinite(number) && number > 0 ? number.toLocaleString('ko-KR') + '원' : fallback;
+}
+
+function parseWonValue(value) {
+  return Number(String(value || '').replace(/[^0-9]/g, '')) || 0;
+}
+
+function setText(selector, value) {
+  const element = document.querySelector(selector);
+  if (element) element.textContent = value;
+}
+
+function setAttr(selector, attr, value) {
+  const element = document.querySelector(selector);
+  if (element) element.setAttribute(attr, value);
+}
+
+function getQrImageUrl(value, size) {
+  const absoluteUrl = new URL(value, window.location.origin).href;
+  return `/api/qr-code?size=${size}&data=${encodeURIComponent(absoluteUrl)}`;
+}
+
+function applyOrderAvailability(store) {
+  const mode = text(store.orderType, 'both');
+  const canDelivery = mode === 'delivery' || mode === 'both' || (!store.orderType && store.canDelivery !== false);
+  const canPickup = mode === 'pickup' || mode === 'both' || (!store.orderType && store.canPickup !== false);
+  const deliveryButton = document.getElementById('deliveryBtn');
+  const pickupButton = document.getElementById('pickupBtn');
+  const deliveryBadge = document.getElementById('deliveryBadge');
+  const pickupBadge = document.getElementById('pickupBadge');
+  const switchBox = document.querySelector('.order-type .switch');
+
+  if(deliveryButton) deliveryButton.style.display = canDelivery ? '' : 'none';
+  if(pickupButton) pickupButton.style.display = canPickup ? '' : 'none';
+  if(switchBox) switchBox.style.display = (canDelivery && canPickup) ? '' : 'none';
+  if(deliveryBadge) deliveryBadge.style.display = canDelivery ? '' : 'none';
+  if(pickupBadge) pickupBadge.style.display = canPickup ? '' : 'none';
+
+  if(canDelivery) setOrderType('배달');
+  else if(canPickup) setOrderType('포장');
+}
+
+function applyDynamicStore(store) {
+  currentStoreData = store || null;
+  const storeName = text(store.storeName, '우리꺼 상점');
+  const address = text(store.storeAddress, '주소 준비중');
+  const phone = text(store.ownerPhone, '연락처 준비중');
+  const ownerName = text(store.ownerName, '대표자 준비중');
+  const businessNumber = text(store.businessNumber, '사업자번호 준비중');
+  const category = text(store.storeCategory, '메뉴 준비중');
+  const description = text(store.description, `${storeName} 전용 주문웹입니다.`);
+  const deliveryFeeText = formatWonText(store.deliveryFee, '0원');
+  const minOrderText = formatWonText(store.minOrderPrice, '0원');
+  const shareUrl = text(store.shareUrl, window.location.href);
+  const signImageUrl = text(store.signImageUrl);
+  const storePhotoUrls = Array.isArray(store.storePhotoUrls) ? store.storePhotoUrls.filter(Boolean) : [];
+  const businessStatus = text(store.businessStatus, '영업중') === '마감' ? '마감' : '영업중';
+
+  document.title = `${storeName} 주문웹`;
+  setText('.store-title', storeName);
+  setText('.notice-box', description);
+  baseDeliveryFee = parseWonValue(store.deliveryFee);
+  deliveryFee = orderType === '배달' ? baseDeliveryFee : 0;
+  setText('#feeText', deliveryFeeText);
+  setText('#deliveryFee', deliveryFeeText);
+  const cover = document.querySelector('.cover');
+  if (cover) {
+    cover.style.background = signImageUrl
+      ? `linear-gradient(135deg,rgba(17,24,39,.34),rgba(17,24,39,.14)), url("${signImageUrl}") center/cover no-repeat`
+      : '#fff7ed';
+  }
+  const statusBadge = document.querySelector('.cover-badges .badge');
+  if (statusBadge) {
+    statusBadge.textContent = businessStatus === '마감' ? '🔴 마감' : '🟢 영업중';
+    statusBadge.classList.toggle('closed', businessStatus === '마감');
+  }
+  const albumGrid = document.querySelector('.album-grid');
+  if (albumGrid) {
+    albumGrid.innerHTML = storePhotoUrls.length
+      ? storePhotoUrls.slice(0, 4).map((url, index) => `
+        <img src="${url}" alt="${storeName} 가게사진 ${index + 1}">
+      `).join('')
+      : '<div class="album-empty">가게사진 준비중입니다.</div>';
+  }
+  const minOrderBox = document.querySelectorAll('.delivery-meta .mini b')[1];
+  if (minOrderBox) minOrderBox.textContent = minOrderText;
+  applyOrderAvailability(store);
+
+  const qrImage = document.querySelector('#storeInfo .brand01 img');
+  if (qrImage) {
+    qrImage.src = getQrImageUrl(shareUrl, 260);
+    qrImage.alt = `${storeName} QR코드`;
+  }
+
+  const infoBox = document.querySelector('#storeInfo .info-box p');
+  if (infoBox) {
+    const mode = text(store.orderType, 'both');
+    const services = [mode === 'pickup' || mode === 'both' ? '포장 가능' : '', mode === 'delivery' || mode === 'both' ? '배달 가능' : ''].filter(Boolean).join(', ');
+    infoBox.innerHTML = `상호 : ${storeName}<br>주소 : ${address}<br>전화 : ${phone}<br>${category}${services ? ', ' + services : ''}`;
+  }
+
+  const footerItems = document.querySelectorAll('.footer-info-list li');
+  if (footerItems[0]) footerItems[0].textContent = `상호 : ${storeName}`;
+  if (footerItems[1]) footerItems[1].textContent = `전화 : ${phone}`;
+  if (footerItems[2]) footerItems[2].textContent = `사업자번호 : ${businessNumber}`;
+  if (footerItems[3]) footerItems[3].textContent = `대표 : ${ownerName}`;
+  if (footerItems[4]) footerItems[4].textContent = `주소 : ${address}`;
+
+  setAttr('.store-share-actions', 'aria-label', `${storeName} 주문웹 공유`);
+  setAttr('.native-share-button', 'aria-label', `${storeName} 주문웹 공유하기`);
+  setAttr('.install-button', 'aria-label', `${storeName} 주문웹 휴대폰 바탕화면 바로가기 설치`);
+  setAttr('.footer-apply-btn', 'aria-label', `${storeName} 주문웹 공유하기`);
+  updateOrderManifest(storeName);
+}
+
+function applyDynamicMenus(data) {
+  const nextCategories = Array.isArray(data.categories) ? data.categories.filter(Boolean) : [];
+  const nextMenus = Array.isArray(data.menus) ? data.menus : [];
+  if (!Array.isArray(data.menus)) return;
+  const derivedCategories = nextCategories.length
+    ? nextCategories
+    : [...new Set(nextMenus.map((menu) => menu.category || menu.cat || '').filter(Boolean))];
+
+  categories.splice(0, categories.length, '전체', ...derivedCategories.filter((category) => category !== '전체'));
+  menus.splice(0, menus.length, ...nextMenus
+    .filter((menu) => (menu.status || '판매중') === '판매중')
+    .map((menu, index) => ({
+      id: menu.id || index + 1,
+      cat: menu.category || menu.cat || '',
+      img: menu.image || menu.img || '',
+      name: menu.name || '',
+      desc: menu.desc || menu.description || '',
+      price: Number(menu.price || 0),
+      popular: Boolean(menu.popular) || (menu.category || menu.cat) === '인기메뉴'
+    }))
+    .filter((menu) => menu.name));
+
+  if (!categories.includes(currentCategory)) {
+    currentCategory = '전체';
+    const title = document.getElementById('categoryTitle');
+    if (title) title.textContent = '전체 메뉴';
+  }
+  cart = {};
+  renderCategories();
+  renderMenus();
+  renderCart();
+}
+
+async function loadDynamicMenus(storeId) {
+  try {
+    const response = await fetch(`/api/store-menus?store=${encodeURIComponent(storeId)}`, { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) return;
+    applyDynamicMenus(result);
+  } catch (error) {
+    console.warn('상점 메뉴를 불러오지 못했습니다.', error);
+  }
+}
+
+async function trackStoreVisit(storeId) {
+  if (!storeId) return;
+  try {
+    await fetch('/api/store-visits', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ storeId })
+    });
+  } catch (error) {
+    console.warn('상점 방문수를 기록하지 못했습니다.', error);
+  }
+}
+
+async function loadDynamicStore() {
+  const params = new URLSearchParams(window.location.search);
+  const storeId = params.get('store');
+  if (!storeId) {
+    document.documentElement.classList.remove('dynamic-store-loading');
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/store-info?store=${encodeURIComponent(storeId)}`, { cache: 'no-store' });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) {
+      alert(result.message || '상점 정보를 불러오지 못했습니다.');
+      return;
+    }
+    applyDynamicStore(result.store);
+    trackStoreVisit(result.store.storeId || storeId);
+    await loadDynamicMenus(storeId);
+    await loadCustomerNotice(storeId);
+  } catch (error) {
+    alert('상점 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+  } finally {
+    document.documentElement.classList.remove('dynamic-store-loading');
+  }
+}
+
+placeCartForViewport();
+window.addEventListener('resize', placeCartForViewport);
+updateMemberHeader();fillCartCustomerInfo();renderCategories();renderMenus();renderCart();loadDynamicStore();
+</script>
+</body>
+</html>

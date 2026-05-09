@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+<link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link href="https://woorecco.vercel.app/woorikke_order_platform_02.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="https://woorecco.vercel.app/woorikke_order_platform_02.html" property="og:url"/>
+<meta content="우리꺼" property="og:site_name"/>
+<meta content="태화루 주문웹" property="og:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." property="og:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image:secure_url"/>
+<meta content="image/png" property="og:image:type"/>
+<meta content="1731" property="og:image:width"/>
+<meta content="909" property="og:image:height"/>
+<meta content="우리꺼 주문웹 소개 이미지" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://woorecco.vercel.app/woorikke_order_platform_02.html" name="twitter:url"/>
+<meta content="태화루 주문웹" name="twitter:title"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 가맹점 전용 주문웹 서비스입니다." name="twitter:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image"/>
+<meta content="우리꺼 주문웹 소개 이미지" name="twitter:image:alt"/>
+<title>태화루 주문웹</title>
+
+  <link rel="stylesheet" href="common.css" />
+</head>
+<body class="page-order-02" data-page="order-original">
+<header class="appbar">
+  <div class="wrap appbar-inner">
+    <a class="brand" href="#top" aria-label="우리꺼 홈">
+      <img class="footer-logo" src="assets/logo.png" alt="우리꺼 본사 로고">
+    </a>
+    <div class="search">
+      <input id="searchInput" type="search" placeholder="메뉴를 검색해보세요" oninput="renderMenus()">
+    </div>
+    <div class="top-actions">
+      <a class="icon-btn" href="#storeInfo">매장정보</a>
+      <a class="icon-btn primary" href="#cart">장바구니</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="store-hero wrap">
+    <div class="store-card">
+      <div class="cover">
+        <div class="cover-badges">
+          <span class="badge">🟢 영업중</span>
+          <span class="badge">🚚 배달 가능</span>
+          <span class="badge">🥡 포장 가능</span>
+        </div>
+      </div>
+      <div class="store-info">
+        <div>
+          <h1 class="store-title">태화루</h1>
+          <p class="store-desc">태화루는 그 맛뿐만 아니라 가성비 좋은 세트메뉴로도 유명한 맛집입니다. 오랜 역사를 자랑하는 이곳은 중식의 정통적인 맛을 고수하면서도 고객들의 다양한 취향을 만족시킬 수 있는 메뉴를 제공하고 있습니다.
+</p>
+          <div class="score">
+          <span>최근 주문 38건</span>
+          <span> <a href="woorikke_order_platform_02.html">매장정보 woorikke.kr/s/tae_01</a></span>
+          
+          </div>
+          <div class="notice-box">매장 사정에 따라 조리 시간이 달라질 수 있습니다. 단체 주문은 매장으로 문의해주세요.</div>
+        </div>
+        <aside class="order-type">
+          <div class="switch" role="tablist">
+            <button id="deliveryBtn" class="active" onclick="setOrderType('배달')">배달</button>
+            <button id="pickupBtn" onclick="setOrderType('포장')">포장</button>
+          </div>
+          <div class="delivery-meta">
+            <div class="mini"><small>예상시간</small><b id="timeText">35~45분</b></div>
+            <div class="mini"><small>배달비</small><b id="feeText">1,000원</b></div>
+            <div class="mini"><small>최소주문</small><b>8,000원</b></div>
+            <div class="mini"><small>결제방식</small><b>카드결제</b></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <nav class="category-bar">
+    <div class="wrap category-scroll" id="categoryList"></div>
+  </nav>
+
+  <section class="wrap layout">
+    <div class="content">
+      <section class="section-card" id="menuArea">
+        <div class="section-title">
+          <h2 id="categoryTitle">전체 메뉴</h2>
+          <p>담기 버튼을 누르면 장바구니에 추가됩니다.</p>
+        </div>
+        <div class="menu-list" id="menuList"></div>
+      </section>
+
+      <section class="section-card" id="storeInfo">
+        <div class="section-title"><h2>매장정보</h2><p>전용 주문웹 정보</p></div>
+        <div class="info-grid">
+          <div class="info-box">
+            <h3>가맹점 정보</h3>
+            <p>상호 : 태화루<br>주소 : 인천 동구 동산로 89-1 태화루<br>전화 : 0507-1365-6098<br>단체 이용 가능, 포장, 배달, 예약, 주차</p>
+          </div>
+          <div class="info-box">
+            <h3>QR_cord</h3>
+            <div class="brand01">
+          <img src="assets/qr.png" alt="리조트일마레 카페 사진 1">
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <div class="section-title"><h2>가게사진</h2><p>매장 분위기</p></div>
+        <div class="album-grid">
+          <img src="assets/store/tae_01.jpg" alt="태화루 사진 1">
+          <img src="assets/store/tae_02.jpg" alt="태화루 사진 2">
+          <img src="assets/store/tae_03.jpg" alt="태화루 사진 3">
+          <img src="assets/store/tae_04.jpg" alt="태화루 사진 4">
+        </div>
+      </section>
+    </div>
+
+    <aside class="cart-panel" id="cart">
+      <div class="cart-head">
+        <h2>장바구니</h2>
+        <button class="cart-clear" onclick="clearCart()">비우기</button>
+      </div>
+      <div class="cart-body">
+        <div id="cartList" class="empty">아직 담긴 메뉴가 없습니다.<br>먹고 싶은 메뉴를 담아주세요.</div>
+        <div class="sum"><b>주문금액</b><b id="subtotal">0원</b></div>
+        <div class="sum"><span>배달비</span><span id="deliveryFee">1,000원</span></div>
+        <div class="sum"><b>총 결제금액</b><b id="total">0원</b></div>
+        <div class="form-line"><label>주문자명</label><input id="name" placeholder="예: 홍길동"></div>
+        <div class="form-line"><label>연락처</label><input id="phone" placeholder="010-0000-0000"></div>
+        <div class="form-line"><label>주소</label><input id="address" placeholder=""></div>
+        <div class="form-line"><label>요청사항</label><textarea id="memo" rows="3" placeholder="배달주소 또는 요청사항을 입력해주세요"></textarea></div>
+        <button class="checkout" onclick="submitOrder()">주문결제하기</button>
+        <div class="done" id="done">주문이 접수되었습니다. 매장에서 확인 후 준비를 시작합니다.</div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<div class="mobile-checkout">
+  <button onclick="goCart()"><span class="mobile-count" id="mobileCount">0</span><span id="mobileText">장바구니 보기 · 0원</span></button>
+</div>
+
+<footer class="footer" id="company">
+  <div class="footer-inner">
+    <div>
+      <img class="footer-logo" src="assets/logo_w.png" alt="우리꺼 본사 로고">
+      <p class="footer-desc">사장님과 손님을 직접 연결하는<br>가맹점 전용 주문웹</p>
+    </div>
+    <div>
+      <ul class="footer-info-list">
+        <li>주식회사 망고마켓 | 대표 안정길</li>
+        <li>사업자등록번호 495-87-01663 | 통신판매업 2025-제주한경-39호</li>
+        <li>인천 동구 송림로 119-1 망고빌딩 | 1899-7304</li>
+        <li>mobilitycorea. co.,ltd.</li>
+      </ul>
+    </div>
+    <div class="footer-apply-box">
+      <h3>가맹신청</h3>
+      <p>우리 가게 전용 주문웹을 만들고 싶은 사장님은 신청해주세요.</p>
+      <a class="footer-apply-btn" href="merchant.html">가맹신청하기</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 우리꺼 · 우리 가게 손님은 우리꺼로</span>
+    <span>고객 주문 · 가맹점 관리 · 본사 관리 통합 플랫폼</span>
+  </div>
+</footer>
+
+<div class="modal" id="orderModal">
+  <div class="modal-card">
+    <div style="font-size:48px">✅</div>
+    <h2>주문이 접수되었습니다</h2>
+    <p>매장에서 주문을 확인한 뒤 준비가 시작됩니다.<br>우리꺼를 이용해주셔서 감사합니다.</p>
+    <button onclick="closeModal()">확인</button>
+  </div>
+</div>
+
+<script>
+const categories=['전체','인기메뉴','면','밥','요리'];
+const menus=[
+  {id:1,cat:'면',img:'assets/menu/01.jpg',name:'짜장면',desc:'진한 춘장과 쫄깃한 면발의 기본 중식 메뉴',price:7500,popular:true},
+  {id:2,cat:'면',img:'assets/menu/02.jpg',name:'짬뽕',desc:'얼큰한 국물과 신선한 해물이 어우러진 인기 메뉴',price:8500,popular:true},
+  {id:3,cat:'면',img:'assets/menu/03.jpg',name:'간짜장',desc:'바로 볶아 더 고소하고 진한 프리미엄 짜장',price:8500},
+  {id:4,cat:'밥',img:'assets/menu/04.jpg',name:'볶음밥',desc:'고슬고슬하게 볶아낸 든든한 중식 볶음밥',price:9000},
+  {id:5,cat:'요리',img:'assets/menu/05.jpg',name:'탕수육',desc:'바삭한 튀김과 새콤달콤 소스의 대표 요리',price:25000,popular:true},
+  {id:6,cat:'밥',img:'assets/menu/06.jpg',name:'오무라이스',desc:'부드러운 계란과 볶음밥이 만난 추억의 메뉴',price:9000},
+  {id:7,cat:'밥',img:'assets/menu/07.jpg',name:'잡채밥',desc:'쫄깃한 잡채와 밥을 함께 즐기는 든든한 한 끼',price:10000},
+  {id:8,cat:'요리',img:'assets/menu/08.jpg',name:'사천탕수육',desc:'매콤한 사천식 소스로 즐기는 특별한 탕수육',price:27000}
+];
+let currentCategory='전체';
+let orderType='배달';
+let deliveryFee=1000;
+let cart={};
+function won(n){return n.toLocaleString('ko-KR')+'원'}
+function renderCategories(){
+  const box=document.getElementById('categoryList');
+  box.innerHTML=categories.map(c=>`<button class="cat-btn ${c===currentCategory?'active':''}" onclick="setCategory('${c}')">${c}</button>`).join('');
+}
+function setCategory(cat){currentCategory=cat;document.getElementById('categoryTitle').textContent=cat==='전체'?'전체 메뉴':cat;renderCategories();renderMenus();}
+function renderMenus(){
+  const q=(document.getElementById('searchInput').value||'').trim().toLowerCase();
+  const box=document.getElementById('menuList');
+  const filtered=menus.filter(m=>{
+    const categoryOk=currentCategory==='전체'||m.cat===currentCategory||(currentCategory==='인기메뉴'&&m.popular);
+    const searchOk=!q||m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
+    return categoryOk&&searchOk;
+  });
+  if(!filtered.length){box.innerHTML='<div class="empty">검색된 메뉴가 없습니다.</div>';return;}
+  box.innerHTML=filtered.map(m=>`
+    <article class="menu-item" onclick="addCart(${m.id})">
+      <div class="menu-img">
+        <img src="${m.img}" alt="${m.name}" onerror="this.style.display='none';this.parentElement.classList.add('no-image');this.parentElement.textContent='사진 준비중';">
+      </div>
+      <div class="menu-copy">
+        <h3>${m.name}${m.popular?'<span class="popular-mark">인기</span>':''}</h3>
+        <p>${m.desc}</p>
+        <b class="price">${won(m.price)}</b>
+      </div>
+      <button class="add-btn" onclick="event.stopPropagation();addCart(${m.id})">담기</button>
+    </article>`).join('');
+}
+function setOrderType(type){
+  orderType=type;
+  deliveryFee=type==='배달'?1000:0;
+  document.getElementById('deliveryBtn').classList.toggle('active',type==='배달');
+  document.getElementById('pickupBtn').classList.toggle('active',type==='포장');
+  document.getElementById('timeText').textContent=type==='배달'?'35~45분':'15~20분';
+  document.getElementById('feeText').textContent=type==='배달'?'1,000원':'무료';
+  document.getElementById('deliveryFee').textContent=type==='배달'?'1,000원':'0원';
+  renderCart();
+}
+function addCart(id){cart[id]=(cart[id]||0)+1;renderCart();}
+function changeQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCart();}
+function clearCart(){cart={};renderCart();}
+function renderCart(){
+  const ids=Object.keys(cart);
+  const list=document.getElementById('cartList');
+  let subtotal=0;
+  if(!ids.length){
+    list.className='empty';
+    list.innerHTML='아직 담긴 메뉴가 없습니다.<br>먹고 싶은 메뉴를 담아주세요.';
+  }else{
+    list.className='';
+    list.innerHTML=ids.map(id=>{
+      const m=menus.find(x=>x.id==id); const q=cart[id]; subtotal+=m.price*q;
+      return `<div class="cart-row"><div><div class="cart-row-name">${m.name}</div><small>${won(m.price)} × ${q}</small></div><div class="qty-control"><button onclick="changeQty(${m.id},-1)">-</button><b>${q}</b><button onclick="changeQty(${m.id},1)">+</button></div></div>`;
+    }).join('');
+  }
+  const itemCount=ids.reduce((a,id)=>a+cart[id],0);
+  const total=ids.length?subtotal+deliveryFee:0;
+  document.getElementById('subtotal').textContent=won(subtotal);
+  document.getElementById('total').textContent=won(total);
+  document.getElementById('mobileCount').textContent=itemCount;
+  document.getElementById('mobileText').textContent=`장바구니 보기 · ${won(total)}`;
+}
+function submitOrder(){
+  if(!Object.keys(cart).length){alert('메뉴를 먼저 담아주세요.');return;}
+  document.getElementById('done').style.display='block';
+  document.getElementById('orderModal').style.display='flex';
+}
+function closeModal(){document.getElementById('orderModal').style.display='none'}
+function goCart(){document.getElementById('cart').scrollIntoView({behavior:'smooth',block:'start'});}
+renderCategories();renderMenus();renderCart();
+</script>
+</body>
+</html>

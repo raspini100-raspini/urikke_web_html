@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+  <link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+  <link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+  <link href="/site.webmanifest" rel="manifest"/>
+  <link href="https://woorecco.vercel.app/member-login.html" rel="canonical"/>
+  <meta content="website" property="og:type"/>
+  <meta content="https://woorecco.vercel.app/member-login.html" property="og:url"/>
+  <meta content="우리꺼" property="og:site_name"/>
+  <meta content="회원로그인" property="og:title"/>
+  <meta content="우리꺼 주문웹 회원 로그인" property="og:description"/>
+  <meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <title>회원로그인</title>
+  <link rel="stylesheet" href="common.css" />
+  <style>
+    body[data-page="member-login"]{
+      margin:0;
+      background:#f4f1ec;
+      color:#0f172a;
+      font-family:"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+    }
+    body[data-page="member-login"] *{box-sizing:border-box;}
+    body[data-page="member-login"] .page{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:minmax(320px, .92fr) minmax(360px, 1fr);
+    }
+    body[data-page="member-login"] .left-panel{
+      min-height:100vh;
+      padding:56px 44px;
+      background:linear-gradient(180deg,#ff7a1a 0%,#ff9b2f 100%);
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:26px;
+    }
+    body[data-page="member-login"] .logo-img{
+      width:210px;
+      max-width:72%;
+      display:block;
+    }
+    body[data-page="member-login"] .hero-copy h1{
+      margin:0;
+      font-size:38px;
+      line-height:1.2;
+      font-weight:800;
+      letter-spacing:0;
+    }
+    body[data-page="member-login"] .left-bottom{
+      margin-top:10px;
+      font-size:16px;
+      font-weight:600;
+      opacity:.94;
+    }
+    body[data-page="member-login"] .right-panel{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:36px 18px;
+    }
+    body[data-page="member-login"] .card{
+      width:min(430px,100%);
+      padding:36px 28px;
+      border-radius:26px;
+      background:#fff;
+      border:1px solid #eceff3;
+      box-shadow:0 18px 48px rgba(15,23,42,.08);
+    }
+    body[data-page="member-login"] h2{
+      margin:0 0 10px;
+      font-size:30px;
+      font-weight:800;
+      letter-spacing:0;
+    }
+    body[data-page="member-login"] .desc{
+      margin:0 0 26px;
+      color:#64748b;
+      line-height:1.6;
+      font-size:15px;
+      font-weight:500;
+    }
+    body[data-page="member-login"] .form-group{
+      display:grid;
+      gap:8px;
+      margin-bottom:16px;
+    }
+    body[data-page="member-login"] label{
+      font-size:14px;
+      font-weight:650;
+      color:#0f172a;
+    }
+    body[data-page="member-login"] input{
+      width:100%;
+      min-height:52px;
+      border:1px solid #dce3eb;
+      border-radius:15px;
+      padding:0 15px;
+      font:inherit;
+      font-weight:500;
+      outline:none;
+    }
+    body[data-page="member-login"] input:focus{
+      border-color:#ff7a1a;
+      box-shadow:0 0 0 3px rgba(255,122,26,.14);
+    }
+    body[data-page="member-login"] .helper{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin:4px 0 18px;
+      color:#64748b;
+      font-size:13px;
+      font-weight:500;
+    }
+    body[data-page="member-login"] .check-line{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:#475569;
+      font-size:13px;
+      font-weight:500;
+    }
+    body[data-page="member-login"] .check-line input{
+      width:16px;
+      min-height:auto;
+      height:16px;
+      padding:0;
+    }
+    body[data-page="member-login"] .link-orange{
+      color:#ea580c;
+      text-decoration:none;
+      font-weight:700;
+    }
+    body[data-page="member-login"] .btn{
+      width:100%;
+      min-height:54px;
+      border:0;
+      border-radius:16px;
+      font:inherit;
+      font-weight:800;
+      cursor:pointer;
+    }
+    body[data-page="member-login"] .btn-login{
+      background:#0f172a;
+      color:#fff;
+    }
+    body[data-page="member-login"] .btn-register{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:10px;
+      background:#ff7a1a;
+      color:#fff;
+      text-decoration:none;
+    }
+    body[data-page="member-login"] .footer-links{
+      margin-top:20px;
+      padding-top:18px;
+      border-top:1px solid #eef2f7;
+      color:#64748b;
+      text-align:center;
+      font-size:14px;
+      font-weight:500;
+    }
+    @media (max-width:760px){
+      body[data-page="member-login"] .page{
+        min-height:100vh;
+        display:block;
+      }
+      body[data-page="member-login"] .left-panel{
+        min-height:150px;
+        padding:24px 22px 20px;
+        justify-content:center;
+        align-items:center;
+        text-align:center;
+      }
+      body[data-page="member-login"] .hero-copy,
+      body[data-page="member-login"] .left-bottom{
+        display:none;
+      }
+      body[data-page="member-login"] .logo-img{
+        width:158px;
+        max-width:56%;
+      }
+      body[data-page="member-login"] .right-panel{
+        min-height:auto;
+        padding:28px 16px 40px;
+        align-items:flex-start;
+      }
+      body[data-page="member-login"] .card{
+        padding:30px 22px;
+        border-radius:24px;
+      }
+      body[data-page="member-login"] h2{
+        font-size:27px;
+      }
+    }
+  </style>
+</head>
+<body data-page="member-login">
+  <main class="page">
+    <section class="left-panel">
+      <img class="logo-img" src="assets/logo/logo_w.png" alt="우리꺼 로고" />
+      <div class="hero-copy">
+        <h1>우리 동네 가게를<br />더 가까이 만나는 방법</h1>
+      </div>
+      <div class="left-bottom">우리꺼 · 우리 가게 손님은 우리꺼로</div>
+    </section>
+
+    <section class="right-panel">
+      <div class="card">
+        <h2>회원로그인</h2>
+        <p class="desc">주문웹에서 사용할 회원 아이디와 비밀번호를 입력해주세요.</p>
+
+        <form id="memberLoginForm">
+          <div class="form-group">
+            <label for="loginId">아이디</label>
+            <input type="text" id="loginId" name="loginId" placeholder="아이디 입력" autocomplete="username" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" placeholder="비밀번호 입력" autocomplete="current-password" required />
+          </div>
+
+          <div class="helper">
+            <label class="check-line">
+              <input type="checkbox" id="rememberLogin" />
+              로그인 유지
+            </label>
+            <a href="member-register.html" class="link-orange" id="registerTopLink">회원가입</a>
+          </div>
+
+          <button type="submit" class="btn btn-login">로그인</button>
+          <a href="member-register.html" class="btn btn-register" id="registerButton">회원가입</a>
+        </form>
+
+        <div class="footer-links">로그인 후 이전에 보고 있던 주문웹으로 이동합니다.</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function getRedirectUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('redirect') || localStorage.getItem('wooreccoMemberRedirect') || 'order.html';
+    }
+
+    function setRegisterLinks() {
+      const href = `member-register.html?redirect=${encodeURIComponent(getRedirectUrl())}`;
+      document.getElementById('registerTopLink').href = href;
+      document.getElementById('registerButton').href = href;
+    }
+
+    function normalize(value) {
+      return String(value || '').trim();
+    }
+
+    function normalizePhone(value) {
+      return String(value || '').replace(/\D/g, '');
+    }
+
+    function saveMember(member, remember) {
+      const target = remember ? localStorage : sessionStorage;
+      const fallbackName = normalize(member.name || member.id || member.phone || '회원');
+      const nextMember = {
+        id: normalize(member.id || member.loginId || member.phone || fallbackName),
+        name: fallbackName,
+        phone: normalize(member.phone),
+        address: normalize(member.address),
+        provider: normalize(member.provider || 'normal')
+      };
+      target.setItem('wooreccoMember', JSON.stringify(nextMember));
+      target.setItem('wooreccoMemberName', nextMember.name);
+      target.setItem('wooreccoMemberPhone', nextMember.phone);
+      target.setItem('wooreccoMemberAddress', nextMember.address);
+      localStorage.setItem('wooreccoMemberName', nextMember.name);
+      if (nextMember.phone) localStorage.setItem('wooreccoMemberPhone', nextMember.phone);
+      if (nextMember.address) localStorage.setItem('wooreccoMemberAddress', nextMember.address);
+    }
+
+    function findCustomer(customers, loginId) {
+      const key = normalize(loginId).toLowerCase();
+      const phoneKey = normalizePhone(loginId);
+      return customers.find((customer) => {
+        const ids = [
+          customer.id,
+          customer.loginId,
+          customer.name,
+          customer.phone
+        ].map((value) => normalize(value).toLowerCase());
+        if (ids.includes(key)) return true;
+        return phoneKey && normalizePhone(customer.phone) === phoneKey;
+      });
+    }
+
+    async function fetchCustomers() {
+      try {
+        const response = await fetch('/api/customers?admin=1', { cache: 'no-store' });
+        const result = await response.json().catch(() => ({}));
+        return response.ok && result.ok && Array.isArray(result.customers) ? result.customers : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    document.getElementById('memberLoginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const loginId = normalize(document.getElementById('loginId').value);
+      const password = normalize(document.getElementById('password').value);
+      const remember = document.getElementById('rememberLogin').checked;
+      if (!loginId || !password) {
+        alert('아이디와 비밀번호를 입력해주세요.');
+        return;
+      }
+
+      const submitButton = this.querySelector('.btn-login');
+      submitButton.disabled = true;
+      submitButton.textContent = '로그인 중...';
+
+      try {
+        const customers = await fetchCustomers();
+        const customer = findCustomer(customers, loginId);
+        if (!customer) {
+          alert('가입된 회원 정보를 찾을 수 없습니다. 회원가입 후 이용해주세요.');
+          return;
+        }
+        if (customer.password && customer.password !== password) {
+          alert('비밀번호가 일치하지 않습니다.');
+          return;
+        }
+        saveMember(customer, remember);
+        const redirectUrl = getRedirectUrl();
+        localStorage.removeItem('wooreccoMemberRedirect');
+        window.location.href = redirectUrl;
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = '로그인';
+      }
+    });
+
+    setRegisterLinks();
+  </script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+﻿<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="우리꺼는 상점과 손님을 직접 연결하는 우리 가게 전용 주문웹입니다. 고객 주문, 메뉴관리, QR 주문, 상점관리자, 빠른 정산까지 한 번에 운영할 수 있습니다." name="description"/>
+<meta content="우리꺼, 우리 가게 주문웹, 상점 전용 주문웹, 상점관리자, 고객 주문, QR 주문, 메뉴관리, 빠른 정산" name="keywords"/>
+<meta content="index, follow" name="robots"/>
+<meta content="#ff6b00" name="theme-color"/>
+<link href="/assets/logo/favicon.png" rel="icon" type="image/png"/>
+<link href="/assets/logo/512.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/assets/logo/512.png" rel="apple-touch-icon"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link href="https://woorecco.vercel.app/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="https://woorecco.vercel.app/" property="og:url"/>
+<meta content="우리꺼" property="og:site_name"/>
+<meta content="우리꺼 | 우리 가게 전용 주문웹" property="og:title"/>
+<meta content="사장님에게도 사장님의 주문웹이 필요합니다" property="og:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" property="og:image:secure_url"/>
+<meta content="image/png" property="og:image:type"/>
+<meta content="1731" property="og:image:width"/>
+<meta content="909" property="og:image:height"/>
+<meta content="우리꺼 우리 가게 전용 주문웹 소개 이미지" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://woorecco.vercel.app/" name="twitter:url"/>
+<meta content="우리꺼 | 우리 가게 전용 주문웹" name="twitter:title"/>
+<meta content="사장님에게도 사장님의 주문웹이 필요합니다" name="twitter:description"/>
+<meta content="https://woorecco.vercel.app/assets/og_img01.png" name="twitter:image"/>
+<meta content="우리꺼 우리 가게 전용 주문웹 소개 이미지" name="twitter:image:alt"/>
+<title>우리꺼 | 우리 가게 전용 주문웹</title>
+<link href="common.css" rel="stylesheet"/>
+<style>
+/* 카카오톡 상담 하단 고정 버튼 */
+.kakao-floating-cta{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:9999;
+  padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+  background:transparent;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  pointer-events:none;
+}
+.kakao-floating-cta .kakao-consult-btn{
+  pointer-events:auto;
+}
+.kakao-floating-cta .kakao-consult-btn{
+  position:relative;
+  isolation:isolate;
+  width:min(100%, 520px);
+  min-height:72px;
+  margin:0 auto;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-radius:24px;
+  background:linear-gradient(135deg, #FFE812 0%, #FFD900 52%, #FFC400 100%);
+  color:#321818;
+  text-decoration:none;
+  box-shadow:0 18px 36px rgba(50,24,24,.18), 0 10px 24px rgba(255,212,0,.42);
+  overflow:hidden;
+  transform:translateY(0);
+  transition:transform .22s ease, box-shadow .22s ease, filter .22s ease;
+}
+.kakao-floating-cta .kakao-consult-btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(115deg, transparent 0%, rgba(255,255,255,.34) 38%, transparent 62%);
+  transform:translateX(-120%);
+  animation:kakaoShine 3.2s ease-in-out infinite;
+}
+.kakao-floating-cta .kakao-consult-btn:hover{
+  transform:translateY(-3px);
+  filter:saturate(1.06);
+  box-shadow:0 22px 44px rgba(50,24,24,.22), 0 14px 28px rgba(255,212,0,.5);
+}
+.kakao-floating-cta .kakao-badge{
+  position:absolute;
+  top:-9px;
+  right:22px;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#321818;
+  color:#FFE812;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:-.02em;
+  box-shadow:0 8px 18px rgba(50,24,24,.25);
+}
+.kakao-floating-cta .kakao-badge i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#FFE812;
+  box-shadow:0 0 0 4px rgba(255,232,18,.18);
+  animation:kakaoPulse 1.4s ease-in-out infinite;
+}
+.kakao-floating-cta .kakao-icon-box{
+  width:50px;
+  height:50px;
+  flex:0 0 50px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  background:#321818;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1), 0 8px 16px rgba(50,24,24,.18);
+  overflow:hidden;
+}
+.kakao-floating-cta .kakao-icon{
+  width:50px;
+  height:50px;
+  object-fit:cover;
+  display:block;
+}
+.kakao-floating-cta .kakao-text{
+  min-width:0;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  line-height:1.08;
+  letter-spacing:-.04em;
+}
+.kakao-floating-cta .kakao-text small{
+  margin-bottom:5px;
+  color:rgba(50,24,24,.72);
+  font-size:12px;
+  font-weight:850;
+}
+.kakao-floating-cta .kakao-text strong{
+  color:#321818;
+  font-size:20px;
+  font-weight:950;
+  white-space:nowrap;
+}
+.kakao-floating-cta .kakao-action{
+  flex:0 0 auto;
+  padding:10px 12px;
+  border-radius:999px;
+  background:rgba(50,24,24,.13);
+  color:#321818;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+@keyframes kakaoShine{
+  0%, 46%{transform:translateX(-120%)}
+  72%, 100%{transform:translateX(120%)}
+}
+@keyframes kakaoPulse{
+  0%, 100%{transform:scale(1); opacity:1}
+  50%{transform:scale(1.45); opacity:.72}
+}
+@media (min-width:769px){
+  .kakao-floating-cta{display:none;}
+}
+@media (max-width:380px){
+  .kakao-floating-cta{padding-left:10px; padding-right:10px;}
+  .kakao-floating-cta .kakao-consult-btn{min-height:66px; border-radius:20px; gap:10px;}
+  .kakao-floating-cta .kakao-icon-box,
+  .kakao-floating-cta .kakao-icon{width:44px; height:44px;}
+  .kakao-floating-cta .kakao-text strong{font-size:17px;}
+  .kakao-floating-cta .kakao-action{display:none;}
+}
+
+/* 히어로 상점등록 / 상점관리자 버튼 나란히 정렬 */
+.hero-actions{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+.hero-actions .btn{
+  width:100% !important;
+  min-width:0 !important;
+  text-align:center !important;
+}
+@media (max-width:420px){
+  .hero-actions{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* 샘플보기 버튼 - 모바일 창 크기 미리보기 */
+.process-visual.has-sample{
+  flex-wrap:wrap;
+}
+.process-visual .sample-view-row{
+  grid-column:1 / -1;
+  flex:0 0 100%;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-top:18px;
+}
+.sample-view-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-width:180px;
+  min-height:50px;
+  padding:0 24px;
+  border-radius:999px;
+  background:#ff7a00;
+  color:#ffffff;
+  font-size:16px;
+  font-weight:950;
+  letter-spacing:-.03em;
+  text-decoration:none;
+  box-shadow:0 14px 28px rgba(0,18,38,.22);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.sample-view-btn:hover{
+  transform:translateY(-2px);
+  background:#ff7a00;
+  box-shadow:0 18px 34px rgba(255,122,0,.28);
+}
+.sample-view-btn::after{
+  content:"↗";
+  font-size:15px;
+  line-height:1;
+}
+@media (max-width:560px){
+  .process-visual .sample-view-row{
+    margin-top:14px;
+  }
+  .sample-view-btn{
+    width:100%;
+    min-height:52px;
+  }
+}
+
+</style>
+</head>
+<body data-page="landing">
+<a class="skip-link" href="#top">본문 바로가기</a>
+<div class="top-banner" role="note">사장님은 가게에 집중하고, 손님은 더 쉽게 주문하는 우리꺼</div>
+<header>
+<div class="wrap nav">
+<a aria-label="우리꺼 홈으로 이동" class="logo" href="#top">
+<img alt="우리꺼 로고" class="logo-img" decoding="async" height="60" src="assets/logo/logo.png" width="190"/>
+</a>
+<nav aria-label="주요 메뉴" class="nav-menu">
+<a href="#about">WAY</a>
+<a href="#how">HOW</a>
+<a href="#price-policy">PRICE</a>
+<a href="#faq">FAQ</a>
+</nav>
+<div class="nav-actions">
+<a class="btn btn-main" href="store-register.html" target="_blank" rel="noopener noreferrer">상점전용웹 제작신청</a>
+<a class="btn btn-ghost" href="store-login.html">상점관리자</a>
+</div>
+</div>
+</header>
+<main id="top" tabindex="-1">
+<section class="hero">
+<div class="wrap hero-grid">
+<div>
+<div class="badge">가게마다 하나씩, 전용 주문웹</div>
+<h1>배달앱 말고,<br/><span>우리 가게 주문은 우리꺼</span>로</h1>
+<p class="hero-copy">
+           우리꺼는 상점과 손님을 직접 연결합니다.<br/>
+            손님은 익숙하게 주문하고,<br/>
+            사장님은 내 가게의 단골을 직접 만납니다.
+          </p>
+<div class="hero-actions">
+<a class="btn btn-main" href="store-register.html" rel="noopener noreferrer" target="_blank">상점전용웹 제작신청</a>
+<a class="btn btn-ghost" href="store-login.html">상점관리자</a>
+</div>
+
+</div>
+<div aria-label="우리꺼 고객 주문 화면 예시" class="phone-board">
+<div class="float-card float-1">
+<strong>사장님~!</strong>
+<small>우리꺼로 주문왔어요~^^</small>
+</div>
+<div class="float-card float-2">
+<strong>사장님!</strong>
+<small>우리꺼로 주문 왔어요~!!!</small>
+</div>
+<br/><br/><br/>
+<img alt="우리꺼 주문웹 화면 예시" class="main-img" decoding="async" height="420" loading="lazy" src="assets/main_001.jpg" width="560"/>
+</div>
+</div>
+</section>
+
+
+<section id="about">
+<div class="wrap">
+<div class="section-head">
+<div class="eyebrow">WAY</div>
+<h2>
+ 배달앱의 손님은<br/>
+ 사장님의 손님이 아닙니다.
+</h2>
+      <p>
+      우리꺼는 거창한 플랫폼보다, 사장님의 가게 하나를 제대로 보여주는 데 집중합니다.
+      </p>
+</div>
+<div class="cards-3">
+<article class="card">
+<div class="card-icon">🏬</div>
+<h3>손님은 주문과 결제, 영업정보와<br>친구공유까지</h3>
+</article>
+<article class="card">
+<div class="card-icon">📲</div>
+<h3>문자, 카카오톡, QR코드,<br> 네이버 플레이스 등으로 접속</h3>
+</article>
+<article class="card">
+<div class="card-icon">💻</div>
+<h3>주문정보를 상점관리자가<br> 직접 관리.</h3>
+</article>
+</div>
+<div class="process-visual has-sample">
+  <div class="process-visual-copy">
+    <span>CUSTOMER</span>
+    <h3>손님이 상점에 직접 방문합니다.</h3>
+    <p>고객이 주문 및 결제,  친구소개, 홍보, 상점정보 확인</p>
+  </div>
+  <figure class="process-visual-image">
+    <img src="assets/main_003.jpg" alt="고객페이지" loading="lazy" decoding="async" />
+  </figure>
+  <div class="sample-view-row">
+    <a class="sample-view-btn"
+       href="order.html?store=raspini1"
+       onclick="return openMobileSample('order.html?store=raspini1')"
+       aria-label="오늘이닭 고객 주문 샘플을 모바일 창 크기로 보기">
+      고객용 샘플보기
+    </a>
+  </div>
+</div>
+</div>
+</section>
+
+
+
+<!--section id="customer">
+<div class="wrap split">
+<article class="empathy-card customer">
+<span class="bubble">손님 마음</span>
+<h3>그 가게 또 주문하고 싶은데, 어디서 하지?</h3>
+<div class="check-list">
+<div class="check"><i>✓</i><span>플랫폼 없이 가게로 바로 주문</span></div>
+<div class="check"><i>✓</i><span>메뉴와 서비스를 한눈에 확인</span></div>
+<div class="check"><i>✓</i><span>포장 및 배달주문 가게 상황에 맞게 이용</span></div>
+</div>
+</article>
+<article class="empathy-card owner">
+<span class="bubble">사장님 마음</span>
+<h3>내 손님은, <br/>내 가게로 다시 와야 합니다.</h3>
+<div class="check-list">
+<div class="check"><i>✓</i><span>내 가게 전용 주문 페이지 제공</span></div>
+<div class="check"><i>✓</i><span>상점관리자가 직접 메뉴와 영업정보 수정</span></div>
+<div class="check"><i>✓</i><span>단골 고객에게 플레이스링크, 카톡, QR, 문자로 재주문 유도</span></div>
+</div>
+</article>
+</div>
+</section-->
+
+
+
+<section id="how">
+<div class="wrap">
+<div class="section-head">
+<div class="eyebrow">HOW IT WORKS</div>
+<h2>우리꺼는 이렇게 시작합니다</h2>
+<p>가맹점이 직접 신청하고, 본사 승인 후 바로 내 가게 주문웹을 운영할 수 있습니다.</p>
+</div>
+<div class="process">
+<div class="step">
+<h3>가맹점 신청</h3>
+<p>사장님이 직접 가게 정보와 연락처를 등록합니다.</p>
+</div>
+<div class="step">
+<h3>기본 세팅</h3>
+<p>가게 소개, 운영시간, 배달/포장 여부를 설정합니다.</p>
+</div>
+<div class="step">
+<h3>메뉴 등록</h3>
+<p>메뉴명, 가격, 사진, 품절 여부를 직접 관리합니다.</p>
+</div>
+<div class="step">
+<h3>링크 공유</h3>
+<p>QR, 문자, 카카오톡, SNS, 플레이스링크로 상점주문 링크를 알립니다.</p>
+</div>
+<div class="step">
+<h3>주문 운영</h3>
+<p>들어온 주문을 확인하고 배달완료 후 10분정산으로 운영합니다.</p>
+</div>
+</div>
+<div class="process-visual has-sample">
+  <div class="process-visual-copy">
+    <span>OWNER DASHBOARD</span>
+    <h3>우리가게 손님은 우리꺼로</h3>
+    <p>주문접수, 메뉴관리, 정산 확인까지 사장님이 직접 관리할 수 있는 상점관리자를 제공합니다.</p>
+  </div>
+  <figure class="process-visual-image">
+    <img src="assets/main_004.jpg" alt="우리꺼 상점관리자 화면과 주문관리 소개 이미지" loading="lazy" decoding="async" />
+  </figure>
+  <div class="sample-view-row">
+    <a class="sample-view-btn"
+       href="store-admin.html?store=raspini1&sample=1"
+       onclick="return openMonitorSample('store-admin.html?store=raspini1&sample=1')"
+       aria-label="상점 관리자 샘플을 모니터 창 크기로 보기">
+      상점용 샘플보기
+    </a>
+  </div>
+</div>
+
+</div>
+</section>
+
+
+
+<!--section id="service">
+<div class="wrap">
+<div class="feature-zone">
+<div class="section-head">
+<div class="eyebrow">SERVICE</div>
+<h2>손님과 상점<br/>"우리꺼"로 연결됩니다</h2>
+<p>단순한 주문 페이지가 아니라 고객 주문 화면, 가맹점 관리자를 분리해 운영할 수 있는 구조입니다.
+</p>
+</div>
+<div class="feature-grid">
+<div class="feature">
+<b>고객용 주문웹</b>
+<span>특정 가맹점만 보이는 전용 주문 화면, 메뉴 확인, 장바구니, 주문 요청</span>
+</div>
+<div class="feature">
+<b>가맹점 관리자</b>
+<span>가게 정보, 메뉴, 가격, 품절, 주문내역, 영업상태 직접 관리</span>
+</div>
+<div class="feature">
+<b>바로가기 </b>
+<span> 바탕화면 바로가기 기능으로 손님은 어플처럼 사용가능 </span>
+</div>
+<div class="feature">
+<b>QR 주문 연결</b>
+<span>배달과 함께가는 명함, 전단지, 영수증, 배너에 QR을 넣어 바로 주문 유도</span>
+</div>
+<div class="feature">
+<b>단골 재주문</b>
+<span>가게 링크를 저장한 고객이 다시 쉽게 들어와 재주문 가능</span>
+</div>
+<div class="feature">
+<b>SNS, 카카오톡</b>
+<span>단골고객에게 상점이벤트를 문자와 카톡으로 바로 전송관리</span>
+</div>
+</div>
+</div>
+</div>
+</section-->
+
+
+
+<!--section>
+<div class="wrap pricing-card">
+<div>
+<div class="eyebrow">FOR OWNERS</div>
+<h2>시작은 가볍게,<br/>운영은 내 가게답게</h2>
+<p style="color:var(--muted); font-weight:750; font-size:18px;">
+            우리꺼는 가맹점이 복잡한 개발을 몰라도 내 가게 주문웹을 가질 수 있도록 돕습니다.
+          </p><br/>
+<a class="btn btn-main" href="store-register.html" rel="noopener noreferrer" target="_blank">상점등록</a>
+</div>
+<div class="pricing-list">
+<div class="check"><i>✓</i><span>가게 전용 주문 페이지 제작</span></div>
+<div class="check"><i>✓</i><span>메뉴와 가격을 사장님이 직접 수정</span></div>
+<div class="check"><i>✓</i><span>고객이 특정 가게만 보고 주문하는 구조</span></div>
+<div class="check"><i>✓</i><span>상점관리자에서 주문, 정산 및 전체 현황 관리</span></div>
+</div>
+</div>
+</section-->
+
+
+
+<section class="price-policy" id="price-policy">
+<div class="wrap">
+<div class="price-policy-box">
+<div class="price-policy-head">
+<div class="eyebrow">PRICE POLICY</div>
+<h2>가격정책</h2>
+<p>초기제작비 220,000원 현재면제</p>
+<div aria-label="최초 1년 동안 0원" class="price-value">최초 1년 동안 0원</div>
+<p>1년 후부터는 월 11,000원의 관리비가 적용됩니다. 언제든 해지 가능하며, 위약금은 없습니다.</p>
+</div>
+<div class="price-policy-grid">
+<article class="price-policy-card">
+<div>
+<span class="price-label">상점운영관리비</span>
+<div class="price-title">최초 1년 무료</div>
+<div class="price-value">0<small> 원</small></div>
+<p class="price-desc">
+            초기제작비 220,000원 현재면제
+                </p>
+</div>
+</article>
+<article class="price-policy-card highlight">
+<div>
+<span class="price-label">주문 정산 기준</span>
+<div class="price-title">정산수수료</div>
+<div class="price-value">4.4<small> %</small></div>
+<p class="price-desc">
+                  고객주문 후 정산 시 적용되는 카드수수료, 상점수수료를 포함한 % 입니다.
+                </p>
+</div>
+</article>
+<article class="price-policy-card">
+<div>
+<span class="price-label">정산 속도</span>
+<div class="price-title">빠른 정산</div>
+<div class="price-value">10분<small> 이내</small></div>
+<p class="price-desc">
+                  주문 배달완료 후 상점이 등록한 계좌로 빠르게 정산되는 구조입니다.
+                </p>
+</div>
+</article>
+</div>
+<div class="price-policy-detail">
+<table class="policy-table">
+<tbody>
+<tr>
+<tr>
+<th>전용웹 제작비</th>
+<td>현재 220,000원 면제</td>
+</tr>
+<tr>
+<th>상점웹 운영관리비</th>
+<td>최초 1년 무료, 이후 월 11,000원</td>
+</tr>
+<tr>
+<th>정산수수료</th>
+<td>결제금액 기준 4.4%</td>
+</tr>
+<tr>
+<th>정산방식</th>
+<td>상점 등록 계좌로 정산</td>
+</tr>
+<tr>
+<th>정산시간</th>
+<td>고객 주문 완료 후 10분 이내</td>
+</tr>
+</tbody>
+</table>
+
+<div class="policy-note">
+
+<ul>
+
+<li>상점 전용 주문웹 제작</li>
+<li>QR, 문자, 카카오톡 링크 활용 가능</li>
+<li>메뉴·가격·영업상태 직접 관리</li>
+<li>단골 고객 재주문 유도에 적합</li>
+<li>다른 명목을 붙여 별도의 수수료를 요구하지 않습니다.</li>
+</ul>
+<br/>
+<a class="btn btn-main" href="store-register.html" rel="noopener noreferrer" target="_blank">상점등록 신청하기</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+<section id="faq">
+<div class="wrap">
+<div class="section-head">
+<div class="eyebrow">FAQ</div>
+<h2>사장님들이 자주 묻는 질문</h2>
+</div>
+<div class="faq">
+<details open="">
+<summary>우리꺼는 배달앱인가요?</summary>
+<p>아닙니다. <br/>상점별 전용 주문웹으로 손님이 바로 들어와 주문하게 하는 서비스입니다.</p>
+</details>
+<details>
+<summary>고객이 앱을 설치해야 하나요?</summary>
+<p>아닙니다.<br/> 고객은 상점전용웹, QR, 문자, 카카오톡, 네이버플레이스 등을 통해 웹으로 접속해 주문할 수 있도록 구성되어 있습니다.</p>
+</details>
+<details>
+<summary>상점이 직접 메뉴를 수정할 수 있나요?</summary>
+<p>네.<br/> 상점전용 관리자 화면에서 메뉴명, 가격, 품절 여부, 영업 상태 등을 직접 관리하는 구조입니다.</p>
+</details>
+<details>
+<summary>상점웹 운영관리비가 어떻게 되나요?</summary>
+<p>최초 1년 동안은 0원입니다.<br/>1년 후부터는 월 11,000원의 운영관리비가 발생합니다.</p>
+</details>
+<details>
+<summary>정산시간과 수수료는 어떻게 되나요?</summary>
+<p>10분입니다.<br/>고객이 결제를 하고 배달완료 버튼을 누른 후 10분 이내 상점의 등록계좌로 정산됩니다.<br/>
+                  정산수수료 4.4%가 발생되며 별도의 상점수수료가 발생하지 않습니다.<br/>
+                  우리꺼는 사장님께 또 다른 부담을 만들지 않습니다.<br/>
+                  광고비, 노출비, 중개비처럼 이름만 바꾼 비용을 받지 않고,<br/>
+                  처음 약속한 기준 그대로 정직하게 운영합니다.
+</p>
+</details>
+<details>
+<summary>배달앱도 중개수수료만 부담하면 되는 것 아닌가요?</summary>
+<p>아닙니다.<br/>배달앱 비용은 중개수수료만으로 끝나지 않습니다.<br/>
+                   실제로는 배달비, 결제수수료, 광고비까지 함께 부담되는 경우가 많습니다.<br/>
+                   이 비용들을 모두 합치면 사장님 부담은 매출의 약 15%에서,<br/>
+                   많게는 30% 이상까지 올라갈 수 있습니다.<br/>
+                   예를 들어 2만 원짜리 주문을 받아도,<br/>
+                   여러 비용을 제외하고 나면 실제로는 5천 원 넘게 빠질 수 있습니다.<br/>
+                   그래서 이제는 주문을 외부 플랫폼에만 의존하기보다,<br/><br/>
+                   사장님 가게만의 직접 주문 채널이 필요합니다.<br/>
+</p> 
+</details>
+</div>
+</div>
+</section>
+<section>
+<div class="wrap final-cta final-letter">
+<h2>사장님, 많이 힘드셨지요.</h2>
+<br/> <br/>
+우리 가게 주문은, 우리꺼였는데....<br/>처음에는 손님을 더 많이 만나게 해준다고 했습니다. <br/>
+가게를 알릴 수 있다고 했고, 주문이 늘어날 거라고 했습니다. <br/><br/>
+
+그래서 사장님들은 믿었습니다.<br/>
+하루 종일 불 앞에 서서 음식을 만들고, <br/>
+포스모니터를 생각없이 응시하며,<br/>
+당신 생일 날에도 가게 문을 열고,<br/>
+손님 한 명 한 명을 기다리며 버텼습니다. <br/><br/>
+
+그런데 어느 순간부터 내 가게의 손님인데도 내 손님 같지 않게 느껴졌습니다.<br/>
+ 주문은 들어오지만, 수수료가 먼저 빠져나갔고, <br/>
+광고를 하지 않으면 보이지 않았고, <br/>
+리뷰 하나에 마음이 무너지고,<br/>
+ 쿠폰과 할인 경쟁 속에서 정작 사장님의 정성과 땀은 점점 작아졌습니다. <br/>
+음식은 사장님이 만들었는데, <br/>
+손님과의 관계는 플랫폼이 가져갔습니다.<br/><br/>
+
+먹고 나서 환불을 요구하고,<br/>
+작은 흠 하나로 별점을 깎고,<br/>
+플랫폼을 등에 업은 손님의 매정했던 말 한마디로 <br/>
+가게의 하루를 무너뜨리는 일도 있었습니다.<br/>
+사장님은 억울했지만,<br/>
+플랫폼은 사장님의 이야기를 먼저 들어주지 않았습니다.<br/>
+
+손님을 잃을까 봐,<br/>
+리뷰가 나빠질까 봐,<br/>
+문제가 커질까 봐.<br/>
+
+결국 사장님은 또 참아야 했습니다.<br/><br/>
+
+모든 손님이 옳다는 말보다,<br/>
+정직하게 장사하는 사장님도 보호받아야 한다고 믿습니다.<br/><br/>
+ 우리꺼는 그 마음에서 시작했습니다.<br/>
+거창한 기술보다 먼저, 사장님의 마음을 생각했습니다. <br/><br/>
+
+“내 가게 손님은 다시 내 가게로 오게 해야 한다.”<br/>
+ “사장님이 만든 음식의 가치는 사장님에게 남아야 한다.”<br/>
+ “단골은 플랫폼의 손님이 아니라, 우리 가게의 손님이어야 한다.”<br/><br/>
+ 공룡같은 플랫폼은 선량한 상점주들에게<br/>
+자기 앞에 줄 서라 합니다. 아닙니다. <br/>
+사장님이 손님을 맞이해야 합니다. <br/><br/>
+우리꺼는 사장님을 대신해 장사를 하려는 서비스가 아닙니다. <br/>
+사장님이 사장님답게 장사할 수 있는 서비스입니다. <br/>
+대형 플랫폼에 마음 상하셨던 사장님께 조심스럽게 말씀드립니다. <br/><br/>
+
+이제 손님과 직접 만나십시오. <br/>
+내 가게의 손님을 다시 품으십시오. <br/>
+넉넉한 마음으로 주변을 외면하지 않았던 사장님들이<br/>
+영혼없는 플랫폼의 숫자에 가려지지 않도록,<br/>
+가게와 손님이 다시 직접 이어지는 길을 만들겠습니다.<br/>
+사장님의 노력이 헛되지 않도록, 함께하겠습니다. <br/><br/>
+
+<p>우리 가게 주문은, 이제 우리꺼입니다.</p>
+</div>
+</section>
+
+<section aria-label="관계사 브랜드" class="family-brand-section">
+<div class="wrap">
+<div class="family-brand-head">
+<div class="eyebrow" style="text-align: center;">&nbsp;&nbsp;&nbsp;FAMILY BRAND</div>
+</div>
+<div class="family-logo-row">
+<a aria-label="망고마켓 새창으로 열기" class="family-logo-card" href="https://www.mango-market.com" rel="noopener noreferrer" target="_blank">
+<img alt="망고마켓 로고" decoding="async" loading="lazy" src="assets/family/mango.jpg"/>
+</a>
+<a aria-label="배달페이 새창으로 열기" class="family-logo-card" href="https://bdpay.co.kr/" rel="noopener noreferrer" target="_blank">
+<img alt="배달페이 로고" decoding="async" loading="lazy" src="assets/family/deliverypay.jpg"/>
+</a>
+<a aria-label="링크링크 새창으로 열기" class="family-logo-card" href="https://linklink.co.kr/" rel="noopener noreferrer" target="_blank">
+<img alt="링크링크 로고" decoding="async" loading="lazy" src="assets/family/linklink.jpg"/>
+</a>
+<a aria-label="복음복음 새창으로 열기" class="family-logo-card" href="https://bogeumx2.com/" rel="noopener noreferrer" target="_blank">
+<img alt="복음복음 로고" decoding="async" loading="lazy" src="assets/family/bogeumbogeum.jpg"/>
+</a>
+<a aria-label="모빌리티코리아 새창으로 열기" class="family-logo-card" href="https://www.mobilitycorea.co.kr/" rel="noopener noreferrer" target="_blank">
+<img alt="모빌리티코리아 로고" decoding="async" loading="lazy" src="assets/family/mobilitycorea.jpg"/>
+</a>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="wrap footer-grid">
+<div>
+<img alt="우리꺼 로고" class="logo-img" src="assets/logo/logo.png" style="width:160px; height:auto; display:block; margin-bottom:10px;"/>
+
+        상점과 손님을 직접 연결하는 주문웹
+      </div>
+<div>
+       (주)망고마켓[우리꺼] | 대표이사 안정길<br/>
+       495-87-01663 | 제2025-제주한경-39호<br/>
+       인천 동구 송림로 119-1 망고빌딩 | 1899-7304<br/>
+       © 1998 mobilitycorea. All rights reserved.
+      </div>
+<div>
+      우리는 내일도 최선을 다하겠습니다.
+      </div>
+</div>
+</footer>
+<div class="mobile-cta kakao-floating-cta" aria-label="카카오톡 상담 바로가기">
+  <a class="kakao-consult-btn"
+     href="http://pf.kakao.com/_xnqxdxbX/chat"
+     rel="noopener noreferrer"
+     target="_blank"
+     aria-label="카카오톡 상담하기 새창 열기">
+
+    <span class="kakao-icon-box" aria-hidden="true">
+      <img class="kakao-icon"
+           src="assets/logo/kakaotalk_logo.png"
+           alt=""
+           loading="lazy"
+           decoding="async" />
+    </span>
+    <span class="kakao-text">
+      <small>우리꺼 사장님 전용 상담</small>
+      <strong>카카오톡 상담하기</strong>
+    </span>
+    <span class="kakao-action" aria-hidden="true">바로가기</span>
+  </a>
+</div>
+
+<script>
+function openMobileSample(url){
+  return openSampleWindow(url, 'woorikkeOrderSampleMobile', 430, 860);
+}
+function openMonitorSample(url){
+  return openSampleWindow(url, 'woorikkeStoreAdminSampleMonitor', 1280, 860);
+}
+function openSampleWindow(url, windowName, popupWidth, popupHeight){
+  const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+  const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+  const screenWidth = window.innerWidth || document.documentElement.clientWidth || screen.width;
+  const screenHeight = window.innerHeight || document.documentElement.clientHeight || screen.height;
+  const left = Math.max(0, dualScreenLeft + (screenWidth - popupWidth) / 2);
+  const top = Math.max(0, dualScreenTop + (screenHeight - popupHeight) / 2);
+  const features = [
+    `width=${popupWidth}`,
+    `height=${popupHeight}`,
+    `left=${Math.round(left)}`,
+    `top=${Math.round(top)}`,
+    'resizable=yes',
+    'scrollbars=yes',
+    'toolbar=no',
+    'menubar=no',
+    'location=no',
+    'status=no'
+  ].join(',');
+  const sampleWindow = window.open(url, windowName, features);
+  if(sampleWindow){
+    sampleWindow.focus();
+    return false;
+  }
+  return true;
+}
+</script>
+</body>
+</html>
